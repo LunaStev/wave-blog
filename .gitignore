@@ -45,3 +45,7 @@ Thumbs.db
 # Generated from content/posts at build time
 src/app/blog-data.ts
 scripts/__pycache__/
+public/post/
+public/robots.txt
+public/rss.xml
+public/sitemap.xml
