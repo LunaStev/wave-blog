@@ -41,7 +41,8 @@ export class SeoService {
 
   setPost(post: BlogPost): void {
     const pageTitle = `${post.title} | ${this.siteName}`;
-    const canonical = this.absoluteUrlForPath(`post/${post.slug}`);
+    const canonical = this.absoluteUrlForPath(`post/${post.slug}/`);
+    const image = this.absoluteOrExternalUrl(post.cover);
     const keywords = [
       'wave language',
       'programming language',
@@ -56,7 +57,7 @@ export class SeoService {
       description: post.description,
       canonical,
       type: 'article',
-      image: post.cover || undefined,
+      image: image || undefined,
       keywords,
     });
 
@@ -71,7 +72,7 @@ export class SeoService {
       dateModified: this.toIso(post.date),
       mainEntityOfPage: canonical,
       url: canonical,
-      image: post.cover || undefined,
+      image: image || undefined,
       keywords: post.tags,
       author: {
         '@type': 'Organization',
@@ -123,13 +124,22 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:description', content: input.description });
     this.meta.updateTag({ property: 'og:type', content: input.type });
     this.meta.updateTag({ property: 'og:url', content: input.canonical });
+    this.meta.updateTag({ property: 'og:locale', content: 'en_US' });
 
     if (input.image) {
       this.meta.updateTag({ property: 'og:image', content: input.image });
+      this.meta.updateTag({ property: 'og:image:url', content: input.image });
+      this.meta.updateTag({ property: 'og:image:secure_url', content: input.image.replace(/^http:\/\//i, 'https://') });
+      this.meta.updateTag({ property: 'og:image:alt', content: `${input.title} cover image` });
       this.meta.updateTag({ name: 'twitter:image', content: input.image });
+      this.meta.updateTag({ name: 'twitter:image:alt', content: `${input.title} cover image` });
     } else {
       this.meta.removeTag("property='og:image'");
+      this.meta.removeTag("property='og:image:url'");
+      this.meta.removeTag("property='og:image:secure_url'");
+      this.meta.removeTag("property='og:image:alt'");
       this.meta.removeTag("name='twitter:image'");
+      this.meta.removeTag("name='twitter:image:alt'");
     }
 
     this.meta.updateTag({ name: 'twitter:card', content: input.image ? 'summary_large_image' : 'summary' });
@@ -177,6 +187,20 @@ export class SeoService {
   private absoluteUrlForPath(path: string): string {
     const cleaned = path.replace(/^\/+/, '');
     return new URL(cleaned || './', this.document.baseURI).toString();
+  }
+
+  private absoluteOrExternalUrl(pathOrUrl: string): string {
+    const value = pathOrUrl.trim();
+    if (!value) {
+      return '';
+    }
+    if (value.startsWith('https://') || value.startsWith('http://')) {
+      return value;
+    }
+    if (value.startsWith('//')) {
+      return `https:${value}`;
+    }
+    return this.absoluteUrlForPath(value);
   }
 
   private toIso(raw: string): string {

@@ -1,16 +1,6 @@
-# Wave Blog
+# Wave Programming Language
 
-## Cloudflare Workers (Default)
+This repository is the official source code for the Wave Programming Language blog.
 
-- Static assets are served from `dist/waveblog`.
-- SPA fallback is enabled (`not_found_handling = "single-page-application"` in `wrangler.toml`).
-
-### Commands
-
-- Local preview: `npm run preview:worker`
-- Deploy: `npm run deploy:worker`
-
-### Environment variable
-
-- `SITE_URL`: official blog URL (example: `https://blog.wave-lang.org`)
-  - Used for canonical URL, `sitemap.xml`, `rss.xml`, and static post SEO metadata.
+Code License: MPL-2.0 (Incompatible With Secondary Licenses).
+Content and Images License: All Rights Reserved.

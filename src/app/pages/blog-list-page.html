@@ -25,7 +25,7 @@
 <main class="feed-grid">
   @for (post of orderedFilteredPosts(); track post.slug) {
     <article class="post-card" [style.--delay]="($index * 0.04) + 's'" [class.pinned]="post.pinned">
-      <a [routerLink]="['/post', post.slug]">
+      <a [routerLink]="'/post/' + post.slug + '/'">
         <div class="card-cover" [class.no-cover]="!post.cover" [style.background-image]="cardCoverStyle(post)"></div>
 
         <div class="card-body">

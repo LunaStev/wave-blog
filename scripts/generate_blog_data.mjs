@@ -213,6 +213,34 @@ function absoluteUrl(siteUrl, p) {
   return `${siteUrl}${normalized}`;
 }
 
+function resolvePublicUrl(siteUrl, rawValue) {
+  const value = String(rawValue ?? '').trim();
+  if (!value) {
+    return '';
+  }
+  if (value.startsWith('https://') || value.startsWith('http://')) {
+    return value;
+  }
+  if (value.startsWith('//')) {
+    return `https:${value}`;
+  }
+  return absoluteUrl(siteUrl, value);
+}
+
+function guessImageMimeType(rawUrl) {
+  try {
+    const pathname = new URL(rawUrl).pathname.toLowerCase();
+    if (pathname.endsWith('.png')) return 'image/png';
+    if (pathname.endsWith('.jpg') || pathname.endsWith('.jpeg')) return 'image/jpeg';
+    if (pathname.endsWith('.webp')) return 'image/webp';
+    if (pathname.endsWith('.gif')) return 'image/gif';
+    if (pathname.endsWith('.svg')) return 'image/svg+xml';
+  } catch {
+    // ignore parsing errors
+  }
+  return '';
+}
+
 function stripHtml(text) {
   return text.replace(/<[^>]+>/g, '');
 }
@@ -224,6 +252,15 @@ function toRfc2822(rawDate) {
     return new Date().toUTCString();
   }
   return parsed.toUTCString();
+}
+
+function toIsoDate(rawDate) {
+  const candidate = rawDate.includes('T') ? `${rawDate}Z` : rawDate;
+  const parsed = new Date(candidate);
+  if (Number.isNaN(parsed.getTime())) {
+    return rawDate;
+  }
+  return parsed.toISOString();
 }
 
 function loadPosts() {
@@ -296,7 +333,7 @@ function writeSeoFiles(posts) {
   ];
 
   for (const post of posts) {
-    const postUrl = absoluteUrl(siteUrl, `/post/${post.slug}`);
+    const postUrl = absoluteUrl(siteUrl, `/post/${post.slug}/`);
     sitemapLines.push('  <url>');
     sitemapLines.push(`    <loc>${escapeHtml(postUrl)}</loc>`);
     sitemapLines.push(`    <lastmod>${escapeHtml(post.date.slice(0, 10))}</lastmod>`);
@@ -309,7 +346,7 @@ function writeSeoFiles(posts) {
   fs.writeFileSync(SITEMAP_FILE, `${sitemapLines.join('\n')}\n`, 'utf-8');
 
   const rssItems = posts.slice(0, 30).map((post) => {
-    const postUrl = absoluteUrl(siteUrl, `/post/${post.slug}`);
+    const postUrl = absoluteUrl(siteUrl, `/post/${post.slug}/`);
     const tagsXml = post.tags.map((tag) => `<category>${escapeHtml(tag)}</category>`).join('');
     const plainDescription = stripHtml(post.description).trim();
 
@@ -352,15 +389,32 @@ function writeSeoFiles(posts) {
 }
 
 function renderStaticPostHtml(post, siteUrl) {
-  const canonical = absoluteUrl(siteUrl, `/post/${post.slug}`);
+  const canonical = absoluteUrl(siteUrl, `/post/${post.slug}/`);
   const homeUrl = absoluteUrl(siteUrl, '/');
   const rssUrl = absoluteUrl(siteUrl, '/rss.xml');
   const faviconUrl = absoluteUrl(siteUrl, '/favicon.ico');
+  const coverUrl = resolvePublicUrl(siteUrl, post.cover);
+  const coverMimeType = coverUrl ? guessImageMimeType(coverUrl) : '';
+  const twitterCard = coverUrl ? 'summary_large_image' : 'summary';
+  const publishedTime = toIsoDate(post.date);
 
   const tagItems = post.tags.map((tag) => `<li>${escapeHtml(tag)}</li>`).join('');
   const pinnedChip = post.pinned ? '<span class="chip">PINNED</span>' : '';
-  const coverHtml = post.cover
-    ? `<img class="cover" src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" loading="lazy">`
+  const coverHtml = coverUrl
+    ? `<img class="cover" src="${escapeHtml(coverUrl)}" alt="${escapeHtml(post.title)} cover image" loading="lazy">`
+    : '';
+  const imageMeta = coverUrl
+    ? [
+        `<meta property="og:image" content="${escapeHtml(coverUrl)}">`,
+        `<meta property="og:image:url" content="${escapeHtml(coverUrl)}">`,
+        `<meta property="og:image:secure_url" content="${escapeHtml(coverUrl.replace(/^http:\/\//i, 'https://'))}">`,
+        coverMimeType ? `<meta property="og:image:type" content="${escapeHtml(coverMimeType)}">` : '',
+        `<meta property="og:image:alt" content="${escapeHtml(post.title)} cover image">`,
+        `<meta name="twitter:image" content="${escapeHtml(coverUrl)}">`,
+        `<meta name="twitter:image:alt" content="${escapeHtml(post.title)} cover image">`,
+      ]
+        .filter(Boolean)
+        .join('\n  ')
     : '';
 
   const jsonLd = JSON.stringify({
@@ -368,11 +422,11 @@ function renderStaticPostHtml(post, siteUrl) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description,
-    datePublished: post.date,
-    dateModified: post.date,
+    datePublished: publishedTime,
+    dateModified: publishedTime,
     mainEntityOfPage: canonical,
     url: canonical,
-    image: post.cover || undefined,
+    image: coverUrl || undefined,
     keywords: post.tags,
     author: { '@type': 'Organization', name: 'Wave Foundation' },
     publisher: { '@type': 'Organization', name: 'Wave Foundation' },
@@ -392,11 +446,12 @@ function renderStaticPostHtml(post, siteUrl) {
   <meta property="og:title" content="${escapeHtml(post.title)}">
   <meta property="og:description" content="${escapeHtml(post.description)}">
   <meta property="og:url" content="${escapeHtml(canonical)}">
-  ${post.cover ? `<meta property="og:image" content="${escapeHtml(post.cover)}">` : ''}
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:locale" content="en_US">
+  <meta property="article:published_time" content="${escapeHtml(publishedTime)}">
+  ${imageMeta}
+  <meta name="twitter:card" content="${twitterCard}">
   <meta name="twitter:title" content="${escapeHtml(post.title)}">
   <meta name="twitter:description" content="${escapeHtml(post.description)}">
-  ${post.cover ? `<meta name="twitter:image" content="${escapeHtml(post.cover)}">` : ''}
   <link rel="canonical" href="${escapeHtml(canonical)}">
   <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="${escapeHtml(rssUrl)}">
   <link rel="icon" type="image/x-icon" href="${escapeHtml(faviconUrl)}">
