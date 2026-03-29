@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls | Wave Programming Language Blog</title>
+  <meta name="description" content="The evolution of a programming language is a journey of balancing developer-friendly syntax with raw system capabilities. Our latest update to the Wave language does exactly that—introducing essential unary operators and variable declarations while s...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls">
+  <meta property="og:description" content="The evolution of a programming language is a journey of balancing developer-friendly syntax with raw system capabilities. Our latest update to the Wave language does exactly that—introducing essential unary operators and variable declarations while s...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-15-patch-271-bridging-high-level-syntax-and-system-power-unary-negation-letconst-and-syscalls">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768461955414/9f214323-846c-42d6-99db-f0f6e46e6b0c.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls">
+  <meta name="twitter:description" content="The evolution of a programming language is a journey of balancing developer-friendly syntax with raw system capabilities. Our latest update to the Wave language does exactly that—introducing essential unary operators and variable declarations while s...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768461955414/9f214323-846c-42d6-99db-f0f6e46e6b0c.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-15-patch-271-bridging-high-level-syntax-and-system-power-unary-negation-letconst-and-syscalls">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls", "description": "The evolution of a programming language is a journey of balancing developer-friendly syntax with raw system capabilities. Our latest update to the Wave language does exactly that—introducing essential unary operators and variable declarations while s...", "datePublished": "2026-01-15T07:29:03", "dateModified": "2026-01-15T07:29:03", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-15-patch-271-bridging-high-level-syntax-and-system-power-unary-negation-letconst-and-syscalls", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-15-patch-271-bridging-high-level-syntax-and-system-power-unary-negation-letconst-and-syscalls", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1768461955414/9f214323-846c-42d6-99db-f0f6e46e6b0c.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-15</span></div>
+      <h1>Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls</h1>
+      <p class="desc">The evolution of a programming language is a journey of balancing developer-friendly syntax with raw system capabilities. Our latest update to the Wave language does exactly that—introducing essential unary operators and variable declarations while s...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768461955414/9f214323-846c-42d6-99db-f0f6e46e6b0c.png" alt="Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls</h1>
+<p>The evolution of a programming language is a journey of balancing developer-friendly syntax with raw system capabilities. Our latest update to the Wave language does exactly that—introducing essential unary operators and variable declarations while simultaneously expanding the standard library into the realm of Linux syscalls and networking.</p>
+<p><img alt="" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768462000020/82bf9b15-c0ec-4b37-9835-4c774ccaea89.png align=" title="center"></p>
+<p><img alt="" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768462008025/36f4a7cd-4d12-4291-b554-770f6c344e33.png align=" title="center"></p>
+<h3>1. First-Class Unary Negation</h3>
+<p>Previously, negative values were often handled as parts of numeric literals. With this update, we have implemented <strong>Unary Negation (</strong><code>-</code>) as a first-class operator in the Abstract Syntax Tree (AST).</p>
+<ul>
+<li>
+<p><strong>Generalized Expressions</strong>: The <code>-</code> operator can now be applied to any general expression, not just literals.</p>
+</li>
+<li>
+<p><strong>Type Awareness</strong>: The compiler's type inference system now ensures that negation is only applied to numeric types, while the logical NOT (<code>!</code>) operator correctly results in a boolean.</p>
+</li>
+<li>
+<p><strong>LLVM Implementation</strong>: Under the hood, we generate IR using <code>build_int_sub</code> and <code>build_float_sub</code> by subtracting the value from zero, ensuring efficient and standard-compliant arithmetic.</p>
+</li>
+</ul>
+<h3>2. Modern Variable Declarations: <code>let</code> and <code>const</code></h3>
+<p>To provide developers with better control over scope and mutability, we have officially registered the <code>let</code> and <code>const</code> keywords in our statement parser. This paves the way for structured local variable declarations and constant definitions, making Wave code more readable and consistent with modern programming paradigms.</p>
+<h3>3. Standard Library Expansion: Networking and Syscalls</h3>
+<p>Perhaps the most exciting part of this update is the expansion of the <code>std</code> library. We are moving beyond basic I/O and diving into system-level operations.</p>
+<ul>
+<li>
+<p><strong>Linux Syscalls via Inline ASM</strong>: We’ve added <code>std/sys/linux/syscall.wave</code>, which implements the <code>socket</code> syscall. By utilizing our recently improved inline assembly support, Wave can now communicate directly with the Linux kernel.</p>
+</li>
+<li>
+<p><strong>UDP Networking</strong>: Building on top of the syscall layer, we introduced <code>std/net/udp.wave</code>. This module provides a high-level interface for creating UDP sockets, marking the beginning of Wave’s networking capabilities.</p>
+</li>
+<li>
+<p><strong>C ABI Compatibility</strong>: A new <code>std/libc/c.wave</code> module has been added as a foundation for FFI (Foreign Function Interface), allowing for future compatibility with C-standard libraries.</p>
+</li>
+</ul>
+<h3>4. Manifest Updates</h3>
+<p>All these new modules (<code>sys</code>, <code>net</code>, <code>libc</code>) are now officially tracked in the <code>std/manifest.json</code>. If you have the standard library management system set up, a simple <code>wavec update std</code> will bring these new capabilities to your local environment.</p>
+<h3>Bridging the Gap</h3>
+<p>These updates represent a significant milestone. By enabling both high-level syntax like <code>let/const</code> and low-level power like <code>socket</code> syscalls, Wave is uniquely positioned as a tool that can handle everything from application logic to systems programming.</p>
+<p>We are one step closer to a complete, self-hosting-capable language ecosystem. Stay tuned for more updates as we continue to expand the standard library!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/271">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

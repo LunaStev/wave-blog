@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers | Wave Programming Language Blog</title>
+  <meta name="description" content="As the compiler landscape evolves, staying current with foundational technologies is essential for performance and reliability. Our latest patch performs a major infrastructure upgrade, transitioning the Wave backend to LLVM 21 and adopting the moder...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers">
+  <meta property="og:description" content="As the compiler landscape evolves, staying current with foundational technologies is essential for performance and reliability. Our latest patch performs a major infrastructure upgrade, transitioning the Wave backend to LLVM 21 and adopting the moder...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-15-patch-291-modernizing-the-core-upgrading-to-llvm-21-and-the-era-of-opaque-pointers">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1771159084275/7a77b27a-a7ce-4ec4-a0c9-82b8ea7b671d.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers">
+  <meta name="twitter:description" content="As the compiler landscape evolves, staying current with foundational technologies is essential for performance and reliability. Our latest patch performs a major infrastructure upgrade, transitioning the Wave backend to LLVM 21 and adopting the moder...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1771159084275/7a77b27a-a7ce-4ec4-a0c9-82b8ea7b671d.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-15-patch-291-modernizing-the-core-upgrading-to-llvm-21-and-the-era-of-opaque-pointers">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers", "description": "As the compiler landscape evolves, staying current with foundational technologies is essential for performance and reliability. Our latest patch performs a major infrastructure upgrade, transitioning the Wave backend to LLVM 21 and adopting the moder...", "datePublished": "2026-02-15T12:44:14", "dateModified": "2026-02-15T12:44:14", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-15-patch-291-modernizing-the-core-upgrading-to-llvm-21-and-the-era-of-opaque-pointers", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-15-patch-291-modernizing-the-core-upgrading-to-llvm-21-and-the-era-of-opaque-pointers", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1771159084275/7a77b27a-a7ce-4ec4-a0c9-82b8ea7b671d.png", "keywords": ["LLVM", "wave-lang", "Programming Blogs", "programming languages"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-15</span></div>
+      <h1>Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers</h1>
+      <p class="desc">As the compiler landscape evolves, staying current with foundational technologies is essential for performance and reliability. Our latest patch performs a major infrastructure upgrade, transitioning the Wave backend to LLVM 21 and adopting the moder...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1771159084275/7a77b27a-a7ce-4ec4-a0c9-82b8ea7b671d.png" alt="Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers" loading="lazy">
+      <ul class="tags"><li>LLVM</li><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li></ul>
+      <section class="content"><h1>Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers</h1>
+<p>As the compiler landscape evolves, staying current with foundational technologies is essential for performance and reliability. Our latest patch performs a major infrastructure upgrade, transitioning the Wave backend to <strong>LLVM 21</strong> and adopting the modern <strong>Opaque Pointer</strong> standard. We’ve also introduced a new graphical tool to make managing the compiler build process easier than ever.</p>
+<h3>1. The Opaque Pointer Revolution</h3>
+<p>The most significant technical shift in this update is the transition to <strong>Opaque Pointers</strong>. In older versions of LLVM, pointers carried type information (e.g., <code>i32*</code> or <code>struct.User*</code>). Modern LLVM has moved to a single, unified <code>ptr</code> type.</p>
+<ul>
+<li><strong>Explicit Type Tracking</strong>: Since pointers no longer "know" what they point to, our codegen now explicitly tracks types during every memory operation. We’ve updated all <code>build_load</code>, <code>build_store</code>, and <code>build_gep</code> calls to provide explicit LLVM types.</li>
+<li><strong>Refactored Address Logic</strong>: Modules like <code>address.rs</code> and <code>lvalue.rs</code> have been overhauled to infer Wave-level types during IR generation, ensuring that the correct instructions are emitted even without typed pointers.</li>
+</ul>
+<p>This change not only aligns Wave with the latest LLVM standards but also results in a cleaner, more robust internal architecture.</p>
+<h3>2. Next-Gen Optimization with PassBuilder</h3>
+<p>We have officially retired the legacy <code>PassManagerBuilder</code> in favor of the modern LLVM <strong>PassBuilder</strong>. </p>
+<p>This allows Wave to leverage the newest optimization pipelines provided by LLVM (such as <code>default&lt;O3&gt;</code>). The result is a more sophisticated optimization process that better understands the nuances of modern hardware, leading to more efficient machine code generation.</p>
+<h3>3. Visualizing the Toolchain: GUI Build Manager</h3>
+<p>To lower the barrier for building and installing the Wave toolchain, we’ve added a <strong>GUI Build Manager</strong> to our <code>x.py</code> script.</p>
+<ul>
+<li><strong>Tkinter-based Interface</strong>: You can now manage targets, optimization levels, and installations through a simple visual window.</li>
+<li><strong>Cross-Compilation Made Easy</strong>: We’ve significantly improved support for cross-compiling for Windows (<code>x86_64-pc-windows-gnu</code>) from Linux hosts using MinGW LLVM prefixes, all configurable via the new GUI or CLI.</li>
+</ul>
+<h3>4. Smarter Frontend and Bug Fixes</h3>
+<p>The compiler frontend hasn't been forgotten. We’ve performed a deep refactoring and fixed critical C-interoperability bugs:</p>
+<ul>
+<li><strong>Modular Lexer</strong>: Following our "separation of concerns" philosophy, the Lexer has been split into dedicated modules (<code>core</code>, <code>cursor</code>, <code>trivia</code>, <code>literals</code>, <code>ident</code>, and <code>scan</code>), making the code much easier to navigate and maintain.</li>
+<li><strong>C Varargs Type Promotion</strong>: We fixed a bug in <code>printf</code> handling where small types weren't being correctly promoted according to C standards. Small integers are now promoted to <code>i32</code> and floats to <code>double</code>, ensuring perfect compatibility with the standard C library.</li>
+<li><strong>C-String Tracking</strong>: Since LLVM <code>ptr</code> is now ambiguous, we’ve implemented manual tracking for C-string status to ensure our I/O logic remains accurate.</li>
+</ul>
+<h3>Why This Matters</h3>
+<p>By moving to LLVM 21 and Opaque Pointers, we have "future-proofed" Wave. These changes ensure that we can continue to adopt new LLVM features as they are released without massive rewrites. Combined with the new GUI manager and cross-compilation improvements, Wave is becoming a more powerful and accessible tool for developers on all platforms.</p>
+<p>The foundation is now ready for the next wave of language features!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/291">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

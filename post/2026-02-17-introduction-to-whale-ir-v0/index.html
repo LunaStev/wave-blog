@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction to Whale IR v0 | Wave Programming Language Blog</title>
+  <meta name="description" content="Whale IR (WIR) is the intermediate representation used by the Whale toolchain, which powers the Wave programming language.It is designed to be: SSA-based Fully defined (no undefined behavior) Faithful to the original AST at -O0 Optimization-frien...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introduction to Whale IR v0">
+  <meta property="og:description" content="Whale IR (WIR) is the intermediate representation used by the Whale toolchain, which powers the Wave programming language.It is designed to be: SSA-based Fully defined (no undefined behavior) Faithful to the original AST at -O0 Optimization-frien...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-17-introduction-to-whale-ir-v0">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1771334277505/94be1859-5e2b-4f86-9aad-4edcdc7b9d48.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Introduction to Whale IR v0">
+  <meta name="twitter:description" content="Whale IR (WIR) is the intermediate representation used by the Whale toolchain, which powers the Wave programming language.It is designed to be: SSA-based Fully defined (no undefined behavior) Faithful to the original AST at -O0 Optimization-frien...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1771334277505/94be1859-5e2b-4f86-9aad-4edcdc7b9d48.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-17-introduction-to-whale-ir-v0">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Introduction to Whale IR v0", "description": "Whale IR (WIR) is the intermediate representation used by the Whale toolchain, which powers the Wave programming language.It is designed to be: SSA-based Fully defined (no undefined behavior) Faithful to the original AST at -O0 Optimization-frien...", "datePublished": "2026-02-17T13:18:46", "dateModified": "2026-02-17T13:18:46", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-17-introduction-to-whale-ir-v0", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-17-introduction-to-whale-ir-v0", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1771334277505/94be1859-5e2b-4f86-9aad-4edcdc7b9d48.png", "keywords": ["toolchain", "compiler", "LLVM", "Programming Blogs", "programming languages", "wave-lang"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-17</span></div>
+      <h1>Introduction to Whale IR v0</h1>
+      <p class="desc">Whale IR (WIR) is the intermediate representation used by the Whale toolchain, which powers the Wave programming language.It is designed to be: SSA-based Fully defined (no undefined behavior) Faithful to the original AST at -O0 Optimization-frien...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1771334277505/94be1859-5e2b-4f86-9aad-4edcdc7b9d48.png" alt="Introduction to Whale IR v0" loading="lazy">
+      <ul class="tags"><li>toolchain</li><li>compiler</li><li>LLVM</li><li>Programming Blogs</li><li>programming languages</li><li>wave-lang</li></ul>
+      <section class="content"><h1>Introduction to Whale IR v0</h1>
+<p>Whale IR (WIR) is the intermediate representation used by the <strong>Whale toolchain</strong>, which powers the Wave programming language.<br>
+It is designed to be:</p>
+<ul>
+<li>
+<p>SSA-based</p>
+</li>
+<li>
+<p>Fully defined (no undefined behavior)</p>
+</li>
+<li>
+<p>Faithful to the original AST at <code>-O0</code></p>
+</li>
+<li>
+<p>Optimization-friendly starting from <code>-O1</code></p>
+</li>
+<li>
+<p>Explicit in control flow, memory, and trap semantics</p>
+</li>
+</ul>
+<p>Unlike LLVM IR, Whale IR is built with <strong>predictability and language-level correctness guarantees</strong> as primary goals.</p>
+<hr>
+<h2>From Wave Source to Whale IR</h2>
+<p>Consider a simple Wave function:</p>
+<p><code>add.wave</code></p>
+<pre><code class="language-kotlin">fun add(a: i32, b: i32) -&gt; i32 {
+    return a + b;
+}
+</code></pre>
+<p>This is lowered into Whale IR:</p>
+<p><code>out.wir</code></p>
+<pre><code class="language-kotlin">module {
+  target &quot;x86_64-whale-linux&quot;
+  datalayout { ptr=64, endian=little }
+
+  fn @add(a: i32, b: i32) -&gt; i32 {
+  entry:
+    %v2: ptr&lt;i32&gt; = alloca i32, align 4
+    %v3: ptr&lt;i32&gt; = alloca i32, align 4
+    store i32 %v0, ptr&lt;i32&gt; %v2, align 4
+    store i32 %v1, ptr&lt;i32&gt; %v3, align 4
+    %v4: i32 = load i32, ptr&lt;i32&gt; %v2, align 4
+    %v5: i32 = load i32, ptr&lt;i32&gt; %v3, align 4
+    %v6: i32 = add i32 %v4, %v5
+    ret i32 %v6
+  }
+}
+</code></pre>
+<p>For comparison, the equivalent LLVM IR looks like this:</p>
+<pre><code class="language-kotlin">define i32 @add(i32 %0, i32 %1) {
+entry:
+  %a = alloca i32, align 4
+  store i32 %0, ptr %a, align 4
+  %b = alloca i32, align 4
+  store i32 %1, ptr %b, align 4
+  %load_a = load i32, ptr %a, align 4
+  %load_b = load i32, ptr %b, align 4
+  %addtmp = add i32 %load_a, %load_b
+  ret i32 %addtmp
+}
+</code></pre>
+<p>Structurally similar — but philosophically different.</p>
+<hr>
+<h1>Core Design Principles</h1>
+<h2>1. SSA-Based</h2>
+<p>All values are in Static Single Assignment form.</p>
+<pre><code class="language-kotlin">%t0: i32 = add i32 %a, %b
+</code></pre>
+<p>Each SSA value is typed and explicitly declared.</p>
+<hr>
+<h2>2. No Undefined Behavior</h2>
+<p>Whale IR eliminates undefined behavior by construction.</p>
+<p>Examples:</p>
+<ul>
+<li>
+<p>Division by zero → defined <code>trap</code></p>
+</li>
+<li>
+<p>Signed overflow → defined wrap-around</p>
+</li>
+<li>
+<p>Shift overflow → shift amount is masked</p>
+</li>
+<li>
+<p>Null dereference → defined <code>trap</code></p>
+</li>
+<li>
+<p>Misaligned access → defined <code>trap</code></p>
+</li>
+</ul>
+<p>There is <strong>no silent UB</strong>.</p>
+<p>This makes IR behavior predictable across targets.</p>
+<hr>
+<h2>3. Explicit Trap Semantics</h2>
+<p>Whale IR does not hide exceptional behavior.</p>
+<h3>Unconditional trap</h3>
+<pre><code class="language-kotlin">trap reason=&quot;div_by_zero&quot;
+</code></pre>
+<p>Terminates the block.</p>
+<h3>Conditional trap</h3>
+<pre><code class="language-kotlin">trap_if i1 %cond, reason=&quot;overflow&quot;
+</code></pre>
+<p>This allows frontends to insert checks while still enabling optimizers to remove them when provably unnecessary.</p>
+<hr>
+<h2>4. Checked Arithmetic as First-Class IR</h2>
+<p>Instead of encoding overflow through flags or implicit rules, Whale IR provides checked arithmetic explicitly.</p>
+<pre><code class="language-kotlin">%t: tuple&lt;i32, i1&gt; = sadd_chk i32 %a, %b
+%res: i32 = extract tuple&lt;i32, i1&gt; %t, 0
+%ov:  i1  = extract tuple&lt;i32, i1&gt; %t, 1
+trap_if i1 %ov, reason=&quot;overflow&quot;
+</code></pre>
+<p>This design:</p>
+<ul>
+<li>
+<p>Keeps default arithmetic fast (wrap semantics)</p>
+</li>
+<li>
+<p>Allows safe-mode semantics at language level</p>
+</li>
+<li>
+<p>Enables optimizers to remove overflow checks via range analysis</p>
+</li>
+</ul>
+<hr>
+<h2>5. AST-Faithful at -O0</h2>
+<p>At <code>-O0</code>, Whale IR preserves:</p>
+<ul>
+<li>
+<p>Unreachable blocks</p>
+</li>
+<li>
+<p>Dead code</p>
+</li>
+<li>
+<p>Structural layout</p>
+</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-kotlin">dead:
+  %u0: i32 = mul i32 %x, 999
+  br label %exit
+</code></pre>
+<p>Dead blocks may remain in the IR if they originate from the AST.</p>
+<p>Cleanup happens at <code>-O1</code> and above.</p>
+<hr>
+<h2>6. Clean and Explicit Type System</h2>
+<p>Whale IR includes:</p>
+<h3>Scalars</h3>
+<ul>
+<li>
+<p><code>i1 i8 i16 i32 i64 i128</code></p>
+</li>
+<li>
+<p><code>u8 u16 u32 u64 u128</code></p>
+</li>
+<li>
+<p><code>f16 f32 f64</code></p>
+</li>
+</ul>
+<h3>Aggregates</h3>
+<ul>
+<li>
+<p><code>array&lt;T, N&gt;</code></p>
+</li>
+<li>
+<p><code>struct{T1, T2, ...}</code></p>
+</li>
+<li>
+<p><code>tuple&lt;T1, T2, ...}</code></p>
+</li>
+</ul>
+<h3>Pointers</h3>
+<ul>
+<li><code>ptr&lt;T&gt;</code></li>
+</ul>
+<p>All instructions explicitly declare result types:</p>
+<pre><code class="language-kotlin">%v: i32 = load i32, ptr&lt;i32&gt; %p, align 4
+</code></pre>
+<p>No implicit typing.</p>
+<hr>
+<h2>7. Memory Model</h2>
+<p>Memory operations are explicit:</p>
+<ul>
+<li>
+<p><code>alloca</code></p>
+</li>
+<li>
+<p><code>load</code></p>
+</li>
+<li>
+<p><code>store</code></p>
+</li>
+<li>
+<p><code>gep</code></p>
+</li>
+<li>
+<p><code>memcpy</code></p>
+</li>
+<li>
+<p><code>memset</code></p>
+</li>
+</ul>
+<p>Whale IR defines behavior for:</p>
+<ul>
+<li>
+<p>Null dereference → trap</p>
+</li>
+<li>
+<p>Misaligned access → trap</p>
+</li>
+</ul>
+<p>This avoids platform-dependent UB behavior.</p>
+<hr>
+<h1>What Makes Whale IR Different?</h1>
+<p>Whale IR is not trying to be a clone of LLVM IR.</p>
+<p>Its design emphasizes:</p>
+<ul>
+<li>
+<p>Defined behavior over permissive semantics</p>
+</li>
+<li>
+<p>Predictability over historical compatibility</p>
+</li>
+<li>
+<p>Explicit trap representation</p>
+</li>
+<li>
+<p>Frontend-driven correctness</p>
+</li>
+<li>
+<p>Optimization that removes checks rather than relying on UB</p>
+</li>
+</ul>
+<p>LLVM IR treats many situations as undefined behavior to enable aggressive optimization.<br>
+Whale IR instead encodes behavior explicitly and lets analysis remove unnecessary checks safely.</p>
+<p>This makes Whale IR particularly suitable for:</p>
+<ul>
+<li>
+<p>System-level languages with strong correctness guarantees</p>
+</li>
+<li>
+<p>Deterministic compilation pipelines</p>
+</li>
+<li>
+<p>Fully controlled toolchains (assembler, object format, linker)</p>
+</li>
+<li>
+<p>Future self-hosted compiler development</p>
+</li>
+</ul>
+<hr>
+<h1>Conclusion</h1>
+<p>Whale IR (WIR) is the foundation of the Whale toolchain.</p>
+<p>It is:</p>
+<ul>
+<li>
+<p>SSA-based</p>
+</li>
+<li>
+<p>Fully defined</p>
+</li>
+<li>
+<p>Trap-explicit</p>
+</li>
+<li>
+<p>Optimization-friendly</p>
+</li>
+<li>
+<p>Designed for long-term toolchain independence</p>
+</li>
+</ul>
+<p>While inspired by modern IR design principles, it intentionally avoids undefined behavior and hidden semantics.</p>
+<p>Whale IR is not just a lowering format —<br>
+it is the semantic backbone of the Wave ecosystem.</p></section>
+    </article>
+  </div>
+</body>
+</html>

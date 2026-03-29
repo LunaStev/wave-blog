@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction to Wave v0.1.4-pre-beta: Add optimization, method chaining, and image file build | Wave Programming Language Blog</title>
+  <meta name="description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.4-pre-beta — We&#x27;ve added CLI improvements, LLVMO2 optimization, and we&#x27;ve added commands to help build the image file, and we&#x27;ve added the most important feature, Method...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introduction to Wave v0.1.4-pre-beta: Add optimization, method chaining, and image file build">
+  <meta property="og:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.4-pre-beta — We&#x27;ve added CLI improvements, LLVMO2 optimization, and we&#x27;ve added commands to help build the image file, and we&#x27;ve added the most important feature, Method...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-08-01-introduction-to-wave-v014-pre-beta-add-optimization-method-chaining-and-image-file-build">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270096252/b768a649-a82e-4b94-ab0e-89de88f680e0.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Introduction to Wave v0.1.4-pre-beta: Add optimization, method chaining, and image file build">
+  <meta name="twitter:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.4-pre-beta — We&#x27;ve added CLI improvements, LLVMO2 optimization, and we&#x27;ve added commands to help build the image file, and we&#x27;ve added the most important feature, Method...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270096252/b768a649-a82e-4b94-ab0e-89de88f680e0.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-08-01-introduction-to-wave-v014-pre-beta-add-optimization-method-chaining-and-image-file-build">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Introduction to Wave v0.1.4-pre-beta: Add optimization, method chaining, and image file build", "description": "Hello! I'm LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.4-pre-beta — We've added CLI improvements, LLVMO2 optimization, and we've added commands to help build the image file, and we've added the most important feature, Method...", "datePublished": "2025-08-01T03:28:54", "dateModified": "2025-08-01T03:28:54", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-08-01-introduction-to-wave-v014-pre-beta-add-optimization-method-chaining-and-image-file-build", "url": "https://LunaStev.github.io/wave-blog/post/2025-08-01-introduction-to-wave-v014-pre-beta-add-optimization-method-chaining-and-image-file-build", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754270096252/b768a649-a82e-4b94-ab0e-89de88f680e0.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-08-01</span></div>
+      <h1>Introduction to Wave v0.1.4-pre-beta: Add optimization, method chaining, and image file build</h1>
+      <p class="desc">Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.4-pre-beta — We&#x27;ve added CLI improvements, LLVMO2 optimization, and we&#x27;ve added commands to help build the image file, and we&#x27;ve added the most important feature, Method...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270096252/b768a649-a82e-4b94-ab0e-89de88f680e0.webp" alt="Introduction to Wave v0.1.4-pre-beta: Add optimization, method chaining, and image file build" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Introduction to Wave v0.1.4-pre-beta: Add optimization, method chaining, and image file build</h1>
+<p>Hello! I'm LunaStev, the developer of Wave.</p>
+<p>We are pleased to announce Wave v0.1.4-pre-beta — We've added CLI improvements, LLVMO2 optimization, and we've added commands to help build the image file, and we've added the most important feature, Method Chaining.</p>
+<h2>PR and Commits</h2>
+<ul>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/212">[#212]CLI improvements</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/213">[#213]Optimized to pass and -O2</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/215">[#215]Image caption Agregar comandos CLI y palabras clave de Proto para construir archivos</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/216">[#216]Add Method Chaining</a></p>
+</li>
+</ul>
+<h2>Showcase</h2>
+<p>The showcase is available at <a href="https://github.com/LunaStev/wave-testing">Wave-Test</a>.</p>
+<hr>
+<p>Thank you for using Wave! Stay tuned for future updates and enhancements.</p>
+<hr>
+<h2>Features</h2>
+<p>CLI:</p>
+<pre><code class="language-bash">wavec run --img main.wave
+</code></pre>
+<p>Method Chaining:</p>
+<pre><code class="language-kotlin">fun len(s: str) -&gt; i32 {
+    var count: i32 = 0;
+    while (s[count] != 0) {
+        count += 1;
+    }
+    return count;
+}
+
+fun main() {
+    var my_string: str = &quot;Hello World&quot;;
+    var length: i32 = my_string.len();
+    println(&quot;Result of my_string.len(): {}&quot;, length);
+}
+</code></pre>
+<hr>
+<h2>Installation Guide</h2>
+<ol>
+<li>
+<p><strong>Download:</strong></p>
+<ul>
+<li>
+<p>Download to Curl.</p>
+<p><code>bash
+curl -fsSL https://wave-lang.dev/install.sh | bash -s -- --version v0.1.4-pre-beta</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Verify Installation:</strong></p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+wavec --version</code></p>
+</li>
+<li>
+<p>If the version number displays, the installation was successful.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Contributor</h2>
+<p>@LunaStev | 🇰🇷</p>
+<hr>
+<h2>Website</h2>
+<p><a href="https://wave-lang.dev">Website</a></p>
+<p><a href="https://github.com/LunaStev/Wave">GitHub</a></p>
+<p><a href="https://discord.com/invite/3nev5nHqq9">Community</a></p></section>
+    </article>
+  </div>
+</body>
+</html>

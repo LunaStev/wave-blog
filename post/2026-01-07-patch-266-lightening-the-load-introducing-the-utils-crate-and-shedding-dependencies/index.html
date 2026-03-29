@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies | Wave Programming Language Blog</title>
+  <meta name="description" content="As a project grows, so does its complexity and the number of its dependencies. In our latest update, we’ve taken a major step toward a leaner and faster toolchain by introducing a dedicated utils crate and eliminating our dependency on the heavy rege...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies">
+  <meta property="og:description" content="As a project grows, so does its complexity and the number of its dependencies. In our latest update, we’ve taken a major step toward a leaner and faster toolchain by introducing a dedicated utils crate and eliminating our dependency on the heavy rege...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-07-patch-266-lightening-the-load-introducing-the-utils-crate-and-shedding-dependencies">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767769132693/e8dfeddb-ea81-4e18-9183-963c6186c0c2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies">
+  <meta name="twitter:description" content="As a project grows, so does its complexity and the number of its dependencies. In our latest update, we’ve taken a major step toward a leaner and faster toolchain by introducing a dedicated utils crate and eliminating our dependency on the heavy rege...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767769132693/e8dfeddb-ea81-4e18-9183-963c6186c0c2.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-07-patch-266-lightening-the-load-introducing-the-utils-crate-and-shedding-dependencies">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies", "description": "As a project grows, so does its complexity and the number of its dependencies. In our latest update, we’ve taken a major step toward a leaner and faster toolchain by introducing a dedicated utils crate and eliminating our dependency on the heavy rege...", "datePublished": "2026-01-07T07:02:18", "dateModified": "2026-01-07T07:02:18", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-07-patch-266-lightening-the-load-introducing-the-utils-crate-and-shedding-dependencies", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-07-patch-266-lightening-the-load-introducing-the-utils-crate-and-shedding-dependencies", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1767769132693/e8dfeddb-ea81-4e18-9183-963c6186c0c2.png", "keywords": ["programming languages", "patch", "wave-lang", "Programming Blogs", "programming"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-07</span></div>
+      <h1>Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies</h1>
+      <p class="desc">As a project grows, so does its complexity and the number of its dependencies. In our latest update, we’ve taken a major step toward a leaner and faster toolchain by introducing a dedicated utils crate and eliminating our dependency on the heavy rege...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1767769132693/e8dfeddb-ea81-4e18-9183-963c6186c0c2.png" alt="Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies" loading="lazy">
+      <ul class="tags"><li>programming languages</li><li>patch</li><li>wave-lang</li><li>Programming Blogs</li><li>programming</li></ul>
+      <section class="content"><h1>Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies</h1>
+<p>As a project grows, so does its complexity and the number of its dependencies. In our latest update, we’ve taken a major step toward a leaner and faster toolchain by introducing a dedicated <code>utils</code> crate and eliminating our dependency on the heavy <code>regex</code> engine.</p>
+<h3>Why the Change?</h3>
+<p>While external libraries are powerful, they often come with a cost: increased compilation time and larger binary sizes. We realized that our use of the <code>regex</code> library—primarily for counting placeholders like <code>{}</code> in I/O operations—was a classic case of using a "sledgehammer to crack a nut." By replacing it with targeted, lightweight logic, we’ve significantly improved our build performance.</p>
+<h3>1. The New <code>utils</code> Crate</h3>
+<p>We’ve centralized common logic into a new internal crate: <code>utils</code>. This improves code reusability across the workspace and keeps our core logic clean.</p>
+<ul>
+<li>
+<p><code>formatx.rs</code>: This module now houses <code>count_placeholders</code>, a custom-built, high-performance function that replaces the regex-based placeholder counting. It’s faster, simpler, and tailored exactly to our needs.</p>
+</li>
+<li>
+<p><code>colorex.rs</code>: We’ve moved our color formatting logic here. This centralizes how our compiler styles terminal output, making it easier to maintain a consistent look across the CLI.</p>
+</li>
+</ul>
+<h3>2. Streamlining Dependencies</h3>
+<p>The most significant impact of this update is the removal of the <code>regex</code> crate from <code>front/parser</code>.</p>
+<ul>
+<li>
+<p><strong>Faster Compilation</strong>: By removing one of our largest dependencies, developers will notice a meaningful reduction in clean build times.</p>
+</li>
+<li>
+<p><strong>Smaller Binaries</strong>: Eliminating the regex engine—which includes complex state machine logic—helps keep our final executable size minimal.</p>
+</li>
+<li>
+<p><strong>Simplified Parser</strong>: The parser now relies on our lightweight <code>utils</code> crate, making the <code>front/parser/src/parser/</code><a href="http://io.rs"><code>io.rs</code></a> logic more straightforward.</p>
+</li>
+</ul>
+<h3>3. Improved Error Integration</h3>
+<p>The <code>utils</code> crate is now a foundational piece of our architecture. We’ve updated <code>front/error</code> and our main application entry points to depend on <code>utils::colorex</code>. This ensures that every error message and log output utilizes a unified coloring system, providing a more cohesive user experience.</p>
+<h3>Looking Ahead</h3>
+<p>By taking control of our utility functions and reducing reliance on heavy external crates, we are ensuring that the compiler remains agile and performant. This refactoring sets a standard for how we will manage shared logic and external dependencies moving forward.</p>
+<p>Build fast, stay lean!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/266">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

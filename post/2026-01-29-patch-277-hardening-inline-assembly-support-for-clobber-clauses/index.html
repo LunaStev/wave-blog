@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #277: Hardening Inline Assembly: Support for Clobber Clauses | Wave Programming Language Blog</title>
+  <meta name="description" content="When writing low-level systems code, inline assembly is an indispensable tool. It allows developers to talk directly to the hardware. However, this power comes with a risk: if the compiler doesn&#x27;t know which registers or memory states your assembly c...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #277: Hardening Inline Assembly: Support for Clobber Clauses">
+  <meta property="og:description" content="When writing low-level systems code, inline assembly is an indispensable tool. It allows developers to talk directly to the hardware. However, this power comes with a risk: if the compiler doesn&#x27;t know which registers or memory states your assembly c...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-29-patch-277-hardening-inline-assembly-support-for-clobber-clauses">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1769685934530/3132117b-af58-4aae-b240-846cac25755e.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #277: Hardening Inline Assembly: Support for Clobber Clauses">
+  <meta name="twitter:description" content="When writing low-level systems code, inline assembly is an indispensable tool. It allows developers to talk directly to the hardware. However, this power comes with a risk: if the compiler doesn&#x27;t know which registers or memory states your assembly c...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1769685934530/3132117b-af58-4aae-b240-846cac25755e.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-29-patch-277-hardening-inline-assembly-support-for-clobber-clauses">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #277: Hardening Inline Assembly: Support for Clobber Clauses", "description": "When writing low-level systems code, inline assembly is an indispensable tool. It allows developers to talk directly to the hardware. However, this power comes with a risk: if the compiler doesn't know which registers or memory states your assembly c...", "datePublished": "2026-01-29T11:26:11", "dateModified": "2026-01-29T11:26:11", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-29-patch-277-hardening-inline-assembly-support-for-clobber-clauses", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-29-patch-277-hardening-inline-assembly-support-for-clobber-clauses", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1769685934530/3132117b-af58-4aae-b240-846cac25755e.png", "keywords": ["wave-lang", "Programming Blogs", "Programming Tips", "programming languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-29</span></div>
+      <h1>Patch #277: Hardening Inline Assembly: Support for Clobber Clauses</h1>
+      <p class="desc">When writing low-level systems code, inline assembly is an indispensable tool. It allows developers to talk directly to the hardware. However, this power comes with a risk: if the compiler doesn&#x27;t know which registers or memory states your assembly c...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1769685934530/3132117b-af58-4aae-b240-846cac25755e.png" alt="Patch #277: Hardening Inline Assembly: Support for Clobber Clauses" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>Programming Tips</li><li>programming languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #277: Hardening Inline Assembly: Support for Clobber Clauses</h1>
+<p>When writing low-level systems code, inline assembly is an indispensable tool. It allows developers to talk directly to the hardware. However, this power comes with a risk: if the compiler doesn't know which registers or memory states your assembly code is modifying, it might make incorrect assumptions during optimization, leading to catastrophic data corruption.</p>
+<p>To address this, our latest update introduces support for <strong>Clobber Clauses</strong> in inline assembly blocks.</p>
+<h3>1. What is a Clobber Clause?</h3>
+<p>A clobber clause allows you to explicitly list the registers or special states (like memory or flags) that your assembly code "trashes" or modifies. This informs the compiler's register allocator to avoid using those specific registers for other variables during the assembly execution.</p>
+<p><strong>Syntax Example:</strong></p>
+<pre><code class="language-kotlin">fun clobber_memory() {
+    var buf: i64 = 123;
+
+    println(&quot;before = {}&quot;, buf);
+
+    asm {
+        &quot;mov QWORD PTR [$0], 777&quot;
+        in(&quot;r&quot;) &amp;buf
+        clobber(&quot;memory&quot;)
+    }
+
+    println(&quot;after  = {}&quot;, buf);
+}
+</code></pre>
+<p>In this example, we tell the compiler that our code modifies the <code>rcx</code> register, impacts the condition code (<code>cc</code> / flags), and has side effects on the system's <code>memory</code>.</p>
+<h3>2. Intelligent Backend Normalization</h3>
+<p>Users shouldn't have to worry about the internal syntax of the backend. We’ve implemented a <strong>normalization engine</strong> (<code>normalize_clobber_item</code>) that maps human-readable strings to LLVM-compatible constraints:</p>
+<ul>
+<li>
+<p><code>"memory"</code> → <code>~{memory}</code></p>
+</li>
+<li>
+<p><code>"cc"</code> → <code>~{flags}</code></p>
+</li>
+<li>
+<p><code>"rax"</code> → <code>~{rax}</code></p>
+</li>
+</ul>
+<p>This ensures that the Wave language syntax remains clean and intuitive while providing the LLVM backend with the precise instructions it needs.</p>
+<h3>3. Safety First: Conflict Detection</h3>
+<p>One of the most powerful features of this update is the <strong>AsmPlan Conflict Detector</strong>. Before generating any code, the compiler now checks for overlaps between your input/output operands and your clobber list.</p>
+<p>If you attempt to use a register for an output while also marking it as clobbered, the compiler will trigger a panic. This prevents "impossible" scenarios that would otherwise lead to silent, hard-to-debug runtime failures.</p>
+<h3>4. Lexer &amp; Consistency Improvements</h3>
+<p>As we added the <code>clobber</code> keyword, we also took the opportunity to improve consistency in our literal parsing:</p>
+<ul>
+<li>
+<p><strong>Hex Escapes in Char Literals</strong>: Just like our string literals, <code>char</code> literals now support hex escape sequences (<code>'\xHH'</code>). This is particularly useful when passing specific byte values to assembly blocks.</p>
+</li>
+<li>
+<p><strong>AST Integration</strong>: The <code>AsmBlock</code> node in our Abstract Syntax Tree has been updated to natively store and manage clobber lists for both statements and expressions.</p>
+</li>
+</ul>
+<h3>5. Verified via <code>test77.wave</code></h3>
+<p>This feature is fully integrated and verified. The new <code>test77.wave</code> suite demonstrates various clobber scenarios, including manual register trashing and ensuring memory state preservation. This test serves as both a verification tool and a reference for developers looking to use these new capabilities.</p>
+<h3>Conclusion</h3>
+<p>By supporting clobber clauses, Wave provides a much safer and more predictable environment for low-level integration. You can now write high-performance assembly blocks with the confidence that the compiler will correctly preserve the surrounding state.</p>
+<p>Whether you're writing a kernel, a driver, or a high-performance library, these tools give you the precision you need.</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/277">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

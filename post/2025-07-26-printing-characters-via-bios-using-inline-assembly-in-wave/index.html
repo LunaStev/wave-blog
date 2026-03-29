@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Printing Characters via BIOS Using Inline Assembly in Wave | Wave Programming Language Blog</title>
+  <meta name="description" content="Wave provides a feature called inline assembly, and today we’re going to use it to directly call the BIOS. The int 0x10 interrupt is one of the most basic video output functions in real mode. By putting 0x0E into the AH register and the character you...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Printing Characters via BIOS Using Inline Assembly in Wave">
+  <meta property="og:description" content="Wave provides a feature called inline assembly, and today we’re going to use it to directly call the BIOS. The int 0x10 interrupt is one of the most basic video output functions in real mode. By putting 0x0E into the AH register and the character you...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-07-26-printing-characters-via-bios-using-inline-assembly-in-wave">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270099740/13220347-ff61-49a5-abab-447090de6849.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Printing Characters via BIOS Using Inline Assembly in Wave">
+  <meta name="twitter:description" content="Wave provides a feature called inline assembly, and today we’re going to use it to directly call the BIOS. The int 0x10 interrupt is one of the most basic video output functions in real mode. By putting 0x0E into the AH register and the character you...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270099740/13220347-ff61-49a5-abab-447090de6849.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-07-26-printing-characters-via-bios-using-inline-assembly-in-wave">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Printing Characters via BIOS Using Inline Assembly in Wave", "description": "Wave provides a feature called inline assembly, and today we’re going to use it to directly call the BIOS. The int 0x10 interrupt is one of the most basic video output functions in real mode. By putting 0x0E into the AH register and the character you...", "datePublished": "2025-07-26T13:14:19", "dateModified": "2025-07-26T13:14:19", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-07-26-printing-characters-via-bios-using-inline-assembly-in-wave", "url": "https://LunaStev.github.io/wave-blog/post/2025-07-26-printing-characters-via-bios-using-inline-assembly-in-wave", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754270099740/13220347-ff61-49a5-abab-447090de6849.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-07-26</span></div>
+      <h1>Printing Characters via BIOS Using Inline Assembly in Wave</h1>
+      <p class="desc">Wave provides a feature called inline assembly, and today we’re going to use it to directly call the BIOS. The int 0x10 interrupt is one of the most basic video output functions in real mode. By putting 0x0E into the AH register and the character you...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270099740/13220347-ff61-49a5-abab-447090de6849.webp" alt="Printing Characters via BIOS Using Inline Assembly in Wave" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Printing Characters via BIOS Using Inline Assembly in Wave</h1>
+<p>Wave provides a feature called inline assembly, and today we’re going to use it to directly call the BIOS. The <code>int 0x10</code> interrupt is one of the most basic video output functions in real mode. By putting <code>0x0E</code> into the AH register and the character you want to output into the AL register, then calling <code>int 0x10</code>, the BIOS will display the character on the screen.</p>
+<p>Using this method, we’ll print "Hi!", then perform a line break with CR (0x0D) and LF (0x0A), and finally print "OK".</p>
+<p>Currently, the Wave compiler can only be built on Linux, and by default it only generates executable binaries. It does <strong>not</strong> directly create a <code>.img</code> disk image like a bootloader would. However, when Wave compiles, it generates a <code>/target</code> folder that contains both an LLVM IR file (<code>.ll</code>) and a Linux binary. Since we want to create BIOS code, we don’t need the Linux binary; instead, we’ll use the <code>temp.ll</code> file containing the LLVM IR code.</p>
+<p>Wave is currently in its frontend development phase, and for testing purposes it temporarily uses LLVM. LLVM generates LLVM IR, which can then be compiled into an object file or executable for the desired target architecture using the <code>clang</code> command.</p>
+<pre><code class="language-kotlin">fun main() {
+    // Print 'H' using BIOS teletype mode
+    asm {
+        &quot;mov ah, 0x0e&quot;   // AH = 0x0E → BIOS int 0x10 teletype mode
+        &quot;mov al, 0x48&quot;   // AL = 0x48 → ASCII 'H'
+        &quot;int 0x10&quot;       // BIOS video service call → prints 'H' and moves cursor
+    }
+
+    // Print 'i'
+    asm {
+        &quot;mov ah, 0x0e&quot;
+        &quot;mov al, 0x69&quot;   // ASCII 'i'
+        &quot;int 0x10&quot;
+    }
+
+    // Print '!'
+    asm {
+        &quot;mov ah, 0x0e&quot;
+        &quot;mov al, 0x21&quot;   // ASCII '!'
+        &quot;int 0x10&quot;
+    }
+
+    // Carriage Return (CR)
+    asm {
+        &quot;mov ah, 0x0e&quot;
+        &quot;mov al, 0x0D&quot;   // CR: move cursor to beginning of line
+        &quot;int 0x10&quot;
+    }
+
+    // Line Feed (LF)
+    asm {
+        &quot;mov ah, 0x0e&quot;
+        &quot;mov al, 0x0A&quot;   // LF: move cursor down one line
+        &quot;int 0x10&quot;
+    }
+
+    // Print 'O'
+    asm {
+        &quot;mov ah, 0x0e&quot;
+        &quot;mov al, 0x4F&quot;   // ASCII 'O'
+        &quot;int 0x10&quot;
+    }
+
+    // Print 'K'
+    asm {
+        &quot;mov ah, 0x0e&quot;
+        &quot;mov al, 0x4B&quot;   // ASCII 'K'
+        &quot;int 0x10&quot;
+    }
+}
+</code></pre>
+<p>Now, to run this code in a BIOS environment, we need to go through a build process. As mentioned earlier, the Wave compiler doesn’t directly create a <code>.img</code>, so we need to manually build a boot image using the <code>temp.ll</code> file.</p>
+<p>The build steps are as follows:</p>
+<ol>
+<li>
+<p><strong>Generate LLVM IR (</strong><code>temp.ll</code>) from Wave code:</p>
+<p><code>bash
+wavec run main.wave</code></p>
+</li>
+<li>
+<p><strong>Convert LLVM IR to a 16-bit object file:</strong></p>
+<p><code>bash
+llc -march=x86 -mattr+16bit-mode -filetype=obj target/temp.ll -o boot.o</code></p>
+</li>
+<li>
+<p><strong>Link the object file into a bootloader binary:</strong></p>
+<p><code>bash
+ld -m elf_i386 -Ttext 0x7c00 --oformat binary boot.o -o boot.bin</code></p>
+</li>
+<li>
+<p><strong>Add boot sector signature (0x55AA):</strong></p>
+<p><code>bash
+echo -ne '\x55\xAA' | dd of=boot.bin bs=1 seek=510 count=2 conv=notrunc</code></p>
+</li>
+<li>
+<p><strong>Create the final boot image:</strong></p>
+<p><code>bash
+dd if=boot.bin of=os.img bs=512 count=1 conv=notrunc</code></p>
+</li>
+<li>
+<p><strong>Run with QEMU:</strong></p>
+<p><code>bash
+qemu-system-i386 -drive format=raw,file=os.img</code></p>
+</li>
+</ol>
+<hr>
+<p>To automate this process, you can create a <code>build.sh</code> script:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+set -e
+
+LL_FILE=target/temp.ll
+OBJ_FILE=boot.o
+BIN_FILE=boot.bin
+IMG_FILE=os.img
+
+wavec run main.wave
+
+llc -march=x86 -mattr=+16bit-mode -filetype=obj $LL_FILE -o $OBJ_FILE
+
+ld -m elf_i386 -Ttext 0x7c00 --oformat binary $OBJ_FILE -o $BIN_FILE
+
+echo -ne '\x55\xAA' | dd of=$BIN_FILE bs=1 seek=510 count=2 conv=notrunc
+
+dd if=$BIN_FILE of=$IMG_FILE bs=512 count=1 conv=notrunc
+
+echo &quot;[+] Image created: $IMG_FILE&quot;
+</code></pre>
+<p>Now, just run <code>./build.sh</code>, then execute:</p>
+<pre><code class="language-bash">qemu-system-i386 -drive format=raw,file=os.img
+</code></pre>
+<p>You’ll see <code>Hi!</code> followed by a line break and <code>OK</code> displayed in QEMU.</p>
+<p><img alt="qemu" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270098923/ac7146d4-9c64-40a7-9e9d-ab046c875259.png align=" title="left"></p>
+<hr>
+<p>So far, we’ve seen how to directly call BIOS functions using inline assembly in Wave and print simple strings.</p>
+<p>This example only used basic character output functionality, but you can also call other BIOS interrupts like <code>int 0x16</code> (keyboard input) in the same way. It’s also possible to directly access VGA memory or expand this into simple bootloader logic.</p>
+<p>Although Wave is still in its early development stage, the ability to call BIOS via inline assembly shows that it can be used for low-level development as well. Next, I plan to experiment further with keyboard input, VGA memory output, and more fun low-level features.</p>
+<hr>
+<p>Github: https://github.com/LunaStev/Wave</p>
+<p>Website: https://wave-lang.dev</p></section>
+    </article>
+  </div>
+</body>
+</html>

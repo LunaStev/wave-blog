@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence | Wave Programming Language Blog</title>
+  <meta name="description" content="We are proud to announce a major milestone in the evolution of the Wave programming language. This release is not just a collection of patches; it represents a fundamental shift in Wave’s capabilities. From a completely overhauled CLI to sophisticate...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence">
+  <meta property="og:description" content="We are proud to announce a major milestone in the evolution of the Wave programming language. This release is not just a collection of patches; it represents a fundamental shift in Wave’s capabilities. From a completely overhauled CLI to sophisticate...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-09-announcing-wave-v017-pre-beta-release-the-foundation-for-system-level-excellence">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770627265960/01a96a8c-fe7d-4837-b7ad-36eaeea1524f.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence">
+  <meta name="twitter:description" content="We are proud to announce a major milestone in the evolution of the Wave programming language. This release is not just a collection of patches; it represents a fundamental shift in Wave’s capabilities. From a completely overhauled CLI to sophisticate...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770627265960/01a96a8c-fe7d-4837-b7ad-36eaeea1524f.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-09-announcing-wave-v017-pre-beta-release-the-foundation-for-system-level-excellence">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence", "description": "We are proud to announce a major milestone in the evolution of the Wave programming language. This release is not just a collection of patches; it represents a fundamental shift in Wave’s capabilities. From a completely overhauled CLI to sophisticate...", "datePublished": "2026-02-09T08:54:58", "dateModified": "2026-02-09T08:54:58", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-09-announcing-wave-v017-pre-beta-release-the-foundation-for-system-level-excellence", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-09-announcing-wave-v017-pre-beta-release-the-foundation-for-system-level-excellence", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1770627265960/01a96a8c-fe7d-4837-b7ad-36eaeea1524f.png", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-09</span></div>
+      <h1>Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence</h1>
+      <p class="desc">We are proud to announce a major milestone in the evolution of the Wave programming language. This release is not just a collection of patches; it represents a fundamental shift in Wave’s capabilities. From a completely overhauled CLI to sophisticate...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1770627265960/01a96a8c-fe7d-4837-b7ad-36eaeea1524f.png" alt="Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence</h1>
+<p>We are proud to announce a major milestone in the evolution of the Wave programming language. This release is not just a collection of patches; it represents a fundamental shift in Wave’s capabilities. From a completely overhauled CLI to sophisticated C ABI interoperability and a comprehensive Linux system interface, Wave is now equipped for serious systems engineering.</p>
+<hr>
+<h3>1. Mastering Interoperability: System V ABI &amp; C FFI</h3>
+<p>The implementation of a robust <strong>C Calling Convention (ABI) lowering</strong> mechanism allows Wave to handle complex data structures with the same precision as a native C compiler.</p>
+<ul>
+<li><strong>ABI Compliance</strong>: Our LLVM backend now strictly follows standard ABI rules, including <strong>SRet</strong> (Structured Return) for large aggregates, <strong>ByVal</strong> for passing structures by value, and <strong>Split/HFA</strong> (Homogeneous Floating-point Aggregates) for high-performance vector passing.</li>
+<li><strong>The <code>extern</code> Keyword</strong>: Declare external C functions with ease, including support for block syntax and symbol redirection.</li>
+<li><strong>Safety in Packing</strong>: We’ve refactored aggregate packing to use <code>build_memcpy</code> instead of simple bit-casts, ensuring memory alignment requirements are strictly respected during FFI calls.</li>
+</ul>
+<h3>2. Direct Kernel Access: Linux x86_64 Syscall Suite</h3>
+<p>Wave now speaks the language of the Linux kernel natively via high-precision inline assembly. This foundation has allowed us to build the initial <strong>Wave Standard Library (<code>std</code>)</strong>:</p>
+<ul>
+<li><strong><code>std::sys::linux</code></strong>: Native, zero-overhead interfaces for FS, Memory Management (<code>mmap</code>), Process Control, and Time.</li>
+<li><strong><code>std::net</code></strong>: Synchronous networking with <code>TcpListener</code>, <code>TcpStream</code>, and <code>UdpSocket</code>.</li>
+<li><strong><code>std::libc</code></strong>: Ready-to-use bindings for essential C functions like <code>malloc</code>, <code>free</code>, <code>stdio</code>, and <code>unistd</code>.</li>
+</ul>
+<blockquote>
+<p><em>Note: The standard library is in early development. While we are stabilizing the internal coupling, we recommend using <code>std/libc</code> for critical external bindings.</em></p>
+</blockquote>
+<h3>3. Hardened Inline Assembly: Clobbers and Normalization</h3>
+<p>Low-level programming requires total control. We’ve upgraded our <code>asm</code> blocks to support <strong>clobber clauses</strong> (e.g., <code>clobber("rax", "memory")</code>). This prevents subtle optimization bugs by explicitly informing the compiler about register and memory trashing.</p>
+<p>The new <strong>AsmPlan</strong> engine automatically handles register normalization and sign-aware operand extension, making inline assembly both safer and more expressive.</p>
+<h3>4. Advanced Type System: Enums and Type Aliases</h3>
+<p>Wave now provides better tools for data modeling and code readability:</p>
+<ul>
+<li><strong>Enums</strong>: Define named constants with a specific underlying representation. Enum variants are automatically treated as global constants.
+    <code>rust
+    enum ShaderUniformType -&gt; i32 { FLOAT = 0, VEC2, VEC3 }</code></li>
+<li>
+<p><strong>Type Aliases</strong>: Simplify complex type signatures and improve code reuse.
+    ```rust
+    enum ShaderUniformType -&gt; i32 {
+        FLOAT = 0,
+        VEC2,
+        VEC3,
+        VEC4
+    }</p>
+<p>type UniformType = ShaderUniformType;
+```
+*   <strong>Type Resolution Pass</strong>: A new compiler pass flattens aliases and resolves enum types across the entire program before code generation begins.</p>
+</li>
+</ul>
+<h3>5. Iterative Constant Evaluation</h3>
+<p>Our constant evaluator is now significantly more powerful. It supports <strong>multi-round resolution</strong>, allowing constants to depend on other constants defined later in your code.</p>
+<ul>
+<li><strong>Aggregate Support</strong>: You can now define constants that are <strong>struct literals</strong> or <strong>array literals</strong>.</li>
+<li><strong>Built-in Keywords</strong>: <code>true</code>, <code>false</code>, and <code>null</code> are now fully supported in constant contexts.</li>
+<li><strong>Frontend Validation</strong>: The compiler now catches undeclared identifiers and type mismatches much earlier in the verification phase.</li>
+</ul>
+<h3>6. A Modern, Structured CLI</h3>
+<p>We have completely refactored the <code>wavec</code> toolchain with a command-dispatch system:</p>
+<ul>
+<li><strong>Commands</strong>: <code>run</code>, <code>build</code>, <code>install std</code>, and <code>update std</code>.</li>
+<li><strong>Enhanced Linking</strong>: Use <code>--link</code> and <code>-L</code> to link against external system libraries directly.</li>
+<li><strong>Improved Diagnostics</strong>: Refined RGB color palette and accurate source-pointing for a better developer experience.</li>
+</ul>
+<h3>7. Formalizing the Project</h3>
+<ul>
+<li><strong>Wave Foundation</strong>: Core maintenance and assets are now officially managed by the Wave Foundation.</li>
+<li><strong>MPL-2.0 License</strong>: All source files are now licensed under the Mozilla Public License v2.0.</li>
+<li><strong>Rich Examples</strong>: Explore <code>examples/</code> for everything from a <strong>mini-game</strong> to a <strong>TCP HTTP server</strong> and <strong>Graph algorithms (DFS/BFS)</strong>.</li>
+</ul>
+<hr>
+<h3>Looking Ahead</h3>
+<p>Wave v0.1.7-pre-beta transforms the language into a tool capable of building its own ecosystem. With C FFI, enums, and direct syscall support, Wave is ready for the next level of system programming.</p>
+<h2>Get started:</h2>
+<pre><code class="language-bash"># Install the compiler
+# Set up the standard library
+wavec install std
+
+# Run the new Enum/Type Alias example
+wavec run examples/type_enum.wave
+</code></pre>
+<h2>Install</h2>
+<pre><code class="language-bash">curl -fsSL https://wave-lang.dev/install.sh | bash -s -- --version v0.1.7-pre-beta
+</code></pre>
+<p><em>Wave: Build fast, stay lean, and control the machine.</em></p>
+<p><em>Build fast, stay lean, and keep waving!</em></p>
+<hr>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/releases/tag/v0.1.7-pre-beta">Release Note</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

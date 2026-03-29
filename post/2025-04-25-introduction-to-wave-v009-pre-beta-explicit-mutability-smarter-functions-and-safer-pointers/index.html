@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction to Wave v0.0.9-pre-beta: Explicit Mutability, Smarter Functions, and Safer Pointers | Wave Programming Language Blog</title>
+  <meta name="description" content="Hello! I&#x27;m Lunastev, the developer of Wave. We are very excited to introduce Wave &#x27;v0.0.9-Free Beta&#x27; — A version that offers Explicit Mutability, Smarter Functions, and Safer Pointers. Wave is designed with low-level features in mind, and in this ver...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introduction to Wave v0.0.9-pre-beta: Explicit Mutability, Smarter Functions, and Safer Pointers">
+  <meta property="og:description" content="Hello! I&#x27;m Lunastev, the developer of Wave. We are very excited to introduce Wave &#x27;v0.0.9-Free Beta&#x27; — A version that offers Explicit Mutability, Smarter Functions, and Safer Pointers. Wave is designed with low-level features in mind, and in this ver...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-04-25-introduction-to-wave-v009-pre-beta-explicit-mutability-smarter-functions-and-safer-pointers">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270368495/7403b4d4-fbd4-40f9-a850-994adac0383d.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Introduction to Wave v0.0.9-pre-beta: Explicit Mutability, Smarter Functions, and Safer Pointers">
+  <meta name="twitter:description" content="Hello! I&#x27;m Lunastev, the developer of Wave. We are very excited to introduce Wave &#x27;v0.0.9-Free Beta&#x27; — A version that offers Explicit Mutability, Smarter Functions, and Safer Pointers. Wave is designed with low-level features in mind, and in this ver...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270368495/7403b4d4-fbd4-40f9-a850-994adac0383d.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-04-25-introduction-to-wave-v009-pre-beta-explicit-mutability-smarter-functions-and-safer-pointers">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Introduction to Wave v0.0.9-pre-beta: Explicit Mutability, Smarter Functions, and Safer Pointers", "description": "Hello! I'm Lunastev, the developer of Wave. We are very excited to introduce Wave 'v0.0.9-Free Beta' — A version that offers Explicit Mutability, Smarter Functions, and Safer Pointers. Wave is designed with low-level features in mind, and in this ver...", "datePublished": "2025-04-25T15:26:07", "dateModified": "2025-04-25T15:26:07", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-04-25-introduction-to-wave-v009-pre-beta-explicit-mutability-smarter-functions-and-safer-pointers", "url": "https://LunaStev.github.io/wave-blog/post/2025-04-25-introduction-to-wave-v009-pre-beta-explicit-mutability-smarter-functions-and-safer-pointers", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754270368495/7403b4d4-fbd4-40f9-a850-994adac0383d.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-04-25</span></div>
+      <h1>Introduction to Wave v0.0.9-pre-beta: Explicit Mutability, Smarter Functions, and Safer Pointers</h1>
+      <p class="desc">Hello! I&#x27;m Lunastev, the developer of Wave. We are very excited to introduce Wave &#x27;v0.0.9-Free Beta&#x27; — A version that offers Explicit Mutability, Smarter Functions, and Safer Pointers. Wave is designed with low-level features in mind, and in this ver...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270368495/7403b4d4-fbd4-40f9-a850-994adac0383d.webp" alt="Introduction to Wave v0.0.9-pre-beta: Explicit Mutability, Smarter Functions, and Safer Pointers" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Introduction to Wave v0.0.9-pre-beta: Explicit Mutability, Smarter Functions, and Safer Pointers</h1>
+<p>Hello! I'm Lunastev, the developer of Wave.</p>
+<p>We are very excited to introduce Wave 'v0.0.9-Free Beta' — A version that offers Explicit Mutability, Smarter Functions, and Safer Pointers.</p>
+<p>Wave is designed with low-level features in mind, and in this version, We are making a big leap in that direction.</p>
+<hr>
+<h2>📐 Language Specification Updates</h2>
+<h3>🧠 Introduction of <code>let</code>, <code>let mut</code>, and var for Explicit Mutability</h3>
+<ul>
+<li>
+<p>Wave now supports three types of variable declarations to express mutability explicitly:</p>
+<ul>
+<li>
+<p><code>var</code>: fully mutable, intended for general-purpose variables</p>
+</li>
+<li>
+<p><code>let</code>: immutable, reassignment is forbidden</p>
+</li>
+<li>
+<p><code>let mut</code>: mutable under immutable declaration context (safe controlled mutability)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>This design introduces clearer ownership intent and improves safety in low-level and system-oriented programming.</p>
+</li>
+</ul>
+<h3>🧠 Default Parameter Values in Function Declarations</h3>
+<ul>
+<li>
+<p>Wave functions can now define parameters with default values:</p>
+<p><code>plaintext
+fun main(name: str = "World") {
+    println("Hello {}", name);
+}</code></p>
+</li>
+<li>
+<p>If an argument is not provided at runtime, the default value will be inserted automatically by the compiler.</p>
+</li>
+<li>
+<p>This enables more expressive and flexible function declarations.</p>
+</li>
+</ul>
+<h2>✅ Added Features</h2>
+<h3>🧠 Parser and IR support for explicit mutability</h3>
+<ul>
+<li>
+<p>Introduced internal Mutability enum: <code>Var</code>, <code>Let</code>, <code>LetMut</code></p>
+</li>
+<li>
+<p>Implemented <code>parse_let()</code> with optional mut keyword for parsing</p>
+</li>
+<li>
+<p>Wave's IR generation now restricts <code>let</code> variables from being reassigned</p>
+</li>
+</ul>
+<h3>🧠 IR handling of function parameter defaults</h3>
+<ul>
+<li>
+<p>When default values are present in function parameters, they are now correctly recognized and handled during LLVM IR generation</p>
+</li>
+<li>
+<p>If an argument is not passed at runtime, the default value is inserted directly into the stack-allocated variable</p>
+</li>
+</ul>
+<h2>🔧 Bug Fixes</h2>
+<h3>🐛 Incorrect string output in <code>println()</code> format</h3>
+<ul>
+<li>
+<p>Fixed an issue where <code>str</code> values (<code>i8*</code>) were printed as raw addresses</p>
+</li>
+<li>
+<p>The format translation now maps <code>i8*</code> to <code>%s</code> correctly</p>
+</li>
+<li>
+<p>Values are passed directly to <code>printf</code> as string pointers, avoiding <code>ptr_to_int</code> conversion</p>
+</li>
+</ul>
+<h3>🐛 Incorrect handling of <code>deref</code> assignment</h3>
+<ul>
+<li>
+<p>Fixed an issue where dereferencing a pointer and assigning its value caused type mismatches in the generated IR.</p>
+</li>
+<li>
+<p>The IR now properly handles dereferencing a pointer (<code>deref p1 = deref p2;</code>) and assigning the values correctly without causing <code>i32**</code> mismatches.</p>
+</li>
+</ul>
+<h2>✨ Other Changes</h2>
+<h3>🧠 IR-level enforcement of immutability</h3>
+<ul>
+<li>
+<p>Reassignment attempts to <code>let</code> variables now cause a compile-time panic</p>
+</li>
+<li>
+<p>All memory operations (store/load) respect mutability constraints</p>
+</li>
+</ul>
+<h3>🧠 IR-level enforcement of pointer dereferencing</h3>
+<ul>
+<li>
+<p>Introduced a fix to ensure that pointer dereferencing (<code>deref p1 = deref p2;</code>) is handled correctly in the IR.</p>
+</li>
+<li>
+<p>Adjusted the <code>generate_address_ir()</code> function to properly dereference pointers and load/store values without causing pointer type mismatches.</p>
+</li>
+</ul>
+<hr>
+<h2>Showcase</h2>
+<p><img alt="Image1description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270365525/ec473068-392d-4bc1-a6f1-3f1cf05231e8.png align=" title="left"></p>
+<p><img alt="Image3description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270366298/20648347-0dd6-4820-9522-8d2108dfd417.png align=" title="left"></p>
+<hr>
+<p><img alt="Image2description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270367126/74f553fd-89ea-4159-9f7b-1fa5427abddf.png align=" title="left"></p>
+<p><img alt="Image4description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270367816/68c70de2-96fe-4830-94b2-c0b821adf543.png align=" title="left"></p>
+<hr>
+<p>Thank you for using Wave! Stay tuned for future updates and enhancements.</p>
+<hr>
+<h2>Installation Guide</h2>
+<h3>For Linux:</h3>
+<ol>
+<li>
+<p><strong>Download and Extract:</strong></p>
+<ul>
+<li>
+<p>Download the <code>wave-v0.0.9-pre-beta-x86_64-linux-gnu.tar.gz</code> file from the official source.</p>
+</li>
+<li>
+<p>Use the wget command:</p>
+<p><code>bash
+wget https://github.com/LunaStev/Wave/releases/download/v0.0.9-pre-beta/wave-v0.0.9-pre-beta-x86_64-linux-gnu.tar.gz</code></p>
+</li>
+<li>
+<p>Extract the archive:</p>
+<p><code>bash
+sudo tar -xvzf wave-v0.0.9-pre-beta-x86_64-linux-gnu.tar.gz -C /usr/local/bin</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Setting up LLVMs</p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+sudo apt-get update
+sudo apt-get install llvm-14 llvm-14-dev clang-14 libclang-14-dev lld-14 clang
+sudo ln -s /usr/lib/llvm-14/lib/libLLVM-14.so /usr/lib/libllvm-14.so
+export LLVM_SYS_140_PREFIX=/usr/lib/llvm-14
+source ~/.bashrc</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Verify Installation:</strong></p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+wavec --version</code></p>
+</li>
+<li>
+<p>If the version number displays, the installation was successful.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Contributor</h2>
+<p>@LunaStev | 🇰🇷</p>
+<hr>
+<h2>Website</h2>
+<p><a href="https://wave-lang.dev">Website</a></p>
+<p><a href="https://github.com/LunaStev/Wave">GitHub</a></p>
+<p><a href="https://ko-fi.com/lunasev">Ko-fi</a></p></section>
+    </article>
+  </div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction to Wave v0.1.2-pre-beta: Assignment Operators, Added Remainder and Generalized Indexing Support | Wave Programming Language Blog</title>
+  <meta name="description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.2-pre-beta — This update supports indexing, supports the rest of the operators. And I added an assignment operator. And I fixed a number of bugs. ✅ Added Features 🔍 Ge...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introduction to Wave v0.1.2-pre-beta: Assignment Operators, Added Remainder and Generalized Indexing Support">
+  <meta property="og:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.2-pre-beta — This update supports indexing, supports the rest of the operators. And I added an assignment operator. And I fixed a number of bugs. ✅ Added Features 🔍 Ge...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-06-21-introduction-to-wave-v012-pre-beta-assignment-operators-added-remainder-and-generalized-indexing-support">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270104684/ddb9ba40-d06b-488b-85b9-1803e65b80bd.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Introduction to Wave v0.1.2-pre-beta: Assignment Operators, Added Remainder and Generalized Indexing Support">
+  <meta name="twitter:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.2-pre-beta — This update supports indexing, supports the rest of the operators. And I added an assignment operator. And I fixed a number of bugs. ✅ Added Features 🔍 Ge...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270104684/ddb9ba40-d06b-488b-85b9-1803e65b80bd.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-06-21-introduction-to-wave-v012-pre-beta-assignment-operators-added-remainder-and-generalized-indexing-support">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Introduction to Wave v0.1.2-pre-beta: Assignment Operators, Added Remainder and Generalized Indexing Support", "description": "Hello! I'm LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.2-pre-beta — This update supports indexing, supports the rest of the operators. And I added an assignment operator. And I fixed a number of bugs. ✅ Added Features 🔍 Ge...", "datePublished": "2025-06-21T14:55:18", "dateModified": "2025-06-21T14:55:18", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-06-21-introduction-to-wave-v012-pre-beta-assignment-operators-added-remainder-and-generalized-indexing-support", "url": "https://LunaStev.github.io/wave-blog/post/2025-06-21-introduction-to-wave-v012-pre-beta-assignment-operators-added-remainder-and-generalized-indexing-support", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754270104684/ddb9ba40-d06b-488b-85b9-1803e65b80bd.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-06-21</span></div>
+      <h1>Introduction to Wave v0.1.2-pre-beta: Assignment Operators, Added Remainder and Generalized Indexing Support</h1>
+      <p class="desc">Hello! I&#x27;m LunaStev, the developer of Wave. We are pleased to announce Wave v0.1.2-pre-beta — This update supports indexing, supports the rest of the operators. And I added an assignment operator. And I fixed a number of bugs. ✅ Added Features 🔍 Ge...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270104684/ddb9ba40-d06b-488b-85b9-1803e65b80bd.webp" alt="Introduction to Wave v0.1.2-pre-beta: Assignment Operators, Added Remainder and Generalized Indexing Support" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Introduction to Wave v0.1.2-pre-beta: Assignment Operators, Added Remainder and Generalized Indexing Support</h1>
+<p>Hello! I'm LunaStev, the developer of Wave.</p>
+<p>We are pleased to announce Wave <code>v0.1.2-pre-beta</code> — This update supports indexing, supports the rest of the operators. And I added an assignment operator. And I fixed a number of bugs.</p>
+<hr>
+<h2>✅ Added Features</h2>
+<h3>🔍 Generalized Indexing Support</h3>
+<ul>
+<li>
+<p>Extended <code>arr[index]</code> syntax to support <strong>variable indexing</strong> in any context.</p>
+</li>
+<li>
+<p>Now supports dynamic indexing like <code>arr[i]</code>, <code>ptr[j]</code>, <code>get_array()[k]</code> inside <code>if</code>, <code>while</code>, <code>return</code>, and assignments.</p>
+</li>
+<li>
+<p>Internally handles pointer types (e.g., <code>i8*</code>) using <code>GEP</code> and performs automatic type casting (e.g., <code>i8</code> vs <code>i64</code>) for comparisons and assignments.</p>
+</li>
+</ul>
+<h3>➕ Added <code>%</code> (Remainder) Operator Support</h3>
+<ul>
+<li>
+<p>Wave now supports the modulo operator <code>%</code> for integer types.</p>
+</li>
+<li>
+<p>Expressions like <code>a % b</code>, <code>10 % 3</code>, and <code>var x: i32 = a % b</code> are now fully parsed and compiled to LLVM IR using srem (signed remainder).</p>
+</li>
+<li>
+<p>Parser was updated to recognize <code>%</code> as <code>TokenType::Remainder</code>, and IR generation uses <code>build_int_signed_rem</code> for correct runtime behavior.</p>
+</li>
+<li>
+<p><code>%</code> is fully supported inside expressions, assignments, conditionals, and return statements.</p>
+</li>
+</ul>
+<h3>⚙️ Assignment Operators (<code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>)</h3>
+<ul>
+<li>
+<p>Supports compound assignment operators for both integers (<code>i32</code>) and floating-point numbers (<code>f32</code>).</p>
+</li>
+<li>
+<p>Operators implemented: <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>.</p>
+</li>
+<li>
+<p>Type-safe operation with proper distinction between integer and float IR instructions:</p>
+<ul>
+<li>
+<p>add, sub, mul, sdiv, srem for integers.</p>
+</li>
+<li>
+<p><code>fadd</code>, <code>fsub</code>, <code>fmul</code>, <code>fdiv</code>, <code>frem</code> (uses <code>fmodf</code>) for floats.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Implicit type casting during assignment (e.g., assigning an int to a float variable triggers <code>int</code> → <code>float</code> conversion).</p>
+</li>
+<li>
+<p>Proper LLVM IR generation for all supported operations, including float remainder via external <code>fmodf</code> call (linked with <code>-lm</code>).</p>
+</li>
+</ul>
+<h2>🐛 Bug Fixes</h2>
+<h3>🔢 Accurate Token Differentiation Between Integers and Floats</h3>
+<ul>
+<li>
+<p>Number parsing logic has been overhauled to properly distinguish between integer literals (e.g., <code>42</code>) and floating-point literals (e.g., <code>3.14</code>, <code>42.0</code>).</p>
+</li>
+<li>
+<p>Previously, all numeric literals were parsed as <code>Float(f64)</code> tokens, even when no decimal point was present. → Now, tokens like <code>123</code> are correctly parsed as <code>Number(i64)</code>, and <code>123.45</code> as <code>Float(f64)</code>.</p>
+</li>
+<li>
+<p>Introduced internal flag <code>is_float</code> to detect presence of <code>.</code> during scanning. If found, the number is parsed as a float; otherwise, as an integer.</p>
+</li>
+<li>
+<p>Implemented type-safe error handling:</p>
+<ul>
+<li>Fallbacks to <code>TokenType::Number(0)</code> or <code>TokenType::Float(0.0)</code> on parse failure, ensuring the lexer remains stable on malformed input.</li>
+</ul>
+</li>
+<li>
+<p>This fix improves downstream type checking, IR generation, and expression evaluation, especially for typed languages like Wave where <code>i64</code> and <code>f64</code> must be handled distinctly.</p>
+</li>
+</ul>
+<h2>✨ Other Changes</h2>
+<h3>🧠 Library and Binary 2 Coexist</h3>
+<ul>
+<li>Add lib.rs for easy package manager creation, development, and easy access.</li>
+</ul>
+<hr>
+<h2>Showcase</h2>
+<p>The showcase is available at <a href="https://github.com/LunaStev/wave-testing">Wave-Test</a>.</p>
+<hr>
+<p>Thank you for using Wave! Stay tuned for future updates and enhancements.</p>
+<hr>
+<h2>Installation Guide</h2>
+<ol>
+<li>
+<p><strong>Download:</strong></p>
+<ul>
+<li>
+<p>Download to Curl.</p>
+<p><code>bash
+curl -fsSL https://wave-lang.dev/install.sh | bash -s -- --version v0.1.2-pre-beta</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Verify Installation:</strong></p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+wavec --version</code></p>
+</li>
+<li>
+<p>If the version number displays, the installation was successful.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>PR and Commits</h2>
+<ul>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/172">Switch to Github Flow It's still before the 0.1.2-pre-beta release.</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/182">Add simple algorithm examples for bug hunting (issue #178)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/184">Add simple algorithm examples for bug hunting (issue #178)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/185">primary expression assignment function fix</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/187">Fix IR generation for if-return and function call assignments</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/194">Fix inline assembly code generation for statement-level asm blocks (issue #173)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/LunaStev/Wave/pull/195">Fix expression parser false positives for statement tokens</a></p>
+</li>
+</ul>
+<hr>
+<h2>Contributor</h2>
+<p>@LunaStev | 🇰🇷</p>
+<hr>
+<h2>Website</h2>
+<p><a href="https://wave-lang.dev">Website</a></p>
+<p><a href="https://github.com/LunaStev/Wave">GitHub</a></p>
+<p><a href="https://discord.com/invite/3nev5nHqq9">Discord</a></p>
+<p><a href="https://ko-fi.com/lunasev">Ko-fi</a></p></section>
+    </article>
+  </div>
+</body>
+</html>

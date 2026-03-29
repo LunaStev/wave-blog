@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM | Wave Programming Language Blog</title>
+  <meta name="description" content="In systems programming, how a value is represented &quot;inside&quot; the compiler often differs from how it must look &quot;outside&quot; when calling a C library or interacting with CPU registers. Our latest update introduces an elegant solution to this challenge and ...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM">
+  <meta property="og:description" content="In systems programming, how a value is represented &quot;inside&quot; the compiler often differs from how it must look &quot;outside&quot; when calling a C library or interacting with CPU registers. Our latest update introduces an elegant solution to this challenge and ...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-05-patch-282-mastering-the-abi-introducing-typeflavor-and-high-precision-asm">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770303246051/25f4ee19-b859-479c-af26-f80ab1bf4470.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM">
+  <meta name="twitter:description" content="In systems programming, how a value is represented &quot;inside&quot; the compiler often differs from how it must look &quot;outside&quot; when calling a C library or interacting with CPU registers. Our latest update introduces an elegant solution to this challenge and ...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770303246051/25f4ee19-b859-479c-af26-f80ab1bf4470.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-05-patch-282-mastering-the-abi-introducing-typeflavor-and-high-precision-asm">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM", "description": "In systems programming, how a value is represented \"inside\" the compiler often differs from how it must look \"outside\" when calling a C library or interacting with CPU registers. Our latest update introduces an elegant solution to this challenge and ...", "datePublished": "2026-02-05T14:55:42", "dateModified": "2026-02-05T14:55:42", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-05-patch-282-mastering-the-abi-introducing-typeflavor-and-high-precision-asm", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-05-patch-282-mastering-the-abi-introducing-typeflavor-and-high-precision-asm", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1770303246051/25f4ee19-b859-479c-af26-f80ab1bf4470.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "compiler", "patch", "Blogging"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-05</span></div>
+      <h1>Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM</h1>
+      <p class="desc">In systems programming, how a value is represented &quot;inside&quot; the compiler often differs from how it must look &quot;outside&quot; when calling a C library or interacting with CPU registers. Our latest update introduces an elegant solution to this challenge and ...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1770303246051/25f4ee19-b859-479c-af26-f80ab1bf4470.png" alt="Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>compiler</li><li>patch</li><li>Blogging</li></ul>
+      <section class="content"><h1>Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM</h1>
+<p>In systems programming, how a value is represented "inside" the compiler often differs from how it must look "outside" when calling a C library or interacting with CPU registers. Our latest update introduces an elegant solution to this challenge and significantly bolsters our inline assembly engine.</p>
+<h3>1. The Concept of "TypeFlavor"</h3>
+<p>To bridge the gap between internal logic and external standards, we've introduced <strong>TypeFlavor</strong>. This allows the compiler to distinguish between:</p>
+<ul>
+<li>
+<p><strong>Value Flavor</strong>: Optimized for internal LLVM IR logic (e.g., using <code>i1</code> for booleans to enable efficient branching).</p>
+</li>
+<li>
+<p><strong>AbiC Flavor</strong>: Tailored for C ABI compatibility. For instance, when passing a boolean to a C function, it is now automatically emitted as an <code>i8</code>, ensuring that the receiving C library interprets the value correctly.</p>
+</li>
+</ul>
+<p>By refactoring our codegen entry points to be "flavor-aware," Wave now handles FFI (Foreign Function Interface) calls with much higher predictability and fewer manual workarounds.</p>
+<h3>2. Smarter Inline Assembly: Automatic Normalization</h3>
+<p>Inline assembly is powerful, but managing bit-widths and signedness manually is error-prone. We’ve overhauled our assembly operand handling to automate these tedious tasks:</p>
+<ul>
+<li>
+<p><strong>Sign-Aware Extension</strong>: The compiler now uses a new <code>infer_signedness</code> utility to determine if an input operand should be sign-extended (<code>sext</code>) or zero-extended (<code>zext</code>) when being promoted to a register width. This prevents unexpected behavior when passing negative numbers to assembly blocks.</p>
+</li>
+<li>
+<p><strong>Bit-Width Normalization</strong>: If your assembly output targets a 64-bit register (like <code>rax</code>) but your destination variable is a 32-bit integer, the compiler now automatically handles the truncation or extension.</p>
+</li>
+<li>
+<p><strong>Enhanced Coercion</strong>: We’ve refined <code>coerce_basic_value_for_store</code> to seamlessly handle complex conversions, such as moving values between floating-point registers and integer variables within an <code>asm</code> block.</p>
+</li>
+</ul>
+<h3>3. Backend Refinements &amp; Recursive Literals</h3>
+<p>Our LLVM backend continues to grow more capable:</p>
+<ul>
+<li>
+<p><strong>Recursive Array Literals</strong>: The compiler now supports nested array literal generation when an <code>ArrayType</code> is expected. This allows for cleaner initialization of complex, multi-dimensional data structures.</p>
+</li>
+<li>
+<p><strong>Internal Hygiene</strong>: We’ve performed a sweep of our codegen and parser modules, removing unused imports and clarifying documentation to ensure the codebase remains maintainable for our contributors.</p>
+</li>
+</ul>
+<h3>Why This Matters</h3>
+<p>These changes might seem invisible at first glance, but they solve the "mystery bugs" that often plague systems programming—those cases where a value is passed correctly but interpreted wrongly by the hardware or a linked library.</p>
+<p>With <strong>TypeFlavor</strong> and <strong>ASM Normalization</strong>, Wave is now better equipped to handle the strict requirements of low-level system interfaces, making it a more robust tool for building kernels, drivers, and high-performance applications.</p></section>
+    </article>
+  </div>
+</body>
+</html>

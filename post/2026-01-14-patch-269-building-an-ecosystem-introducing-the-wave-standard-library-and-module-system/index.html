@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System | Wave Programming Language Blog</title>
+  <meta name="description" content="A programming language is more than just syntax and a compiler; it is defined by its ecosystem. Today, we are excited to introduce the infrastructure for the Wave Standard Library (std)—a system designed to distribute, manage, and use common utilitie...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System">
+  <meta property="og:description" content="A programming language is more than just syntax and a compiler; it is defined by its ecosystem. Today, we are excited to introduce the infrastructure for the Wave Standard Library (std)—a system designed to distribute, manage, and use common utilitie...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-14-patch-269-building-an-ecosystem-introducing-the-wave-standard-library-and-module-system">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768378221357/3d67f770-428d-4e08-85ed-80f32ec1864c.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System">
+  <meta name="twitter:description" content="A programming language is more than just syntax and a compiler; it is defined by its ecosystem. Today, we are excited to introduce the infrastructure for the Wave Standard Library (std)—a system designed to distribute, manage, and use common utilitie...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768378221357/3d67f770-428d-4e08-85ed-80f32ec1864c.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-14-patch-269-building-an-ecosystem-introducing-the-wave-standard-library-and-module-system">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System", "description": "A programming language is more than just syntax and a compiler; it is defined by its ecosystem. Today, we are excited to introduce the infrastructure for the Wave Standard Library (std)—a system designed to distribute, manage, and use common utilitie...", "datePublished": "2026-01-14T08:47:18", "dateModified": "2026-01-14T08:47:18", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-14-patch-269-building-an-ecosystem-introducing-the-wave-standard-library-and-module-system", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-14-patch-269-building-an-ecosystem-introducing-the-wave-standard-library-and-module-system", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1768378221357/3d67f770-428d-4e08-85ed-80f32ec1864c.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-14</span></div>
+      <h1>Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System</h1>
+      <p class="desc">A programming language is more than just syntax and a compiler; it is defined by its ecosystem. Today, we are excited to introduce the infrastructure for the Wave Standard Library (std)—a system designed to distribute, manage, and use common utilitie...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768378221357/3d67f770-428d-4e08-85ed-80f32ec1864c.png" alt="Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System</h1>
+<p>A programming language is more than just syntax and a compiler; it is defined by its ecosystem. Today, we are excited to introduce the infrastructure for the <strong>Wave Standard Library (std)</strong>—a system designed to distribute, manage, and use common utilities efficiently and intuitively.</p>
+<h3>1. Seamless Library Management via CLI</h3>
+<p>We’ve added first-class support for managing the standard library directly through the Wave CLI. You no longer need to manually clone repositories or manage paths.</p>
+<ul>
+<li>
+<p><code>wavec install std</code>: This command sets up the standard library environment on your machine. It uses Git's <strong>sparse-checkout</strong> logic to pull only the necessary library files from our source repository, storing them in <code>~/.wave/lib/wave/std</code>.</p>
+</li>
+<li>
+<p><code>wavec update std</code>: Keeps your library up to date with the latest official releases.</p>
+</li>
+</ul>
+<p>By leveraging sparse-checkout, we ensure that you only download what is needed, keeping the installation lightweight and fast. The system also includes manifest validation to guarantee that the library is correctly installed and intact.</p>
+<h3>2. Namespaced Imports with <code>std::</code></h3>
+<p>To make library usage intuitive, we have revamped our import resolution mechanism. You can now use the <code>std::</code> prefix to access official modules, clearly separating them from local project files.</p>
+<pre><code class="language-kotlin">// Example of the new import syntax
+import(&quot;std::io::format&quot;);
+
+fun main() {
+    // Usage of standard library functions
+    format(&quot;Hello, Wave!&quot;);
+}
+</code></pre>
+<p>While standard library imports are automatically resolved to your local installation directory, relative imports (<code>import("./utils")</code>) continue to work seamlessly. This namespacing prevents naming conflicts and makes your code's dependencies much clearer.</p>
+<h3>3. A Lean Philosophy: Custom JSON Parser</h3>
+<p>In line with our goal of keeping the compiler lean (as seen in our previous removal of the <code>regex</code> crate), we decided not to add heavy external dependencies for manifest handling.</p>
+<p>Instead, we implemented a <strong>custom, lightweight JSON parser</strong> within <code>utils::json</code>. It supports all basic JSON types—Objects, Arrays, Strings, Numbers, and Booleans—providing exactly what we need to parse library manifests without the overhead of a general-purpose library.</p>
+<h3>4. Smarter CLI and Better Error Handling</h3>
+<p>The CLI is now more aware of its environment. We’ve added specific error handling for:</p>
+<ul>
+<li>
+<p><strong>Environment Issues</strong>: Alerts if the <code>HOME</code> directory is not set.</p>
+</li>
+<li>
+<p><strong>Missing Dependencies</strong>: Notifies you if <code>Git</code> is missing when attempting an install.</p>
+</li>
+<li>
+<p><strong>Manifest Failures</strong>: Detailed reports if a library manifest is corrupt or missing.</p>
+</li>
+</ul>
+<h3>5. Initial Standard Library Content</h3>
+<p>This release includes the boilerplate for our standard library, starting with basic I/O and formatting logic in <code>std/io/format.wave</code>. While it's just the beginning, this foundation allows us to build out complex string manipulation, math, and system utilities independently of the compiler's core logic.</p>
+<h3>Moving Forward</h3>
+<p>With the standard library infrastructure in place, Wave is now ready to grow its library of reusable components. This modular approach ensures that the compiler stays focused on code generation, while the standard library provides the rich feature set developers expect.</p>
+<p>Try running <code>wavec install std</code> and start exploring the new module system today!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/269">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

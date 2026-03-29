@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Booting a 64-bit Kernel with Wave | Wave Programming Language Blog</title>
+  <meta name="description" content="Multiboot2 + Long Mode + LLVM-Based Kernel Execution Recently, code written in the Wave language successfully operated as a kernel that boots in actual 64-bit Long Mode. Overall Structure GRUB → Mult">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Booting a 64-bit Kernel with Wave">
+  <meta property="og:description" content="Multiboot2 + Long Mode + LLVM-Based Kernel Execution Recently, code written in the Wave language successfully operated as a kernel that boots in actual 64-bit Long Mode. Overall Structure GRUB → Mult">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-03-01-booting-a-64-bit-kernel-with-wave">
+  <meta property="og:image" content="https://cdn.hashnode.com/uploads/covers/688f564f07f13939f0c67146/356fc610-eb2e-4d09-ae97-68668cb9c027.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Booting a 64-bit Kernel with Wave">
+  <meta name="twitter:description" content="Multiboot2 + Long Mode + LLVM-Based Kernel Execution Recently, code written in the Wave language successfully operated as a kernel that boots in actual 64-bit Long Mode. Overall Structure GRUB → Mult">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/uploads/covers/688f564f07f13939f0c67146/356fc610-eb2e-4d09-ae97-68668cb9c027.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-03-01-booting-a-64-bit-kernel-with-wave">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Booting a 64-bit Kernel with Wave", "description": "Multiboot2 + Long Mode + LLVM-Based Kernel Execution Recently, code written in the Wave language successfully operated as a kernel that boots in actual 64-bit Long Mode. Overall Structure GRUB → Mult", "datePublished": "2026-03-01T10:22:44", "dateModified": "2026-03-01T10:22:44", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-03-01-booting-a-64-bit-kernel-with-wave", "url": "https://LunaStev.github.io/wave-blog/post/2026-03-01-booting-a-64-bit-kernel-with-wave", "image": "https://cdn.hashnode.com/uploads/covers/688f564f07f13939f0c67146/356fc610-eb2e-4d09-ae97-68668cb9c027.png", "keywords": ["Kernel", "operating system", "os", "wave-lang"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-03-01</span></div>
+      <h1>Booting a 64-bit Kernel with Wave</h1>
+      <p class="desc">Multiboot2 + Long Mode + LLVM-Based Kernel Execution Recently, code written in the Wave language successfully operated as a kernel that boots in actual 64-bit Long Mode. Overall Structure GRUB → Mult</p>
+      <img class="cover" src="https://cdn.hashnode.com/uploads/covers/688f564f07f13939f0c67146/356fc610-eb2e-4d09-ae97-68668cb9c027.png" alt="Booting a 64-bit Kernel with Wave" loading="lazy">
+      <ul class="tags"><li>Kernel</li><li>operating system</li><li>os</li><li>wave-lang</li></ul>
+      <section class="content"><h1>Booting a 64-bit Kernel with Wave</h1>
+<h3>Multiboot2 + Long Mode + LLVM-Based Kernel Execution</h3>
+<p>Recently, code written in the Wave language successfully operated as a kernel that boots in actual 64-bit Long Mode.</p>
+<hr>
+<h2>Overall Structure</h2>
+<pre><code class="language-plaintext">GRUB → Multiboot2 → 32-bit entry
+      ↓
+   Page table setup
+      ↓
+   Enable Long Mode
+      ↓
+   Load 64-bit GDT
+      ↓
+   far jump
+      ↓
+   Execute k_main() written in Wave
+</code></pre>
+<hr>
+<h2>1. kernel.asm – Long Mode Entry Code</h2>
+<p>The core idea is transitioning directly from 32-bit state into 64-bit Long Mode.</p>
+<h3>Multiboot2 Header</h3>
+<pre><code class="language-plaintext">multiboot2_header:
+    dd 0xe85250d6
+    dd 0
+    dd header_end - multiboot2_header
+    dd -(0xe85250d6 + 0 + (header_end - multiboot2_header))
+</code></pre>
+<p>This is absolutely required for GRUB to recognize the kernel.</p>
+<hr>
+<h3>Identity 2MB Paging</h3>
+<p>Minimal page table configuration:</p>
+<pre><code class="language-plaintext">; PML4 → PDP → PD
+; 2MB identity mapping
+mov dword [pd_table], 0x00000083
+</code></pre>
+<ul>
+<li>
+<p>Present</p>
+</li>
+<li>
+<p>Writable</p>
+</li>
+<li>
+<p>Page Size (PS)</p>
+</li>
+</ul>
+<hr>
+<h3>Enabling Long Mode</h3>
+<pre><code class="language-plaintext">mov ecx, 0xC0000080   ; IA32_EFER
+rdmsr
+or eax, 1 &lt;&lt; 8        ; LME
+wrmsr
+</code></pre>
+<p>After that:</p>
+<pre><code class="language-plaintext">mov eax, cr0
+or eax, 1 &lt;&lt; 31
+mov cr0, eax
+</code></pre>
+<p>Enabling Paging = Long Mode entry condition satisfied.</p>
+<hr>
+<h3>64-bit GDT + Far Jump</h3>
+<pre><code class="language-plaintext">lgdt [gdt64_ptr]
+jmp 0x08:long_mode_entry
+</code></pre>
+<p>Without this far jump, a Triple Fault occurs.</p>
+<hr>
+<h2>2. kernel.wave – The Actual Kernel Code</h2>
+<p>From this point forward, it is Wave code.</p>
+<hr>
+<h3>Writing to VGA MMIO</h3>
+<pre><code class="language-kotlin">fun mmio_write8(addr: ptr&lt;u8&gt;, value: u8) {
+    addr[0] = value;
+
+    asm {
+        clobber(&quot;memory&quot;)
+    }
+}
+</code></pre>
+<h3>Why is <code>clobber("memory")</code> Necessary?</h3>
+<p>LLVM performs dead-store optimizations.</p>
+<p>From the kernel’s perspective:</p>
+<pre><code class="language-c">vidmem[i] = ...
+</code></pre>
+<p>is I/O to a memory-mapped hardware device.</p>
+<p>But the compiler treats it as ordinary memory.</p>
+<p>Result:</p>
+<ul>
+<li>
+<p>Nothing appears on screen</p>
+</li>
+<li>
+<p>The actual code is removed by optimization</p>
+</li>
+</ul>
+<p>Solution:</p>
+<blockquote>
+<p>Inform the compiler of side effects via a memory clobber.</p>
+</blockquote>
+<hr>
+<h3>Screen Initialization</h3>
+<pre><code class="language-kotlin">fun k_clear_screen() {
+    var vidmem: ptr&lt;u8&gt; = 0xb8000 as ptr&lt;u8&gt;;
+    var i: i32 = 0;
+
+    while (i &lt; 80 * 25 * 2) {
+        mmio_write8(vidmem + i, ' ' as u8);
+        i = i + 1;
+
+        mmio_write8(vidmem + i, WHITE_TXT);
+        i = i + 1;
+    }
+}
+</code></pre>
+<hr>
+<h3>String Output</h3>
+<pre><code class="language-kotlin">fun k_printf(message: ptr&lt;u8&gt;, line: i32) -&gt; i32 {
+    var current_line: i32 = line;
+    var msg: ptr&lt;u8&gt; = message;
+    var vidmem: ptr&lt;u8&gt; = 0xb8000 as ptr&lt;u8&gt;;
+    var i: i32 = current_line * 80 * 2;
+
+    while (msg[0] != 0) {
+        ...
+    }
+
+    return 1;
+}
+</code></pre>
+<hr>
+<h3>Kernel Entry</h3>
+<pre><code class="language-kotlin">fun k_main() {
+    k_clear_screen();
+    k_printf(&quot;Hello, world! Welcome to my kernel.&quot;, 0);
+
+    while (true) { }
+}
+</code></pre>
+<hr>
+<h2>3. Linker Script</h2>
+<pre><code class="language-plaintext">OUTPUT_FORMAT(elf64-x86-64)
+ENTRY(_start)
+
+SECTIONS
+{
+    . = 1M;
+
+    .text : {
+        *(.multiboot2)
+        *(.text*)
+    }
+
+    .rodata : { *(.rodata*) }
+    .data   : { *(.data*) }
+    .bss    : { *(.bss*) }
+}
+</code></pre>
+<p>The 1MB offset is the traditional kernel loading location.</p>
+<hr>
+<h2>4. Makefile Build Flow</h2>
+<pre><code class="language-plaintext">Wave → kernel_wave.o
+ASM  → kernel_asm.o
+LD   → kernel
+GRUB → ISO generation
+QEMU → execution
+</code></pre>
+<pre><code class="language-plaintext">make run
+</code></pre>
+<hr>
+<h2>Actual Result</h2>
+<p>Successfully printed output in QEMU. The Triple Fault loop has disappeared.</p>
+<p><img alt="screen" src="https://cdn.hashnode.com/uploads/covers/688f564f07f13939f0c67146/d7e99309-dd15-4d6c-a1a1-35015662115f.png align=" title="middle"></p>
+<hr>
+<h2>Meaning</h2>
+<p>The significance of this experiment is not merely that "Hello, world" was printed successfully.</p>
+<p>What this means is that Wave has reached a position where it can develop an operating system without borrowing C.</p>
+<p>Most languages depend on one of the following at the OS development stage:</p>
+<ul>
+<li>
+<p>A C compiler</p>
+</li>
+<li>
+<p>C runtime (crt0)</p>
+</li>
+<li>
+<p>libc</p>
+</li>
+<li>
+<p>An existing OS environment</p>
+</li>
+</ul>
+<p>This kernel:</p>
+<ul>
+<li>
+<p>Entered 64-bit Long Mode directly</p>
+</li>
+<li>
+<p>Executed in a freestanding environment</p>
+</li>
+<li>
+<p>Linked without libc</p>
+</li>
+<li>
+<p>Used not a single line of C code</p>
+</li>
+</ul>
+<p>Wave directly generated LLVM IR, produced object files, linked them into a kernel binary, was loaded via GRUB, and executed <code>k_main()</code> in a real 64-bit environment.</p>
+<p>This demonstrates that Wave is not a language "built on top of C," but a system programming language capable of operating at the same layer as C.</p>
+<p>In particular, Wave does not aim to support 32-bit environments.</p>
+<p>It was designed with 64-bit as the assumption, and the code executed directly in that environment.</p>
+<p>Therefore, this is not merely a demo — it means the following:</p>
+<blockquote>
+<p>Wave has secured the language-level foundation required to implement an operating system on a 64-bit target without C.</p>
+</blockquote>
+<p>Of course, the kernel does not yet implement a memory manager, interrupt system, or scheduler.</p>
+<p>But the most important gateway — executability at the hardware level — has already been passed.</p>
+<p>This is only the beginning.</p>
+<hr>
+<h1>Full Source Code</h1>
+<h3>- kernel.asm</h3>
+<pre><code class="language-asm">; =========================================
+; Multiboot2 + Minimal 64bit Long Mode
+; =========================================
+
+bits 32
+
+section .text
+align 8
+
+; -----------------------------------------
+; Multiboot2 Header (must be in first 32KB)
+; -----------------------------------------
+multiboot2_header:
+    dd 0xe85250d6
+    dd 0
+    dd header_end - multiboot2_header
+    dd -(0xe85250d6 + 0 + (header_end - multiboot2_header))
+    dw 0
+    dw 0
+    dd 8
+header_end:
+
+global _start
+extern k_main
+
+_start:
+    cli
+
+    ; -------------------------------------
+    ; Temporary 32bit stack
+    ; -------------------------------------
+    mov esp, stack_top
+
+    ; -------------------------------------
+    ; Setup page tables (identity 2MB)
+    ; -------------------------------------
+
+    ; PML4[0] = pdp_table | present | writable
+    mov eax, pdp_table
+    or eax, 0x3
+    mov [pml4_table], eax
+    mov dword [pml4_table + 4], 0
+
+    ; PDP[0] = pd_table | present | writable
+    mov eax, pd_table
+    or eax, 0x3
+    mov [pdp_table], eax
+    mov dword [pdp_table + 4], 0
+
+    ; PD[0] = 2MB page, present | writable | PS
+    mov dword [pd_table], 0x00000083
+    mov dword [pd_table + 4], 0
+
+    ; -------------------------------------
+    ; Enable PAE
+    ; -------------------------------------
+    mov eax, cr4
+    or eax, 1 &lt;&lt; 5        ; PAE
+    mov cr4, eax
+
+    ; -------------------------------------
+    ; Load CR3 with PML4
+    ; -------------------------------------
+    mov eax, pml4_table
+    mov cr3, eax
+
+    ; -------------------------------------
+    ; Enable Long Mode (EFER.LME)
+    ; -------------------------------------
+    mov ecx, 0xC0000080   ; IA32_EFER
+    rdmsr
+    or eax, 1 &lt;&lt; 8        ; LME
+    wrmsr
+
+    ; -------------------------------------
+    ; Enable Paging
+    ; -------------------------------------
+    mov eax, cr0
+    or eax, 1 &lt;&lt; 31       ; PG
+    mov cr0, eax
+
+    ; -------------------------------------
+    ; Load 64bit GDT
+    ; -------------------------------------
+    lgdt [gdt64_ptr]
+
+    ; -------------------------------------
+    ; Far jump to 64bit
+    ; -------------------------------------
+    jmp 0x08:long_mode_entry
+
+; =========================================
+; 64bit mode begins here
+; =========================================
+
+bits 64
+long_mode_entry:
+
+    mov rsp, stack_top
+    mov rbp, 0
+
+    call k_main
+
+.hang:
+    hlt
+    jmp .hang
+
+
+; =========================================
+; Page Tables (4KB aligned)
+; =========================================
+
+section .bss
+align 4096
+
+pml4_table:
+    resq 512
+
+pdp_table:
+    resq 512
+
+pd_table:
+    resq 512
+
+; =========================================
+; 64bit GDT
+; =========================================
+
+section .data
+align 8
+
+gdt64:
+    dq 0x0000000000000000       ; null
+    dq 0x00af9a000000ffff       ; 64bit code
+    dq 0x00af92000000ffff       ; 64bit data
+gdt64_end:
+
+gdt64_ptr:
+    dw gdt64_end - gdt64 - 1
+    dq gdt64
+
+
+; =========================================
+; Stack
+; =========================================
+
+section .bss
+align 16
+
+stack_bottom:
+    resb 16384
+stack_top:
+</code></pre>
+<h3>- kernel.wave</h3>
+<pre><code class="language-kotlin">const WHITE_TXT: u8 = 0x07;
+
+fun mmio_write8(addr: ptr&lt;u8&gt;, value: u8) {
+    addr[0] = value;
+
+    asm {
+        clobber(&quot;memory&quot;)
+    }
+}
+
+fun k_clear_screen() {
+    var vidmem: ptr&lt;u8&gt; = 0xb8000 as ptr&lt;u8&gt;;
+    var i: i32 = 0;
+
+    while (i &lt; 80 * 25 * 2) {
+        mmio_write8(vidmem + i, ' ' as u8);
+        i = i + 1;
+
+        mmio_write8(vidmem + i, WHITE_TXT);
+        i = i + 1;
+    }
+}
+
+fun k_printf(message: ptr&lt;u8&gt;, line: i32) -&gt; i32 {
+    var current_line: i32 = line;
+    var msg: ptr&lt;u8&gt; = message;
+    var vidmem: ptr&lt;u8&gt; = 0xb8000 as ptr&lt;u8&gt;;
+    var i: i32 = current_line * 80 * 2;
+
+    while (msg[0] != 0) {
+
+        if (msg[0] == '\n' as u8) {
+            current_line = current_line + 1;
+            i = current_line * 80 * 2;
+            msg = msg + 1;
+        } else {
+            mmio_write8(vidmem + i, msg[0]);
+            msg = msg + 1;
+            i = i + 1;
+
+            mmio_write8(vidmem + i, WHITE_TXT);
+            i = i + 1;
+        }
+    }
+
+    return 1;
+}
+
+fun k_main() {
+    k_clear_screen();
+    k_printf(&quot;Hello, world! Welcome to my kernel.&quot;, 0);
+
+    while (true) { }
+}
+</code></pre>
+<h3>- link.ld</h3>
+<pre><code class="language-ld">OUTPUT_FORMAT(elf64-x86-64)
+ENTRY(_start)
+
+SECTIONS
+{
+    . = 1M;
+
+    .text : {
+        *(.multiboot2)
+        *(.text*)
+    }
+
+    .rodata : { *(.rodata*) }
+    .data   : { *(.data*) }
+    .bss    : { *(.bss*) }
+}
+</code></pre>
+<h3>- Makefile</h3>
+<pre><code class="language-Makefile"># ===== Configuration =====
+
+WAVEC      := wavec
+NASM       := nasm
+LD         := ld.lld
+GRUB_MKISO := grub2-mkrescue
+
+ARCH       := x86_64
+BUILD_DIR  := build
+ISO_DIR    := iso
+KERNEL     := kernel
+ISO_IMAGE  := waveos.iso
+
+# ===== Files =====
+
+ASM_SRC    := kernel.asm
+WAVE_SRC   := kernel.wave
+LINKER     := link.ld
+
+ASM_OBJ    := $(BUILD_DIR)/kernel_asm.o
+WAVE_OBJ   := $(BUILD_DIR)/kernel_wave.o
+KERNEL_BIN := $(BUILD_DIR)/kernel
+
+# ===== Targets =====
+
+all: iso
+
+# --- Wave → object (.o)
+$(WAVE_OBJ): $(WAVE_SRC)
+    @mkdir -p $(BUILD_DIR)
+    @mkdir -p target
+    $(WAVEC) build -o $(WAVE_SRC)
+    @mv target/kernel.o $(WAVE_OBJ)
+
+# --- ASM → object (.o)
+$(ASM_OBJ): $(ASM_SRC)
+    @mkdir -p $(BUILD_DIR)
+    $(NASM) -f elf64 $(ASM_SRC) -o $(ASM_OBJ)
+
+# --- Link kernel
+$(KERNEL_BIN): $(ASM_OBJ) $(WAVE_OBJ) $(LINKER)
+    $(LD) -m elf_x86_64 -T $(LINKER) -o $(KERNEL_BIN) $(ASM_OBJ) $(WAVE_OBJ)
+
+# --- Build GRUB ISO
+iso: $(KERNEL_BIN)
+    @rm -rf $(ISO_DIR)
+    @mkdir -p $(ISO_DIR)/boot/grub
+    cp $(KERNEL_BIN) $(ISO_DIR)/boot/kernel
+    printf 'set timeout=0\nset default=0\n\nmenuentry &quot;WaveOS&quot; {\n  multiboot2 /boot/kernel\n  boot\n}\n' &gt; $(ISO_DIR)/boot/grub/grub.cfg
+    $(GRUB_MKISO) -o $(ISO_IMAGE) $(ISO_DIR)
+
+# --- Run in QEMU
+run: iso
+    qemu-system-x86_64 -cdrom $(ISO_IMAGE)
+
+# --- Clean
+clean:
+    rm -rf $(BUILD_DIR) $(ISO_DIR) $(ISO_IMAGE) target
+
+.PHONY: all iso run clean
+</code></pre></section>
+    </article>
+  </div>
+</body>
+</html>

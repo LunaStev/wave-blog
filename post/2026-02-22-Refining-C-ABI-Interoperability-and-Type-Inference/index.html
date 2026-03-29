@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference | Wave Programming Language Blog</title>
+  <meta name="description" content="Following our major move to LLVM 21, our focus has shifted toward stabilizing the new architecture and perfecting how Wave interacts with the C ecosystem. Our latest patch introduces significant refin">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference">
+  <meta property="og:description" content="Following our major move to LLVM 21, our focus has shifted toward stabilizing the new architecture and perfecting how Wave interacts with the C ecosystem. Our latest patch introduces significant refin">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-22-Refining-C-ABI-Interoperability-and-Type-Inference">
+  <meta property="og:image" content="https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/e222bd7b-a50c-40e2-b7ab-7a955cf5871d.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference">
+  <meta name="twitter:description" content="Following our major move to LLVM 21, our focus has shifted toward stabilizing the new architecture and perfecting how Wave interacts with the C ecosystem. Our latest patch introduces significant refin">
+  <meta name="twitter:image" content="https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/e222bd7b-a50c-40e2-b7ab-7a955cf5871d.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-22-Refining-C-ABI-Interoperability-and-Type-Inference">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference", "description": "Following our major move to LLVM 21, our focus has shifted toward stabilizing the new architecture and perfecting how Wave interacts with the C ecosystem. Our latest patch introduces significant refin", "datePublished": "2026-02-22T14:22:31", "dateModified": "2026-02-22T14:22:31", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-22-Refining-C-ABI-Interoperability-and-Type-Inference", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-22-Refining-C-ABI-Interoperability-and-Type-Inference", "image": "https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/e222bd7b-a50c-40e2-b7ab-7a955cf5871d.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-22</span></div>
+      <h1>Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference</h1>
+      <p class="desc">Following our major move to LLVM 21, our focus has shifted toward stabilizing the new architecture and perfecting how Wave interacts with the C ecosystem. Our latest patch introduces significant refin</p>
+      <img class="cover" src="https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/e222bd7b-a50c-40e2-b7ab-7a955cf5871d.png" alt="Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference</h1>
+<p>Following our major move to LLVM 21, our focus has shifted toward stabilizing the new architecture and perfecting how Wave interacts with the C ecosystem. Our latest patch introduces significant refinements to the C ABI (Application Binary Interface), smarter type inference for opaque pointers, and enhanced data serialization tools.</p>
+<h3>1. High-Precision C ABI Lowering</h3>
+<p>Interfacing with C requires more than just matching function names; it requires matching how the CPU handles data.</p>
+<ul>
+<li>
+<p><strong>Aggregates and Registers</strong>: We have updated <code>abi_c.rs</code> to pass small "mixed" aggregates (structs containing both integers and floats) as direct values. This allows the LLVM backend to more effectively assign them to either INTEGER or SSE (floating-point) registers, matching the behavior of standard C compilers and boosting performance.</p>
+</li>
+<li>
+<p><strong>Standard-Compliant</strong> <code>main</code>: In many operating systems, the <code>main</code> function is expected to return an integer. If your Wave <code>main</code> function is defined without a return value, the compiler now implicitly adds a <code>return 0</code> and lowers the return type to <code>i32</code> in LLVM to satisfy standard execution environments.</p>
+</li>
+<li>
+<p><strong>Redirected Symbol Resolution</strong>: We fixed a critical bug where external C functions were being looked up by their high-level Wave name rather than their redirected LLVM symbol name. This ensures that custom-named FFI bindings now work exactly as intended.</p>
+</li>
+</ul>
+<h3>2. Smarter Type Inference in a "Type-less" World</h3>
+<p>With our recent transition to Opaque Pointers, the compiler can no longer rely on pointers to carry their own type information. We’ve introduced several tools to manage this complexity:</p>
+<ul>
+<li>
+<p><strong>Context-Aware Addressing</strong>: The new <code>generate_address_and_type_ir</code> helper provides both the memory address and its corresponding Wave type simultaneously. This simplifies the logic for complex array indexing and struct field access.</p>
+</li>
+<li>
+<p><strong>Enhanced Mapping</strong>: We implemented <code>infer_wave_type_of_expr</code> and <code>basic_ty_to_wave_ty</code> to bridge the gap between LLVM’s internal types and Wave’s high-level type system, ensuring type safety even when the backend type is ambiguous.</p>
+</li>
+<li>
+<p><strong>Legacy-Friendly</strong> <code>deref</code>: To keep existing codebases working smoothly, the compiler now handles "redundant" dereferences gracefully. For example, <code>deref array[i]</code> is now explicitly allowed on expressions that are already addressable, maintaining compatibility while we transition to stricter syntax.</p>
+</li>
+</ul>
+<h3>3. Reliable JSON Serialization</h3>
+<p>As Wave begins to handle more metadata, reliable data exchange is key. We have significantly upgraded our built-in JSON utilities:</p>
+<ul>
+<li>
+<p><strong>Pretty vs. Compact</strong>: You can now choose between <code>write_pretty_to</code> for human-readable output and <code>write_compact_to</code> for efficient data storage.</p>
+</li>
+<li>
+<p><strong>Robust Escaping</strong>: We implemented full JSON string escaping. The engine now correctly handles newlines, quotes, backslashes, and control characters, ensuring that your data remains valid JSON regardless of its content.</p>
+</li>
+</ul>
+<h3>4. New Optimization Flags</h3>
+<p>We’ve expanded the Wave CLI to give developers more control over the final binary:</p>
+<ul>
+<li>
+<p><code>-Os</code>: Optimizes the code specifically for binary size—perfect for embedded or resource-constrained environments.</p>
+</li>
+<li>
+<p><code>-Ofast</code>: Enables aggressive optimizations that may disregard strict standards (like floating-point precision) to achieve maximum execution speed.</p>
+</li>
+</ul>
+<h3>Conclusion</h3>
+<p>This update is about <strong>predictability</strong>. Whether you are calling a complex C function, calculating memory addresses, or serializing data to JSON, Wave now behaves more consistently and follows industry standards more closely.</p>
+<p>These internal refinements provide the stability needed to build large-scale applications and complex system interfaces with confidence.</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/293">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

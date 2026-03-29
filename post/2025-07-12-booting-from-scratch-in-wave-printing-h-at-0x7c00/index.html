@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Booting from Scratch in Wave: Printing ‘H’ at 0x7C00 | Wave Programming Language Blog</title>
+  <meta name="description" content="Wave is a language that supports inline assembly. In its current pre-beta stage, it compiles through LLVM. So here&#x27;s a thought — what if we could write a boot sector in Wave and run it using QEMU? If this works, we might just be writing the very firs...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Booting from Scratch in Wave: Printing ‘H’ at 0x7C00">
+  <meta property="og:description" content="Wave is a language that supports inline assembly. In its current pre-beta stage, it compiles through LLVM. So here&#x27;s a thought — what if we could write a boot sector in Wave and run it using QEMU? If this works, we might just be writing the very firs...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-07-12-booting-from-scratch-in-wave-printing-h-at-0x7c00">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271463009/7b0a28e6-831a-459d-85d2-447b7f86e781.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Booting from Scratch in Wave: Printing ‘H’ at 0x7C00">
+  <meta name="twitter:description" content="Wave is a language that supports inline assembly. In its current pre-beta stage, it compiles through LLVM. So here&#x27;s a thought — what if we could write a boot sector in Wave and run it using QEMU? If this works, we might just be writing the very firs...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271463009/7b0a28e6-831a-459d-85d2-447b7f86e781.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-07-12-booting-from-scratch-in-wave-printing-h-at-0x7c00">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Booting from Scratch in Wave: Printing ‘H’ at 0x7C00", "description": "Wave is a language that supports inline assembly. In its current pre-beta stage, it compiles through LLVM. So here's a thought — what if we could write a boot sector in Wave and run it using QEMU? If this works, we might just be writing the very firs...", "datePublished": "2025-07-12T04:38:54", "dateModified": "2025-07-12T04:38:54", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-07-12-booting-from-scratch-in-wave-printing-h-at-0x7c00", "url": "https://LunaStev.github.io/wave-blog/post/2025-07-12-booting-from-scratch-in-wave-printing-h-at-0x7c00", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754271463009/7b0a28e6-831a-459d-85d2-447b7f86e781.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-07-12</span></div>
+      <h1>Booting from Scratch in Wave: Printing ‘H’ at 0x7C00</h1>
+      <p class="desc">Wave is a language that supports inline assembly. In its current pre-beta stage, it compiles through LLVM. So here&#x27;s a thought — what if we could write a boot sector in Wave and run it using QEMU? If this works, we might just be writing the very firs...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271463009/7b0a28e6-831a-459d-85d2-447b7f86e781.webp" alt="Booting from Scratch in Wave: Printing ‘H’ at 0x7C00" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Booting from Scratch in Wave: Printing ‘H’ at 0x7C00</h1>
+<p>Wave is a language that supports inline assembly. In its current pre-beta stage, it compiles through LLVM.
+So here's a thought — what if we could write a boot sector in Wave and run it using QEMU?</p>
+<p>If this works, we might just be writing the very first line in Wave’s low-level programming history.</p>
+<p>Today, we’re going to attempt exactly that:
+<strong>creating a boot sector using only Wave</strong>.</p>
+<hr>
+<p>At the moment, Wave uses LLVM as a temporary backend.
+LLVM is a general-purpose compiler toolchain used by languages like C/C++, Rust, and Zig.
+However, Wave aims to eventually move away from LLVM and build its own dedicated compiler toolchain,
+called <strong>Whale</strong> — optimized specifically for Wave and free from the limitations of LLVM.</p>
+<p>Of course, before that can happen, Wave’s frontend needs to be fully developed.</p>
+<hr>
+<p>In a previous post, I showed how to print “Hello World” using only Wave.
+This time, we’ll take it one step further and write a boot sector, which runs below the OS level.</p>
+<hr>
+<p>Typically, boot sectors and bootloaders are written in raw assembly.
+But Wave allows inline assembly using the <code>asm {}</code> block, making it possible to implement a boot sector directly in Wave.</p>
+<p>The basics of Wave’s inline assembly syntax are explained in my earlier post:
+<a href="https://dev.to/lunastev/printing-hello-world-from-scratch-in-wave-4oh">Printing Hello World from Scratch in Wave</a></p>
+<hr>
+<p>Here’s the Wave code we’ll be using:</p>
+<pre><code>fun main() {
+    asm {
+        &quot;mov ah, 0x0e&quot;
+        &quot;mov al, 0x48&quot;
+        &quot;int 0x10&quot;
+    }
+}
+</code></pre>
+<p>Before we proceed, let’s break it down a bit.</p>
+<h2>Code Breakdown</h2>
+<h3>1. <code>mov ah, 0x0e</code></h3>
+<ul>
+<li>Stores <code>0x0E</code> in the AH register.</li>
+<li>In x86 real mode, the <code>int 0x10</code> BIOS interrupt is used for video services.</li>
+<li>When AH = <code>0x0E</code>, it selects the "TTY character output" function.</li>
+</ul>
+<h3>2. <code>mov al, 0x48</code></h3>
+<ul>
+<li>Stores <code>0x48</code> (ASCII for <code>'H'</code>) in the AL register.</li>
+<li>This sets the character to be printed.</li>
+</ul>
+<h3>3. <code>int 0x10</code></h3>
+<ul>
+<li>Triggers the BIOS video interrupt.</li>
+<li>AH = <code>0x0E</code> → TTY mode</li>
+<li>AL = character to print</li>
+<li>BL = page number (defaults to 0)</li>
+<li>As a result, it prints a single <code>'H'</code> on the screen.</li>
+</ul>
+<hr>
+<p>Now that the code is ready, it’s time to compile.</p>
+<p>Currently, Wave only compiles to Linux binaries — formats like <code>.img</code> or <code>.exe</code> aren’t directly supported.
+However, Wave generates a <code>temp.ll</code> file (LLVM IR) when running <code>wavec run main.wave</code>, and we can use that to produce a bootable <code>.img</code> file.</p>
+<p>To simplify the process, I’ve written a shell script called <code>build.sh</code>:</p>
+<pre><code class="language-bash">#!/bin/bash
+
+set -e
+
+LL_FILE=target/temp.ll
+OBJ_FILE=boot.o
+BIN_FILE=boot.bin
+IMG_FILE=os.img
+
+wavec run main.wave
+
+llc -march=x86 -mattr=+16bit-mode -filetype=obj $LL_FILE -o $OBJ_FILE
+
+ld -m elf_i386 -Ttext 0x7c00 --oformat binary $OBJ_FILE -o $BIN_FILE
+
+echo -ne '\x55\xAA' | dd of=$BIN_FILE bs=1 seek=510 count=2 conv=notrunc
+
+dd if=$BIN_FILE of=$IMG_FILE bs=512 count=1 conv=notrunc
+
+echo &quot;[+] Image created: $IMG_FILE&quot;
+</code></pre>
+<blockquote>
+<p>Note: You’ll need the LLVM toolchain installed. I recommend using <code>clang 14</code> for compatibility with Wave.</p>
+</blockquote>
+<p>When you run <code>./build.sh</code>, you’ll get output like this:</p>
+<p><img alt="command" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271461390/619a3331-39af-40bb-be75-28381828b9a6.png"></p>
+<p>The <code>os.img</code> file is now ready.</p>
+<p>Let’s boot it using QEMU:</p>
+<pre><code class="language-bash">qemu-system-i386 -drive format=raw,file=os.img
+</code></pre>
+<p>You should see the character <code>'H'</code> printed to the screen like this:</p>
+<p><img alt="qemu" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271462332/5847bd36-c88a-4f5a-b455-e7710c929d52.png"></p>
+<hr>
+<p>Wave is still a work in progress, but this experiment shows that it's already capable of writing boot sectors through inline assembly.
+As the language evolves with more features and syntax improvements, we might one day build entire OS kernels in Wave.</p></section>
+    </article>
+  </div>
+</body>
+</html>

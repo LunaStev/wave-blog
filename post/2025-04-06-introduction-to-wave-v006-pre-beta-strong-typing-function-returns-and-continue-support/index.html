@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction to Wave v0.0.6-pre-beta: Strong Typing, Function Returns, and continue Support | Wave Programming Language Blog</title>
+  <meta name="description" content="Hello! I&#x27;m Lunastev, the developer of Wave. I&#x27;m very happy to introduce Wave v0.0.6-pre-beta, which is an important step forward in the evolution of language. The release focuses on expanding the type system, enhancing feature support, and introducin...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introduction to Wave v0.0.6-pre-beta: Strong Typing, Function Returns, and continue Support">
+  <meta property="og:description" content="Hello! I&#x27;m Lunastev, the developer of Wave. I&#x27;m very happy to introduce Wave v0.0.6-pre-beta, which is an important step forward in the evolution of language. The release focuses on expanding the type system, enhancing feature support, and introducin...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-04-06-introduction-to-wave-v006-pre-beta-strong-typing-function-returns-and-continue-support">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270125855/a1a07851-a9d3-4bd5-b1b5-167630c535b9.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Introduction to Wave v0.0.6-pre-beta: Strong Typing, Function Returns, and continue Support">
+  <meta name="twitter:description" content="Hello! I&#x27;m Lunastev, the developer of Wave. I&#x27;m very happy to introduce Wave v0.0.6-pre-beta, which is an important step forward in the evolution of language. The release focuses on expanding the type system, enhancing feature support, and introducin...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270125855/a1a07851-a9d3-4bd5-b1b5-167630c535b9.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-04-06-introduction-to-wave-v006-pre-beta-strong-typing-function-returns-and-continue-support">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Introduction to Wave v0.0.6-pre-beta: Strong Typing, Function Returns, and continue Support", "description": "Hello! I'm Lunastev, the developer of Wave. I'm very happy to introduce Wave v0.0.6-pre-beta, which is an important step forward in the evolution of language. The release focuses on expanding the type system, enhancing feature support, and introducin...", "datePublished": "2025-04-06T13:47:21", "dateModified": "2025-04-06T13:47:21", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-04-06-introduction-to-wave-v006-pre-beta-strong-typing-function-returns-and-continue-support", "url": "https://LunaStev.github.io/wave-blog/post/2025-04-06-introduction-to-wave-v006-pre-beta-strong-typing-function-returns-and-continue-support", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754270125855/a1a07851-a9d3-4bd5-b1b5-167630c535b9.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-04-06</span></div>
+      <h1>Introduction to Wave v0.0.6-pre-beta: Strong Typing, Function Returns, and continue Support</h1>
+      <p class="desc">Hello! I&#x27;m Lunastev, the developer of Wave. I&#x27;m very happy to introduce Wave v0.0.6-pre-beta, which is an important step forward in the evolution of language. The release focuses on expanding the type system, enhancing feature support, and introducin...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270125855/a1a07851-a9d3-4bd5-b1b5-167630c535b9.webp" alt="Introduction to Wave v0.0.6-pre-beta: Strong Typing, Function Returns, and continue Support" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Introduction to Wave v0.0.6-pre-beta: Strong Typing, Function Returns, and continue Support</h1>
+<p>Hello! I'm Lunastev, the developer of Wave.</p>
+<p>I'm very happy to introduce Wave <code>v0.0.6-pre-beta</code>, which is an important step forward in the evolution of language.</p>
+<p>The release focuses on expanding the type system, enhancing feature support, and introducing powerful new features such as 'continue' doors and floating arithmetic. With the structured 'WaveType' Enum now replacing all string-based types, Wave has taken a strong step towards becoming a statically typed system language.</p>
+<p>The function return type is now fully supported, enabling expressive and reusable logic. You can define the function as <code>-&gt; i32</code> and return the value using the <code>return</code> keyword. LLVM IR generation logic has also been upgraded to be fully type-aware, ensuring safer and more accurate lower-level output.</p>
+<p>The waves are growing fast, and we are very excited to share our future plans.
+Thank you for supporting me on this journey 💙</p>
+<hr>
+<h2>✅ Added Features</h2>
+<h3>💬 Comment Support</h3>
+<ul>
+<li>Supports single-line comments using <code>//</code></li>
+<li>Supports multi-line comment blocks using <code>/* */</code></li>
+</ul>
+<h3>✅ continue statement Support</h3>
+<ul>
+<li>Possible to skip to the next iteration depending on the condition within the 'while' loop</li>
+<li>Syntax supported for 'if (condition) {continue; }'</li>
+<li>In LLVM IR, 'continue' is treated as a condition check block for the corresponding loop</li>
+</ul>
+<h3>🧠 Strong Typing for Variables and Parameters</h3>
+<ul>
+<li>Replaced string-based types with structured <code>WaveType</code> enums in the AST</li>
+<li>Fully supports types like <code>i32</code>, <code>u64</code>, <code>f32</code> for both variables and parameters</li>
+<li>Enables static type checking and safer LLVM IR generation</li>
+</ul>
+<h3>🔢 Float Type Support (<code>f32</code>)</h3>
+<ul>
+<li>Supports <code>f32</code> literals (e.g., <code>12.34</code>)</li>
+<li>Allows declaration, initialization, and reassignment of <code>f32</code> variables</li>
+<li>Enables use of <code>f32</code> values in arithmetic and comparison operations (e.g., <code>if</code>, <code>while</code>)</li>
+<li>Promotes <code>float</code> to <code>double</code> using <code>fpext</code> when passing to <code>printf</code> to conform to the C ABI</li>
+</ul>
+<h3>🖨️ Formatted Print (<code>println("...", value)</code>)</h3>
+<ul>
+<li>Automatically maps Wave types to proper C format specifiers (<code>%d</code>, <code>%f</code>, <code>%s</code>)</li>
+<li>Correctly handles printing of <code>f32</code>, <code>i32</code>, and string types with type inference</li>
+</ul>
+<h3>🌀 Type-Aware LLVM IR Generation</h3>
+<ul>
+<li>LLVM <code>alloca</code>, <code>store</code>, and <code>load</code> instructions are generated based on <code>WaveType</code></li>
+<li>Supports both integer and float value initialization</li>
+<li>Uses <code>BasicTypeEnum</code> and <code>BasicValueEnum</code> to unify value handling</li>
+<li>Ensures correctness in mixed-type binary expressions and conditionals</li>
+</ul>
+<h3>🧩 Function Definition and Calls</h3>
+<ul>
+<li>Supports user-defined functions with multiple parameters</li>
+<li>Parameters support explicit typing (e.g., <code>i32</code>, <code>str</code>)</li>
+<li>Functions can be called with literals or variables as arguments</li>
+<li>LLVM IR correctly handles parameter passing using <code>%0</code>, <code>%1</code>, ... style</li>
+<li>Parameter values are properly <code>store</code>d and <code>load</code>ed from the stack</li>
+<li>Enables composable and reusable logic with full IR-level integration</li>
+</ul>
+<h3>🧠 Function Return Type Support</h3>
+<ul>
+<li>Functions can now specify return types using <code>-&gt;</code> syntax (e.g., <code>-&gt; i32</code>)</li>
+<li>Supported return types: <code>i32</code>, <code>f32</code>, <code>str</code> (more planned)</li>
+<li>Return statements (<code>return expr;</code>) emit the appropriate LLVM <code>ret</code> instruction</li>
+<li>If no return is specified in a void function, <code>ret void</code> is automatically inserted</li>
+<li>Ensures matching return types between Wave AST and LLVM IR generation</li>
+</ul>
+<hr>
+<h2>Showcase</h2>
+<p><img alt="Image des2cription" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270122795/d94ab670-6e73-42e4-8452-9a37370a1fb5.png"></p>
+<p><img alt="Image descri3ption" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270123598/3c9e4856-0808-46c1-98b1-bd8a1a608556.png"></p>
+<hr>
+<p><img alt="Image descr2iption" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270124368/be0640ca-aea8-46fb-92a2-f648f261b898.png"></p>
+<p><img alt="Image descr3iption" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270125208/fa32e70b-aa32-4901-9630-9be5e82a260d.png"></p>
+<hr>
+<p>Thank you for using Wave! Stay tuned for future updates and enhancements.</p>
+<hr>
+<h2>Installation Guide</h2>
+<h3>For Linux:</h3>
+<ol>
+<li>
+<p><strong>Download and Extract:</strong>
+   - Download the <code>wave-v0.0.6-pre-beta-linux.tar.gz</code> file from the official source.
+   - Use the wget command:
+     <code>bash
+     wget https://github.com/LunaStev/Wave/releases/download/v0.0.6-pre-beta/wave-v0.0.6-pre-beta-linux.tar.gz</code>
+   - Extract the archive:
+     <code>bash
+     sudo tar -xvzf wave-v0.0.6-pre-beta-linux.tar.gz -C /usr/local/bin</code></p>
+</li>
+<li>
+<p>Setting up LLVMs
+   - Open a terminal and type:
+     <code>bash
+     sudo apt-get update
+     sudo apt-get install llvm-14 llvm-14-dev clang-14 libclang-14-dev lld-14 clang
+     sudo ln -s /usr/lib/llvm-14/lib/libLLVM-14.so /usr/lib/libllvm-14.so
+     export LLVM_SYS_140_PREFIX=/usr/lib/llvm-14
+     source ~/.bashrc</code></p>
+</li>
+<li>
+<p><strong>Verify Installation:</strong>
+   - Open a terminal and type:
+     <code>bash
+     wave --version</code>
+   - If the version number displays, the installation was successful.</p>
+</li>
+</ol>
+<hr>
+<h2>Contributor</h2>
+<p>@LunaStev | 🇰🇷</p>
+<hr>
+<h2>Website</h2>
+<p><a href="https://wave-lang.dev">Website</a>
+<a href="https://github.com/LunaStev/Wave">GitHub</a></p></section>
+    </article>
+  </div>
+</body>
+</html>

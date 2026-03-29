@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave | Wave Programming Language Blog</title>
+  <meta name="description" content="We are pushing the boundaries of what Wave can do at the system level. This latest patch introduces a comprehensive suite of Linux x86_64 syscall wrappers and foundational networking modules, giving developers direct control over the operating system...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave">
+  <meta property="og:description" content="We are pushing the boundaries of what Wave can do at the system level. This latest patch introduces a comprehensive suite of Linux x86_64 syscall wrappers and foundational networking modules, giving developers direct control over the operating system...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-23-patch-276-direct-system-access-linux-x8664-syscalls-and-networking-in-wave">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1769162359927/78e9b8ed-e069-4333-bd78-7b8349e31f5d.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave">
+  <meta name="twitter:description" content="We are pushing the boundaries of what Wave can do at the system level. This latest patch introduces a comprehensive suite of Linux x86_64 syscall wrappers and foundational networking modules, giving developers direct control over the operating system...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1769162359927/78e9b8ed-e069-4333-bd78-7b8349e31f5d.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-23-patch-276-direct-system-access-linux-x8664-syscalls-and-networking-in-wave">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave", "description": "We are pushing the boundaries of what Wave can do at the system level. This latest patch introduces a comprehensive suite of Linux x86_64 syscall wrappers and foundational networking modules, giving developers direct control over the operating system...", "datePublished": "2026-01-23T09:55:50", "dateModified": "2026-01-23T09:55:50", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-23-patch-276-direct-system-access-linux-x8664-syscalls-and-networking-in-wave", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-23-patch-276-direct-system-access-linux-x8664-syscalls-and-networking-in-wave", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1769162359927/78e9b8ed-e069-4333-bd78-7b8349e31f5d.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-23</span></div>
+      <h1>Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave</h1>
+      <p class="desc">We are pushing the boundaries of what Wave can do at the system level. This latest patch introduces a comprehensive suite of Linux x86_64 syscall wrappers and foundational networking modules, giving developers direct control over the operating system...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1769162359927/78e9b8ed-e069-4333-bd78-7b8349e31f5d.png" alt="Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave</h1>
+<p>We are pushing the boundaries of what Wave can do at the system level. This latest patch introduces a comprehensive suite of Linux x86_64 syscall wrappers and foundational networking modules, giving developers direct control over the operating system.</p>
+<h3>1. The Full Linux x86_64 Syscall Suite</h3>
+<p>We have established a robust low-level interface for the Linux kernel. By utilizing our advanced inline assembly, we’ve implemented a complete set of syscall wrappers:</p>
+<ul>
+<li>
+<p><code>syscall0</code> through <code>syscall6</code>: Supporting the standard x86_64 calling convention, these functions allow Wave to trigger any Linux kernel service directly.</p>
+</li>
+<li>
+<p><strong>System Infrastructure (</strong><code>std::sys::linux</code>):</p>
+<ul>
+<li>
+<p><code>fs</code>: Native wrappers for file operations like <code>open</code>, <code>read</code>, <code>write</code>, <code>lseek</code>, and even directory management.</p>
+</li>
+<li>
+<p><code>memory</code>: Manual virtual memory management is now possible via <code>mmap</code>, <code>munmap</code>, and <code>brk</code>.</p>
+</li>
+<li>
+<p><code>time</code>: High-precision time handling with <code>nanosleep</code> and <code>clock_gettime</code>, including full <code>TimeSpec</code> support.</p>
+</li>
+<li>
+<p><code>socket</code>: Raw wrappers and constants (like <code>AF_INET</code>, <code>SOCK_STREAM</code>) that serve as the building blocks for all network communication.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3>2. High-Level Networking: <code>std::net</code></h3>
+<p>While raw syscalls provide power, our new <code>std::net</code> module provides productivity. We have built high-level, synchronous abstractions on top of the raw socket API:</p>
+<ul>
+<li>
+<p><strong>TCP Support</strong>: With <code>TcpListener</code> and <code>TcpStream</code>, you can now build robust servers and clients in Wave.</p>
+</li>
+<li>
+<p><strong>UDP Support</strong>: The <code>UdpSocket</code> module is available for fast, datagram-based communication.</p>
+</li>
+</ul>
+<p>These modules make network programming in Wave feel modern and safe while maintaining the performance of the underlying system calls.</p>
+<h3>3. Compiler Intelligence: "Syscall Coercion"</h3>
+<p>To make low-level programming less tedious, we’ve introduced a specialized compiler feature. The backend now performs <strong>implicit coercion between Pointers and</strong> <code>Int64</code> specifically for functions prefixed with <code>syscall</code>.</p>
+<p>This allows you to pass raw memory addresses directly to syscalls without manually casting them to integers every time—a common pain point in systems programming that Wave now handles elegantly.</p>
+<h3>4. Lexer &amp; Parser Enhancements</h3>
+<p>The frontend has also received significant updates to support binary data and better code hygiene:</p>
+<ul>
+<li>
+<p><strong>Hex Escape Sequences</strong>: String literals now support <code>\xHH</code> (e.g., <code>"\x01\x02\x03"</code>), which is essential for defining binary protocols and packet headers.</p>
+</li>
+<li>
+<p><strong>Trivia Cleanup</strong>: We refactored whitespace and comment skipping into a unified <code>skip_trivia</code> method. This ensures that multi-line comments and complex formatting are handled more robustly during tokenization.</p>
+</li>
+<li>
+<p><strong>Input Statement</strong>: The parser now supports the <code>input</code> statement, rounding out our basic I/O capabilities.</p>
+</li>
+</ul>
+<h3>5. Backend Refinements</h3>
+<p>We’ve fine-tuned the LLVM codegen to handle character data more precisely. When generating <code>scanf</code> format strings, 8-bit integers (<code>i8</code>) are now correctly mapped to <code>%c</code>, ensuring perfect compatibility between Wave’s char types and the standard I/O library.</p>
+<h3>Why This Matters</h3>
+<p>With this patch, Wave is no longer just a language for logic; it’s a language for <strong>systems</strong>. You can now write a web server, manage file systems, or even build a custom memory allocator entirely in Wave, without relying on external C libraries for basic system tasks.</p>
+<p>We are excited to see the low-level tools and network services the community will build with these new primitives!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/276">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

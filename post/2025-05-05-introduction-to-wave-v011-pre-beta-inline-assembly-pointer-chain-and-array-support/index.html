@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction to Wave v0.1.1-pre-beta: Inline Assembly, Pointer Chain, and Array Support | Wave Programming Language Blog</title>
+  <meta name="description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are excited to announce Wave v0.1.1-pre-beta — This update introduces inline assembly (asm {}) support, enabling you to write low-level system code directly in Wave, such as making syscalls with direct r...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introduction to Wave v0.1.1-pre-beta: Inline Assembly, Pointer Chain, and Array Support">
+  <meta property="og:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are excited to announce Wave v0.1.1-pre-beta — This update introduces inline assembly (asm {}) support, enabling you to write low-level system code directly in Wave, such as making syscalls with direct r...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-05-05-introduction-to-wave-v011-pre-beta-inline-assembly-pointer-chain-and-array-support">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270115332/6b7b8340-d3eb-4c3c-a714-e319515eace2.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Introduction to Wave v0.1.1-pre-beta: Inline Assembly, Pointer Chain, and Array Support">
+  <meta name="twitter:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are excited to announce Wave v0.1.1-pre-beta — This update introduces inline assembly (asm {}) support, enabling you to write low-level system code directly in Wave, such as making syscalls with direct r...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270115332/6b7b8340-d3eb-4c3c-a714-e319515eace2.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-05-05-introduction-to-wave-v011-pre-beta-inline-assembly-pointer-chain-and-array-support">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Introduction to Wave v0.1.1-pre-beta: Inline Assembly, Pointer Chain, and Array Support", "description": "Hello! I'm LunaStev, the developer of Wave. We are excited to announce Wave v0.1.1-pre-beta — This update introduces inline assembly (asm {}) support, enabling you to write low-level system code directly in Wave, such as making syscalls with direct r...", "datePublished": "2025-05-05T11:46:33", "dateModified": "2025-05-05T11:46:33", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-05-05-introduction-to-wave-v011-pre-beta-inline-assembly-pointer-chain-and-array-support", "url": "https://LunaStev.github.io/wave-blog/post/2025-05-05-introduction-to-wave-v011-pre-beta-inline-assembly-pointer-chain-and-array-support", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754270115332/6b7b8340-d3eb-4c3c-a714-e319515eace2.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-05-05</span></div>
+      <h1>Introduction to Wave v0.1.1-pre-beta: Inline Assembly, Pointer Chain, and Array Support</h1>
+      <p class="desc">Hello! I&#x27;m LunaStev, the developer of Wave. We are excited to announce Wave v0.1.1-pre-beta — This update introduces inline assembly (asm {}) support, enabling you to write low-level system code directly in Wave, such as making syscalls with direct r...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270115332/6b7b8340-d3eb-4c3c-a714-e319515eace2.webp" alt="Introduction to Wave v0.1.1-pre-beta: Inline Assembly, Pointer Chain, and Array Support" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Introduction to Wave v0.1.1-pre-beta: Inline Assembly, Pointer Chain, and Array Support</h1>
+<p>Hello! I'm LunaStev, the developer of Wave.</p>
+<p>We are excited to announce Wave <code>v0.1.1-pre-beta</code> — This update introduces inline assembly (<code>asm {}</code>) support, enabling you to write low-level system code directly in Wave, such as making syscalls with direct register manipulation.</p>
+<p>Additionally, Wave now fully supports pointer chaining (<code>ptr&lt;ptr&lt;i32&gt;&gt;</code>) and array types (<code>array&lt;T, N&gt;</code>), including index access, address-of operations, and validation of literal lengths — expanding Wave's capability for systems-level and memory-safe programming.</p>
+<p>These improvements bring Wave closer to its vision as a low-level but expressive programming language.</p>
+<hr>
+<h2>✅ Added Features</h2>
+<h3>⚙️ Inline Assembly (<code>asm { ... }</code>) Support</h3>
+<ul>
+<li>
+<p>Introduced <code>asm { ... }</code> block syntax to embed raw assembly instructions directly within Wave code.</p>
+</li>
+<li>
+<p>Supports instruction strings (e.g., <code>"syscall"</code>) and explicit register constraints via <code>in("reg") var</code> and <code>out("reg") var</code>.</p>
+</li>
+<li>
+<p>Variables used in <code>in(...)</code> are passed into specified registers; variables in <code>out(...)</code> receive output from registers.</p>
+</li>
+<li>
+<p>Supports passing literal constants directly to registers (e.g., <code>in("rax") 60</code>).</p>
+</li>
+<li>
+<p>Pointer values (e.g., <code>ptr&lt;i8&gt;</code>) are correctly passed to registers such as <code>rsi</code>, enabling low-level syscalls like <code>write</code>.</p>
+</li>
+<li>
+<p>Internally leverages LLVM's inline assembly mechanism using Intel syntax.</p>
+</li>
+<li>
+<p>Currently supports single-output only; multiple <code>out(...)</code> constraints will overwrite each other.</p>
+</li>
+<li>
+<p>Does not yet support clobber lists or advanced constraint combinations.</p>
+</li>
+<li>
+<p>Provides essential capability for system-level programming (e.g., making direct syscalls, writing device-level code).</p>
+</li>
+</ul>
+<blockquote>
+<p>⚠️ This is not a fully general-purpose inline ASM facility yet, but it enables practical low-level operations within Wave. Full support is planned for later phases.</p>
+</blockquote>
+<h3>⚙️ Make pointer chain explicit</h3>
+<ul>
+<li>
+<p>Nested parsing like <code>ptr&lt;i32&gt;</code>, <code>ptr&lt;ptr&lt;i32&gt;&gt;</code></p>
+</li>
+<li>
+<p>Can create <code>ptr&lt;T&gt;</code> for any type (no restrictions on <code>T</code>)</p>
+</li>
+<li>
+<p>Support for consecutive <code>deref</code> operations (e.g., <code>deref deref deref</code>)</p>
+</li>
+</ul>
+<h3>⚙️ Array type complete</h3>
+<ul>
+<li>
+<p>IndexAccess (<code>numbers[0]</code>) handling</p>
+</li>
+<li>
+<p>ArrayLiteral → Parse into AST and validate length</p>
+</li>
+<li>
+<p>AddressOf → Support array literals with address-of values (e.g., <code>[&amp;a, &amp;b]</code>)</p>
+</li>
+<li>
+<p>Confirmed that <code>array&lt;T, N&gt;</code> supports any type as T</p>
+</li>
+</ul>
+<h2>✨ Other Changes</h2>
+<h3>🧠 Library and Binary 2 Coexist</h3>
+<ul>
+<li>Add lib.rs for easy package manager creation, development, and easy access.</li>
+</ul>
+<hr>
+<h2>Showcase</h2>
+<p><img alt="Image1description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270106823/d333ea14-16f8-4ffd-aec7-e7179ffc424b.png align=" title="left"></p>
+<p><img alt="Image2description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270107747/ff489e36-2f67-4b53-a9e9-4db817140e38.png align=" title="left"></p>
+<hr>
+<p><img alt="Image3description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270108480/60ae0d18-4054-445e-b021-434f6571b56e.png align=" title="left"></p>
+<p><img alt="Image4description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270109260/49c75e00-4bf2-4aa3-a305-6337cf1e4951.png align=" title="left"></p>
+<hr>
+<p><img alt="Image5description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270110178/7c4d4428-edb4-45fd-84ac-f07d523ca9ff.png align=" title="left"></p>
+<p><img alt="Image6description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270111118/e47370b2-c636-4b19-9193-488e69b406a3.png align=" title="left"></p>
+<hr>
+<p><img alt="Image7description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270111992/2f0a41b0-b47f-447f-8085-53684c5f57ac.png align=" title="left"></p>
+<p><img alt="Image8description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270112958/b09a702a-90aa-40f9-89a3-b4bb1e2a7e53.png align=" title="left"></p>
+<hr>
+<p><img alt="Image9description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270113726/f10143b2-a9a7-40ae-a16e-d27457bd94dc.png align=" title="left"></p>
+<p><img alt="Image10description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270114590/dc6bd0b4-32a9-4630-a767-a5b97a56d9ea.png align=" title="left"></p>
+<hr>
+<p>Thank you for using Wave! Stay tuned for future updates and enhancements.</p>
+<hr>
+<h2>Installation Guide</h2>
+<h3>For Linux:</h3>
+<ol>
+<li>
+<p><strong>Download and Extract:</strong></p>
+<ul>
+<li>
+<p>Download the <code>wave-v0.1.1-pre-beta-x86_64-linux-gnu.tar.gz</code> file from the official source.</p>
+</li>
+<li>
+<p>Use the wget command:</p>
+<p><code>bash
+wget https://github.com/LunaStev/Wave/releases/download/v0.1.1-pre-beta/wave-v0.1.1-pre-beta-x86_64-linux-gnu.tar.gz</code></p>
+</li>
+<li>
+<p>Extract the archive:</p>
+<p><code>bash
+sudo tar -xvzf wave-v0.1.1-pre-beta-x86_64-linux-gnu.tar.gz -C /usr/local/bin</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Setting up LLVMs</p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+sudo apt-get update
+sudo apt-get install llvm-14 llvm-14-dev clang-14 libclang-14-dev lld-14 clang
+sudo ln -s /usr/lib/llvm-14/lib/libLLVM-14.so /usr/lib/libllvm-14.so
+export LLVM_SYS_140_PREFIX=/usr/lib/llvm-14
+source ~/.bashrc</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Verify Installation:</strong></p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+wavec --version</code></p>
+</li>
+<li>
+<p>If the version number displays, the installation was successful.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Contributor</h2>
+<p>@LunaStev | 🇰🇷</p>
+<hr>
+<h2>Website</h2>
+<p><a href="https://wave-lang.dev">Website</a></p>
+<p><a href="https://github.com/LunaStev/Wave">GitHub</a></p>
+<p><a href="https://discord.com/invite/3nev5nHqq9">Discord</a></p>
+<p><a href="https://ko-fi.com/lunasev">Ko-fi</a></p></section>
+    </article>
+  </div>
+</body>
+</html>

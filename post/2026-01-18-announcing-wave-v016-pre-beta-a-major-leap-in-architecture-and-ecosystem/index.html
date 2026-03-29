@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem | Wave Programming Language Blog</title>
+  <meta name="description" content="We are thrilled to announce the release of Wave v0.1.6-pre-beta. This isn&#x27;t just another update; it is a definitive milestone in Wave&#x27;s journey. This release introduces a massive architectural refactoring, a formal standard library system, and signif...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem">
+  <meta property="og:description" content="We are thrilled to announce the release of Wave v0.1.6-pre-beta. This isn&#x27;t just another update; it is a definitive milestone in Wave&#x27;s journey. This release introduces a massive architectural refactoring, a formal standard library system, and signif...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-18-announcing-wave-v016-pre-beta-a-major-leap-in-architecture-and-ecosystem">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768712246520/2bbf7254-c31b-449b-8c5e-a109c63b94e9.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem">
+  <meta name="twitter:description" content="We are thrilled to announce the release of Wave v0.1.6-pre-beta. This isn&#x27;t just another update; it is a definitive milestone in Wave&#x27;s journey. This release introduces a massive architectural refactoring, a formal standard library system, and signif...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768712246520/2bbf7254-c31b-449b-8c5e-a109c63b94e9.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-18-announcing-wave-v016-pre-beta-a-major-leap-in-architecture-and-ecosystem">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem", "description": "We are thrilled to announce the release of Wave v0.1.6-pre-beta. This isn't just another update; it is a definitive milestone in Wave's journey. This release introduces a massive architectural refactoring, a formal standard library system, and signif...", "datePublished": "2026-01-18T05:14:04", "dateModified": "2026-01-18T05:14:04", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-18-announcing-wave-v016-pre-beta-a-major-leap-in-architecture-and-ecosystem", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-18-announcing-wave-v016-pre-beta-a-major-leap-in-architecture-and-ecosystem", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1768712246520/2bbf7254-c31b-449b-8c5e-a109c63b94e9.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "release notes", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-18</span></div>
+      <h1>Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem</h1>
+      <p class="desc">We are thrilled to announce the release of Wave v0.1.6-pre-beta. This isn&#x27;t just another update; it is a definitive milestone in Wave&#x27;s journey. This release introduces a massive architectural refactoring, a formal standard library system, and signif...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768712246520/2bbf7254-c31b-449b-8c5e-a109c63b94e9.png" alt="Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>release notes</li><li>compiler</li></ul>
+      <section class="content"><h1>Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem</h1>
+<p>We are thrilled to announce the release of <strong>Wave v0.1.6-pre-beta</strong>. This isn't just another update; it is a definitive milestone in Wave's journey. This release introduces a massive architectural refactoring, a formal standard library system, and significant enhancements to both the compiler frontend and the LLVM backend.</p>
+<p>With v0.1.6-pre-beta, Wave matures from a prototype into a robust tool ready for more complex systems programming.</p>
+<hr>
+<h3>1. Re-architecting for the Future</h3>
+<p>To ensure Wave can scale with its community, we have completely overhauled the compiler's internal structure.</p>
+<ul>
+<li>
+<p><strong>Modular Frontend</strong>: The once-monolithic Lexer and Parser have been decomposed into functional submodules. This modularity makes the codebase easier to navigate and allows us to iterate on language features without side effects.</p>
+</li>
+<li>
+<p><strong>The</strong> <code>utils</code> Crate: We’ve introduced an internal utility crate to handle JSON parsing, terminal colorization, and string formatting. By replacing heavy external dependencies like <code>regex</code> with our own lightweight implementations, we’ve significantly reduced compilation times and binary size.</p>
+</li>
+<li>
+<p><strong>Polished Diagnostics</strong>: Error messages now use a refined RGB color palette and provide more accurate source pointers, making the debugging experience much more intuitive.</p>
+</li>
+</ul>
+<h3>2. A More Expressive Language</h3>
+<p>We’ve expanded Wave’s syntax and type system to handle a wider range of programming patterns.</p>
+<ul>
+<li>
+<p><strong>Comprehensive Type System</strong>: Support for integer types from <code>i8</code> to <code>i128</code> (and their unsigned counterparts), floating-point types (<code>f32</code>/<code>f64</code>), <code>bool</code>, <code>char</code>, and <code>byte</code>.</p>
+</li>
+<li>
+<p><strong>Literal Enhancements</strong>: You can now use binary (<code>0b</code>), hexadecimal (<code>0x</code>), and octal (<code>0o</code>) literals, alongside character literals and boolean constants.</p>
+</li>
+<li>
+<p><strong>Advanced Operators</strong>:</p>
+<ul>
+<li>
+<p>Full support for unary operators: <code>-</code>, <code>!</code>, and <code>~</code>.</p>
+</li>
+<li>
+<p>Increment/Decrement (<code>++</code>, <code>--</code>) in both prefix and postfix forms.</p>
+</li>
+<li>
+<p>Bitwise operations including shifts (<code>&lt;&lt;</code>, <code>&gt;&gt;</code>) and XOR (<code>^</code>).</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Complex Structures</strong>: Arrays now support bounds-checked type declarations and literals. Structs have been upgraded with field access and "method" syntax sugar (<code>obj.method()</code>), bringing a modern feel to low-level code.</p>
+</li>
+</ul>
+<h3>3. Backend Power &amp; Performance (LLVM)</h3>
+<p>The LLVM backend has been upgraded to bridge the gap between Wave and the existing system ecosystem.</p>
+<ul>
+<li>
+<p><strong>Clang-based Linking</strong>: Wave now uses Clang as its default linker. This allows seamless interoperability with the C standard library (<code>libc</code>) and math library (<code>libm</code>).</p>
+</li>
+<li>
+<p><strong>Optimization Levels</strong>: Developers can now use <code>-O0</code> through <code>-O3</code>, including <code>-Oz</code> (for size) and <code>-Ofast</code>.</p>
+</li>
+<li>
+<p><strong>Pro-level Inline Assembly</strong>: The <code>asm</code> block now supports sophisticated input/output constraints, enabling high-performance system calls and direct hardware interaction.</p>
+</li>
+</ul>
+<h3>4. The Standard Library (std) &amp; Tooling</h3>
+<p>A language is only as strong as its library. We are introducing the first iteration of the <strong>Wave Standard Library</strong>, distributed independently of the compiler.</p>
+<ul>
+<li>
+<p><strong>New CLI Commands</strong>: Use <code>wavec install std</code> and <code>wavec update std</code> to manage your local library installation directly from our official repository.</p>
+</li>
+<li>
+<p><strong>Standard Modules</strong>: Initial support for <code>math</code> (bit manipulation/float utils), <code>string</code> (trimming, finding, comparing), <code>sys</code> (Linux syscalls), and <code>net</code> (UDP socket support).</p>
+</li>
+<li>
+<p><strong>Granular Debugging</strong>: New <code>--debug-wave</code> flags allow you to peek into the compiler’s soul, outputting <code>tokens</code>, <code>ast</code>, <code>ir</code>, or <code>mc</code> at will.</p>
+</li>
+</ul>
+<h3>5. Governance and Contribution</h3>
+<p>As the project grows, so does our responsibility to our contributors and the law.</p>
+<ul>
+<li>
+<p><strong>License</strong>: Wave has returned to the <strong>Mozilla Public License 2.0 (MPL 2.0)</strong>, striking a balance between open-source freedom and project integrity.</p>
+</li>
+<li>
+<p><strong>DCO Requirement</strong>: To ensure legal clarity, all contributions now require a <strong>Developer Certificate of Origin (Signed-off-by)</strong>.</p>
+</li>
+<li>
+<p><strong>Streamlined Workflows</strong>: We’ve updated our <a href="http://CONTRIBUTING.md"><code>CONTRIBUTING.md</code></a> to support both modern GitHub PRs and traditional email-based patch workflows.</p>
+</li>
+</ul>
+<hr>
+<h3>Moving Forward</h3>
+<p>Wave v0.1.6-pre-beta is a foundation. By modularizing the compiler and establishing a standard library, we have cleared the path for self-hosting and more advanced language features.</p>
+<p>We want to thank all the contributors who have submitted patches, reported bugs, and helped shape the vision of Wave. This release belongs to you.</p>
+<p><strong>Get started today:</strong></p>
+<ol>
+<li>
+<p>Download the latest source.</p>
+</li>
+<li>
+<p>Build the compiler.</p>
+</li>
+<li>
+<p>Run <code>wavec install std</code>.</p>
+</li>
+<li>
+<p>Create something amazing.</p>
+</li>
+</ol>
+<p>or:</p>
+<pre><code class="language-bash">curl -fsSL https://wave-lang.dev/install.sh | bash -s -- --version v0.1.6-pre-beta
+</code></pre>
+<p><em>Build fast, stay lean, and keep waving!</em></p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/releases/tag/v0.1.6-pre-beta">Release Note</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

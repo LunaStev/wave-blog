@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen | Wave Programming Language Blog</title>
+  <meta name="description" content="As we move closer to a more mature language specification, the ability to handle complex data structures efficiently becomes paramount. Our latest update introduces significant enhancements to how the compiler interprets &quot;Lvalues&quot; (locations in memor...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen">
+  <meta property="og:description" content="As we move closer to a more mature language specification, the ability to handle complex data structures efficiently becomes paramount. Our latest update introduces significant enhancements to how the compiler interprets &quot;Lvalues&quot; (locations in memor...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-12-patch-268-scaling-expressiveness-support-for-complex-data-structures-and-recursive-codegen">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768201364725/0c3295a9-c85e-4832-9e0e-8a292c56e350.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen">
+  <meta name="twitter:description" content="As we move closer to a more mature language specification, the ability to handle complex data structures efficiently becomes paramount. Our latest update introduces significant enhancements to how the compiler interprets &quot;Lvalues&quot; (locations in memor...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768201364725/0c3295a9-c85e-4832-9e0e-8a292c56e350.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-12-patch-268-scaling-expressiveness-support-for-complex-data-structures-and-recursive-codegen">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen", "description": "As we move closer to a more mature language specification, the ability to handle complex data structures efficiently becomes paramount. Our latest update introduces significant enhancements to how the compiler interprets \"Lvalues\" (locations in memor...", "datePublished": "2026-01-12T07:04:38", "dateModified": "2026-01-12T07:04:38", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-12-patch-268-scaling-expressiveness-support-for-complex-data-structures-and-recursive-codegen", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-12-patch-268-scaling-expressiveness-support-for-complex-data-structures-and-recursive-codegen", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1768201364725/0c3295a9-c85e-4832-9e0e-8a292c56e350.png", "keywords": ["programming languages", "wave-lang", "Programming Blogs", "coding", "patch"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-12</span></div>
+      <h1>Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen</h1>
+      <p class="desc">As we move closer to a more mature language specification, the ability to handle complex data structures efficiently becomes paramount. Our latest update introduces significant enhancements to how the compiler interprets &quot;Lvalues&quot; (locations in memor...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768201364725/0c3295a9-c85e-4832-9e0e-8a292c56e350.png" alt="Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen" loading="lazy">
+      <ul class="tags"><li>programming languages</li><li>wave-lang</li><li>Programming Blogs</li><li>coding</li><li>patch</li></ul>
+      <section class="content"><h1>Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen</h1>
+<p>As we move closer to a more mature language specification, the ability to handle complex data structures efficiently becomes paramount. Our latest update introduces significant enhancements to how the compiler interprets "Lvalues" (locations in memory) and generates LLVM IR for nested structures, arrays, and inline assembly.</p>
+<p>This patch allows us to implement DFS/BFS.</p>
+<p><img alt="" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768201394191/9651b1f1-e988-4118-bde0-37a5b3534b68.png align=" title="center"></p>
+<p><img alt="" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768201387533/bd78d9ca-6a54-4425-b7aa-54c6ffb68b2e.png align=" title="center"></p>
+<h3>1. Advanced Lvalue Parsing: Chained Access</h3>
+<p>Until now, our parser had limited support for deeply nested data access. With the introduction of <code>parse_lvalue_tail</code>, the language now correctly handles chained field accesses and indexing.</p>
+<p>Whether it is accessing a field in a struct or an element in an array, you can now write complex expressions like: <code>user.profile.settings[0].theme_id = 1;</code></p>
+<p>The parser now recursively identifies these chains and validates "assignability" through a refined <code>is_assignable</code> check, ensuring that you only write to valid memory locations.</p>
+<h3>2. Recursive Address Generation in LLVM</h3>
+<p>The backend received a major overhaul to support these complex Lvalues. The <code>generate_address_ir</code> logic in our LLVM codegen is now fully recursive. This allows the compiler to resolve the memory address of a value regardless of how many levels of field accesses, array indices, or pointer dereferences are involved.</p>
+<p>Key improvements include:</p>
+<ul>
+<li>
+<p><strong>Array Literals</strong>: Added <code>gen_array_literal</code> to support direct IR generation for array initializers.</p>
+</li>
+<li>
+<p><strong>Intelligent Indexing</strong>: <code>IndexAccess</code> now distinguishes between pointer-based and value-based indexing, generating the correct GEP (GetElementPtr) instructions accordingly.</p>
+</li>
+<li>
+<p><strong>The</strong> <code>null</code> Keyword: We’ve officially added support for the <code>null</code> keyword, representing a null pointer constant across the system.</p>
+</li>
+</ul>
+<h3>3. Generics and Type Robustness</h3>
+<p>We’ve centralized how types are parsed from the stream. This includes better support for generic types like <code>ptr&lt;T&gt;</code>, making the type system more consistent. Struct definitions are also more robust, now supporting flexible whitespace/newline handling and improved field type parsing, which makes the code more readable.</p>
+<h3>4. Robust Inline Assembly Coercion</h3>
+<p>Inline assembly is now even more powerful. We have overhauled <code>gen_asm_stmt_ir</code> to support a wider range of output types. The compiler now handles automatic bitcasting and coercion between integers, pointers, and floats for ASM operands. This means less manual casting for the developer and more reliable code generation for low-level tasks.</p>
+<h3>5. Syntax Evolution: Moving to <code>deref</code></h3>
+<p>As part of our effort to make the syntax more explicit and readable, we are transitioning toward the <code>deref</code> keyword for pointer dereferencing. We have updated our internal test suite (including <code>run_tests.py</code>) and existing logic to reflect this cleaner direction.</p>
+<h3>Summary of Key Enhancements</h3>
+<ul>
+<li>
+<p><strong>Parser</strong>: Support for chained <code>.field</code> and <code>[index]</code> access; improved struct and generic type parsing.</p>
+</li>
+<li>
+<p><strong>Backend</strong>: Recursive address resolution for complex types; support for array literals and <code>null</code>.</p>
+</li>
+<li>
+<p><strong>ASM</strong>: Automatic type coercion and bitcasting for assembly output operands.</p>
+</li>
+<li>
+<p><strong>Stability</strong>: Refined assignment validation and cleaned-up pointer logic.</p>
+</li>
+</ul>
+<p>These changes provide the stable foundation needed for building high-level abstractions without sacrificing low-level control. We are excited to see how these new capabilities simplify your development workflow!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/268">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

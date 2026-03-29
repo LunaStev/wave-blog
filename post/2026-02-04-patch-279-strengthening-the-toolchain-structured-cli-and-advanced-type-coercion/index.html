@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion | Wave Programming Language Blog</title>
+  <meta name="description" content="As Wave evolves, so must the tools we use to build and run it. Our latest update focuses on two major fronts: transforming the wavec CLI into a professional-grade command system and empowering the LLVM backend with smarter pointer casting and array-l...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion">
+  <meta property="og:description" content="As Wave evolves, so must the tools we use to build and run it. Our latest update focuses on two major fronts: transforming the wavec CLI into a professional-grade command system and empowering the LLVM backend with smarter pointer casting and array-l...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-04-patch-279-strengthening-the-toolchain-structured-cli-and-advanced-type-coercion">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770198792895/7d527f8c-cb15-4aa3-935c-070c28b7b6db.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion">
+  <meta name="twitter:description" content="As Wave evolves, so must the tools we use to build and run it. Our latest update focuses on two major fronts: transforming the wavec CLI into a professional-grade command system and empowering the LLVM backend with smarter pointer casting and array-l...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770198792895/7d527f8c-cb15-4aa3-935c-070c28b7b6db.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-04-patch-279-strengthening-the-toolchain-structured-cli-and-advanced-type-coercion">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion", "description": "As Wave evolves, so must the tools we use to build and run it. Our latest update focuses on two major fronts: transforming the wavec CLI into a professional-grade command system and empowering the LLVM backend with smarter pointer casting and array-l...", "datePublished": "2026-02-04T09:54:34", "dateModified": "2026-02-04T09:54:34", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-04-patch-279-strengthening-the-toolchain-structured-cli-and-advanced-type-coercion", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-04-patch-279-strengthening-the-toolchain-structured-cli-and-advanced-type-coercion", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1770198792895/7d527f8c-cb15-4aa3-935c-070c28b7b6db.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-04</span></div>
+      <h1>Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion</h1>
+      <p class="desc">As Wave evolves, so must the tools we use to build and run it. Our latest update focuses on two major fronts: transforming the wavec CLI into a professional-grade command system and empowering the LLVM backend with smarter pointer casting and array-l...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1770198792895/7d527f8c-cb15-4aa3-935c-070c28b7b6db.png" alt="Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion</h1>
+<p>As Wave evolves, so must the tools we use to build and run it. Our latest update focuses on two major fronts: transforming the <code>wavec</code> CLI into a professional-grade command system and empowering the LLVM backend with smarter pointer casting and array-literal support.</p>
+<h3>1. A New Command-Driven CLI</h3>
+<p>Previously, the <code>wavec</code> entry point relied on a simple imperative loop to parse arguments. While this worked for a prototype, it became difficult to maintain as we added more features.</p>
+<p>We have completely overhauled the CLI using a <strong>structured dispatch system</strong>:</p>
+<ul>
+<li>
+<p><strong>Subcommands</strong>: We now use a clear command-based structure. Commands like <code>run</code>, <code>build</code>, <code>img</code>, <code>install</code>, and <code>update</code> are now managed through organized enums.</p>
+</li>
+<li>
+<p><strong>Modular Flags</strong>: Flag definitions have been moved to a dedicated <code>src/flags.rs</code>. We’ve also added critical support for <strong>External Linking</strong>:</p>
+<ul>
+<li>
+<p><code>--link</code>: Specify external libraries to link against.</p>
+</li>
+<li>
+<p><code>-L</code>: Add search paths for libraries.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Unified Error Reporting</strong>: By introducing <code>CliError::Usage</code>, we’ve simplified how the compiler communicates incorrect usage to the developer, ensuring consistent and helpful help messages.</p>
+</li>
+</ul>
+<h3>2. Smarter LLVM Backend: Address-of &amp; Casting</h3>
+<p>The backend is now much more "context-aware," allowing for more flexible coding patterns without sacrificing type safety.</p>
+<ul>
+<li>
+<p><strong>Address-of Array Literals</strong>: You can now take the address of an array literal directly (e.g., <code>&amp;[1, 2, 3]</code>). The backend now automatically handles the <code>alloca</code>, stores the elements, and manages the resulting pointer. This is a huge win for passing temporary data to functions.</p>
+</li>
+<li>
+<p><strong>Implicit Pointer Casting (</strong><code>bit_cast</code>): One of the biggest pain points in systems programming is pointer type mismatches. Our backend now performs <strong>automatic bit-casting</strong> when it detects a mismatch between the actual pointer type and the <code>expected_type</code>.</p>
+</li>
+<li>
+<p><strong>Context-Aware Type Inference</strong>: We are now passing the <code>expected_type</code> down through the variable generation pipeline. This allows the compiler to make smarter decisions about how to emit IR based on the surrounding context (such as an assignment or a function argument).</p>
+</li>
+</ul>
+<h3>3. Enhanced Linker and Runner</h3>
+<p>The bridge between compiling and executing is now more robust. Our internal <code>runner.rs</code> now correctly propagates <code>LinkFlags</code> to the object linking phase. This ensures that when you use the new <code>--link</code> and <code>-L</code> flags, the underlying linker (Clang) correctly finds and incorporates those external dependencies.</p>
+<h3>4. Code Hygiene and Consistency</h3>
+<p>We’ve also performed some internal housekeeping:</p>
+<ul>
+<li>
+<p><strong>Standard Library Management</strong>: Renamed functions in <code>src/std.rs</code> (e.g., <code>std_install</code>) to improve naming consistency across the codebase.</p>
+</li>
+<li>
+<p><strong>Logic Simplification</strong>: Refined the assembly clobber normalization logic and removed unused imports, leading to slightly faster build times for the compiler itself.</p>
+</li>
+</ul>
+<h3>Conclusion</h3>
+<p>This update makes <code>wavec</code> feel like a much more mature tool. The new CLI structure provides a solid foundation for future subcommands, while the backend improvements make working with pointers and arrays significantly more ergonomic.</p>
+<p>Whether you're linking against a complex C library or passing around array addresses, Wave's toolchain is now more capable than ever.</p></section>
+    </article>
+  </div>
+</body>
+</html>

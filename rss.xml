@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Wave Programming Language Blog</title>
+    <link>https://LunaStev.github.io/wave-blog/</link>
+    <description>Official Wave programming language blog updates.</description>
+    <language>en</language>
+    <item>
+      <title>Patch #308: Protecting Integrity and Powering Production: AI Training Ban &amp; New Build Pipeline</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-03-27-patch-308-protecting-integrity-and-powering-production-ai-training-ban-new-build-pipeline</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-03-27-patch-308-protecting-integrity-and-powering-production-ai-training-ban-new-build-pipeline</guid>
+      <pubDate>Fri, 27 Mar 2026 04:39:11 +0000</pubDate>
+      <description>As the Wave language ecosystem grows, we are committed to two fundamental principles: protecting the creative work of our contributors and providing developers with a professional-grade toolchain. Our</description>
+      
+    </item>
+    <item>
+      <title>Wave Language v0.1.8-pre-beta: Building the Foundations of Systems Programming</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-03-17-wave-language-v0-1-8-pre-beta-building-the-foundations-of-systems-programming</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-03-17-wave-language-v0-1-8-pre-beta-building-the-foundations-of-systems-programming</guid>
+      <pubDate>Tue, 17 Mar 2026 08:58:43 +0000</pubDate>
+      <description>The Wave Language Team is proud to announce the release of v0.1.8-pre-beta. This update marks a definitive turning point, evolving Wave from an experimental project into a robust and modern systems pr</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>release notes</category>
+    </item>
+    <item>
+      <title>Patch: #306: Powering Abstraction: Introducing Generics, Type Casting, and Static Globals</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-03-08-patch-306-powering-abstraction-introducing-generics-type-casting-and-static-globals</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-03-08-patch-306-powering-abstraction-introducing-generics-type-casting-and-static-globals</guid>
+      <pubDate>Sun, 08 Mar 2026 10:35:12 +0000</pubDate>
+      <description>The evolution of a systems language is marked by its ability to balance high-level expressiveness with low-level precision. Today’s update brings three foundational features to Wave that empower devel</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category><category>patching</category>
+    </item>
+    <item>
+      <title>Patch #303: Crossing the Architecture Barrier: Advanced Cross-Compilation and Backend Control</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-03-07-patch-303-crossing-the-architecture-barrier-advanced-cross-compilation-and-backend-control</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-03-07-patch-303-crossing-the-architecture-barrier-advanced-cross-compilation-and-backend-control</guid>
+      <pubDate>Sat, 07 Mar 2026 07:16:12 +0000</pubDate>
+      <description>We are excited to announce a major infrastructure update that transforms Wave into a truly portable toolchain. Whether you are building for a modern Apple Silicon Mac, a heavy-duty x86_64 Linux server</description>
+      <category>wave-lang</category><category>compiler</category><category>Programming Blogs</category><category>programming languages</category>
+    </item>
+    <item>
+      <title>Patch #300: Evolving Toward Portability: Statics, Type Casting, and Target-Specific Logic</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-03-04-patch-300-evolving-toward-portability-statics-type-casting-and-target-specific-logic</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-03-04-patch-300-evolving-toward-portability-statics-type-casting-and-target-specific-logic</guid>
+      <pubDate>Wed, 04 Mar 2026 08:14:37 +0000</pubDate>
+      <description>As Wave moves closer to becoming a production-ready systems language, we are focusing on providing the primitives necessary for low-level memory management and robust platform abstraction. Our latest</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category><category>patch</category>
+    </item>
+    <item>
+      <title>Patch #298: Low-Level Precision, High-Level Safety: Statics, Pointer Arithmetic, and Multi-Platform ABI</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-03-02-patch-298-low-level-precision-high-level-safety-statics-pointer-arithmetic-and-multi-platform-abi</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-03-02-patch-298-low-level-precision-high-level-safety-statics-pointer-arithmetic-and-multi-platform-abi</guid>
+      <pubDate>Mon, 02 Mar 2026 13:07:14 +0000</pubDate>
+      <description>To build an operating system, a driver, or a high-performance engine, a developer needs absolute control over memory and state. Our latest update delivers this control by introducing foundational syst</description>
+      <category>wave-lang</category><category>compiler</category><category>Programming Blogs</category><category>programming languages</category>
+    </item>
+    <item>
+      <title>Booting a 64-bit Kernel with Wave</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-03-01-booting-a-64-bit-kernel-with-wave</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-03-01-booting-a-64-bit-kernel-with-wave</guid>
+      <pubDate>Sun, 01 Mar 2026 10:22:44 +0000</pubDate>
+      <description>Multiboot2 + Long Mode + LLVM-Based Kernel Execution Recently, code written in the Wave language successfully operated as a kernel that boots in actual 64-bit Long Mode. Overall Structure GRUB → Mult</description>
+      <category>Kernel</category><category>operating system</category><category>os</category><category>wave-lang</category>
+    </item>
+    <item>
+      <title>Patch #296: The Developer Experience Update: Pattern Matching, null, and Modern Diagnostics</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-27-patch-296-the-developer-experience-update-pattern-matching-null-and-modern-diagnostics</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-27-patch-296-the-developer-experience-update-pattern-matching-null-and-modern-diagnostics</guid>
+      <pubDate>Fri, 27 Feb 2026 06:46:20 +0000</pubDate>
+      <description>We believe that a language is only as good as the feedback it provides to the developer. Our latest update focuses on transforming Wave into a more mature and user-friendly tool by introducing powerfu</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #294: Control Flow and Confidence: Full &#x27;for&#x27; Loops and Strict Type Safety</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-23-patch-294-control-flow-and-confidence-full-for-loops-and-strict-type-safety</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-23-patch-294-control-flow-and-confidence-full-for-loops-and-strict-type-safety</guid>
+      <pubDate>Mon, 23 Feb 2026 07:04:00 +0000</pubDate>
+      <description>As Wave continues to mature, we are focusing on two main pillars: developer productivity and compile-time reliability. Our latest patch delivers on both by introducing C-style for loops and enforcing</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #293: Stability and Precision: Refining C ABI Interoperability and Type Inference</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-22-Refining-C-ABI-Interoperability-and-Type-Inference</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-22-Refining-C-ABI-Interoperability-and-Type-Inference</guid>
+      <pubDate>Sun, 22 Feb 2026 14:22:31 +0000</pubDate>
+      <description>Following our major move to LLVM 21, our focus has shifted toward stabilizing the new architecture and perfecting how Wave interacts with the C ecosystem. Our latest patch introduces significant refin</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Introduction to Whale IR v0</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-17-introduction-to-whale-ir-v0</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-17-introduction-to-whale-ir-v0</guid>
+      <pubDate>Tue, 17 Feb 2026 13:18:46 +0000</pubDate>
+      <description>Whale IR (WIR) is the intermediate representation used by the Whale toolchain, which powers the Wave programming language.It is designed to be: SSA-based Fully defined (no undefined behavior) Faithful to the original AST at -O0 Optimization-frien...</description>
+      <category>toolchain</category><category>compiler</category><category>LLVM</category><category>Programming Blogs</category><category>programming languages</category><category>wave-lang</category>
+    </item>
+    <item>
+      <title>Patch #291: Modernizing the Core: Upgrading to LLVM 21 and the Era of Opaque Pointers</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-15-patch-291-modernizing-the-core-upgrading-to-llvm-21-and-the-era-of-opaque-pointers</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-15-patch-291-modernizing-the-core-upgrading-to-llvm-21-and-the-era-of-opaque-pointers</guid>
+      <pubDate>Sun, 15 Feb 2026 12:44:14 +0000</pubDate>
+      <description>As the compiler landscape evolves, staying current with foundational technologies is essential for performance and reliability. Our latest patch performs a major infrastructure upgrade, transitioning the Wave backend to LLVM 21 and adopting the moder...</description>
+      <category>LLVM</category><category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category>
+    </item>
+    <item>
+      <title>Announcing Wave v0.1.7-pre-beta Release: The Foundation for System-Level Excellence</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-09-announcing-wave-v017-pre-beta-release-the-foundation-for-system-level-excellence</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-09-announcing-wave-v017-pre-beta-release-the-foundation-for-system-level-excellence</guid>
+      <pubDate>Mon, 09 Feb 2026 08:54:58 +0000</pubDate>
+      <description>We are proud to announce a major milestone in the evolution of the Wave programming language. This release is not just a collection of patches; it represents a fundamental shift in Wave’s capabilities. From a completely overhauled CLI to sophisticate...</description>
+      
+    </item>
+    <item>
+      <title>Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-09-patch-285-strengthening-the-type-system-enums-aliases-and-iterative-constants</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-09-patch-285-strengthening-the-type-system-enums-aliases-and-iterative-constants</guid>
+      <pubDate>Mon, 09 Feb 2026 07:46:06 +0000</pubDate>
+      <description>As we move toward v0.1.7-pre-beta, Wave is becoming more than just a tool for low-level systems programming; it’s becoming a language that helps you organize complex logic with ease. Our latest update focuses on expanding the type system and making t...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>patching</category><category>languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #283: Mastering the C ABI: Robust FFI with Structs and Arrays</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-06-patch-283-mastering-the-c-abi-robust-ffi-with-structs-and-arrays</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-06-patch-283-mastering-the-c-abi-robust-ffi-with-structs-and-arrays</guid>
+      <pubDate>Fri, 06 Feb 2026 12:51:22 +0000</pubDate>
+      <description>When a programming language talks to a C library, it must follow a strict set of rules known as the Calling Convention or ABI. Passing a single integer is simple, but what happens when you pass a 24-byte struct by value? Should it be split into three...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #282: Mastering the ABI: Introducing TypeFlavor and High-Precision ASM</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-05-patch-282-mastering-the-abi-introducing-typeflavor-and-high-precision-asm</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-05-patch-282-mastering-the-abi-introducing-typeflavor-and-high-precision-asm</guid>
+      <pubDate>Thu, 05 Feb 2026 14:55:42 +0000</pubDate>
+      <description>In systems programming, how a value is represented &quot;inside&quot; the compiler often differs from how it must look &quot;outside&quot; when calling a C library or interacting with CPU registers. Our latest update introduces an elegant solution to this challenge and ...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category><category>patch</category><category>Blogging</category>
+    </item>
+    <item>
+      <title>Wave Language Performance Benchmark: Comparison with C and Rust (Part 2)</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-04-wave-language-performance-benchmark-comparison-with-c-and-rust-part-2</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-04-wave-language-performance-benchmark-comparison-with-c-and-rust-part-2</guid>
+      <pubDate>Wed, 04 Feb 2026 14:56:02 +0000</pubDate>
+      <description>6 months ago, I benchmarked Wave against C and Rust in this post. Today, 6 months later, I ran the benchmark once again using a significantly more mature version of Wave. The Wave version used in this</description>
+      <category>wave-lang</category><category>compiler</category><category>Benchmark</category><category>Programming Blogs</category><category>programming languages</category>
+    </item>
+    <item>
+      <title>Patch #279: Strengthening the Toolchain: Structured CLI and Advanced Type Coercion</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-04-patch-279-strengthening-the-toolchain-structured-cli-and-advanced-type-coercion</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-04-patch-279-strengthening-the-toolchain-structured-cli-and-advanced-type-coercion</guid>
+      <pubDate>Wed, 04 Feb 2026 09:54:34 +0000</pubDate>
+      <description>As Wave evolves, so must the tools we use to build and run it. Our latest update focuses on two major fronts: transforming the wavec CLI into a professional-grade command system and empowering the LLVM backend with smarter pointer casting and array-l...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #278: Bridging Ecosystems: Introducing C FFI and extern Support</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-02-03-patch-278-bridging-ecosystems-introducing-c-ffi-and-extern-support</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-02-03-patch-278-bridging-ecosystems-introducing-c-ffi-and-extern-support</guid>
+      <pubDate>Tue, 03 Feb 2026 11:36:11 +0000</pubDate>
+      <description>A modern systems programming language cannot exist in isolation. To be truly powerful, it must be able to leverage the decades of battle-tested libraries written in C. Today, we are excited to announce that Wave now officially supports C FFI (Foreign...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #277: Hardening Inline Assembly: Support for Clobber Clauses</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-29-patch-277-hardening-inline-assembly-support-for-clobber-clauses</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-29-patch-277-hardening-inline-assembly-support-for-clobber-clauses</guid>
+      <pubDate>Thu, 29 Jan 2026 11:26:11 +0000</pubDate>
+      <description>When writing low-level systems code, inline assembly is an indispensable tool. It allows developers to talk directly to the hardware. However, this power comes with a risk: if the compiler doesn&#x27;t know which registers or memory states your assembly c...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>Programming Tips</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #276: Direct System Access: Linux x86_64 Syscalls and Networking in Wave</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-23-patch-276-direct-system-access-linux-x8664-syscalls-and-networking-in-wave</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-23-patch-276-direct-system-access-linux-x8664-syscalls-and-networking-in-wave</guid>
+      <pubDate>Fri, 23 Jan 2026 09:55:50 +0000</pubDate>
+      <description>We are pushing the boundaries of what Wave can do at the system level. This latest patch introduces a comprehensive suite of Linux x86_64 syscall wrappers and foundational networking modules, giving developers direct control over the operating system...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Announcing Wave v0.1.6-pre-beta: A Major Leap in Architecture and Ecosystem</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-18-announcing-wave-v016-pre-beta-a-major-leap-in-architecture-and-ecosystem</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-18-announcing-wave-v016-pre-beta-a-major-leap-in-architecture-and-ecosystem</guid>
+      <pubDate>Sun, 18 Jan 2026 05:14:04 +0000</pubDate>
+      <description>We are thrilled to announce the release of Wave v0.1.6-pre-beta. This isn&#x27;t just another update; it is a definitive milestone in Wave&#x27;s journey. This release introduces a massive architectural refactoring, a formal standard library system, and signif...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>release notes</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #272: Elevating System Programming: Methods, Recursive Structs, and Advanced Pointers</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-17-patch-272-elevating-system-programming-methods-recursive-structs-and-advanced-pointers</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-17-patch-272-elevating-system-programming-methods-recursive-structs-and-advanced-pointers</guid>
+      <pubDate>Sat, 17 Jan 2026 14:21:00 +0000</pubDate>
+      <description>As we strive to make Wave both expressive and powerful, we realize that syntax should not only be low-level but also intuitive. Our latest release introduces several &quot;quality-of-life&quot; features and backend overhauls that allow for more complex data st...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>TCP</category><category>http</category><category>backend</category><category>programming languages</category>
+    </item>
+    <item>
+      <title>Patch #271: Bridging High-Level Syntax and System Power: Unary Negation, let/const, and Syscalls</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-15-patch-271-bridging-high-level-syntax-and-system-power-unary-negation-letconst-and-syscalls</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-15-patch-271-bridging-high-level-syntax-and-system-power-unary-negation-letconst-and-syscalls</guid>
+      <pubDate>Thu, 15 Jan 2026 07:29:03 +0000</pubDate>
+      <description>The evolution of a programming language is a journey of balancing developer-friendly syntax with raw system capabilities. Our latest update to the Wave language does exactly that—introducing essential unary operators and variable declarations while s...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #269: Building an Ecosystem: Introducing the Wave Standard Library and Module System</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-14-patch-269-building-an-ecosystem-introducing-the-wave-standard-library-and-module-system</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-14-patch-269-building-an-ecosystem-introducing-the-wave-standard-library-and-module-system</guid>
+      <pubDate>Wed, 14 Jan 2026 08:47:18 +0000</pubDate>
+      <description>A programming language is more than just syntax and a compiler; it is defined by its ecosystem. Today, we are excited to introduce the infrastructure for the Wave Standard Library (std)—a system designed to distribute, manage, and use common utilitie...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>programming languages</category><category>compiler</category>
+    </item>
+    <item>
+      <title>Patch #268: Scaling Expressiveness: Support for Complex Data Structures and Recursive Codegen</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-12-patch-268-scaling-expressiveness-support-for-complex-data-structures-and-recursive-codegen</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-12-patch-268-scaling-expressiveness-support-for-complex-data-structures-and-recursive-codegen</guid>
+      <pubDate>Mon, 12 Jan 2026 07:04:38 +0000</pubDate>
+      <description>As we move closer to a more mature language specification, the ability to handle complex data structures efficiently becomes paramount. Our latest update introduces significant enhancements to how the compiler interprets &quot;Lvalues&quot; (locations in memor...</description>
+      <category>programming languages</category><category>wave-lang</category><category>Programming Blogs</category><category>coding</category><category>patch</category>
+    </item>
+    <item>
+      <title>Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-10-patch-267-housekeeping-for-excellence-preparing-for-v016-pre-beta</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-10-patch-267-housekeeping-for-excellence-preparing-for-v016-pre-beta</guid>
+      <pubDate>Sat, 10 Jan 2026 11:27:05 +0000</pubDate>
+      <description>As we continue to iterate on our compiler, we occasionally take a step back from feature development to focus on what keeps a project sustainable: Code Hygiene. Our latest update is dedicated to cleaning up the &quot;dust&quot; that accumulates during rapid de...</description>
+      <category>wave-lang</category><category>Programming Blogs</category><category>General Programming</category><category>programming languages</category>
+    </item>
+    <item>
+      <title>Patch #266: Lightening the Load: Introducing the Utils Crate and Shedding Dependencies</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-07-patch-266-lightening-the-load-introducing-the-utils-crate-and-shedding-dependencies</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-07-patch-266-lightening-the-load-introducing-the-utils-crate-and-shedding-dependencies</guid>
+      <pubDate>Wed, 07 Jan 2026 07:02:18 +0000</pubDate>
+      <description>As a project grows, so does its complexity and the number of its dependencies. In our latest update, we’ve taken a major step toward a leaner and faster toolchain by introducing a dedicated utils crate and eliminating our dependency on the heavy rege...</description>
+      <category>programming languages</category><category>patch</category><category>wave-lang</category><category>Programming Blogs</category><category>programming</category>
+    </item>
+    <item>
+      <title>Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-06-patch-empowering-inline-assembly-and-type-safety</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-06-patch-empowering-inline-assembly-and-type-safety</guid>
+      <pubDate>Tue, 06 Jan 2026 11:20:38 +0000</pubDate>
+      <description>We are excited to share a significant update to our compiler’s frontend and backend, focusing on two critical areas: Inline Assembly (ASM) and Type System Robustness. This release makes writing low-level code more expressive while ensuring that the t...</description>
+      <category>wave-lang</category><category>compiler</category><category>patch</category><category>programming languages</category>
+    </item>
+    <item>
+      <title>Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability</title>
+      <link>https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-refining-the-foundation-decomposing-the-lexer-for-better-maintainability</link>
+      <guid>https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-refining-the-foundation-decomposing-the-lexer-for-better-maintainability</guid>
+      <pubDate>Mon, 05 Jan 2026 08:38:29 +0000</pubDate>
+      <description>Following our recent efforts to modularize the parser, we have now turned our attention to the very first stage of our compilation pipeline: the Lexer. Over time, this component had grown into a single file of nearly 900 lines, making it increasingly...</description>
+      <category>#waves</category><category>languages</category><category>compiler</category><category>programming languages</category><category>Programming Blogs</category><category>patch</category>
+    </item>
+  </channel>
+</rss>

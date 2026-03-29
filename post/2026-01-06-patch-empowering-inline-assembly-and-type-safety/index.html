@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety | Wave Programming Language Blog</title>
+  <meta name="description" content="We are excited to share a significant update to our compiler’s frontend and backend, focusing on two critical areas: Inline Assembly (ASM) and Type System Robustness. This release makes writing low-level code more expressive while ensuring that the t...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety">
+  <meta property="og:description" content="We are excited to share a significant update to our compiler’s frontend and backend, focusing on two critical areas: Inline Assembly (ASM) and Type System Robustness. This release makes writing low-level code more expressive while ensuring that the t...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-06-patch-empowering-inline-assembly-and-type-safety">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767698382632/89a9ff67-2627-4a51-8ece-5e9f7582bb15.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety">
+  <meta name="twitter:description" content="We are excited to share a significant update to our compiler’s frontend and backend, focusing on two critical areas: Inline Assembly (ASM) and Type System Robustness. This release makes writing low-level code more expressive while ensuring that the t...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767698382632/89a9ff67-2627-4a51-8ece-5e9f7582bb15.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-06-patch-empowering-inline-assembly-and-type-safety">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety", "description": "We are excited to share a significant update to our compiler’s frontend and backend, focusing on two critical areas: Inline Assembly (ASM) and Type System Robustness. This release makes writing low-level code more expressive while ensuring that the t...", "datePublished": "2026-01-06T11:20:38", "dateModified": "2026-01-06T11:20:38", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-06-patch-empowering-inline-assembly-and-type-safety", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-06-patch-empowering-inline-assembly-and-type-safety", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1767698382632/89a9ff67-2627-4a51-8ece-5e9f7582bb15.png", "keywords": ["wave-lang", "compiler", "patch", "programming languages"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-06</span></div>
+      <h1>Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety</h1>
+      <p class="desc">We are excited to share a significant update to our compiler’s frontend and backend, focusing on two critical areas: Inline Assembly (ASM) and Type System Robustness. This release makes writing low-level code more expressive while ensuring that the t...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1767698382632/89a9ff67-2627-4a51-8ece-5e9f7582bb15.png" alt="Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>compiler</li><li>patch</li><li>programming languages</li></ul>
+      <section class="content"><h1>Patch: Empowering Low-Level Control: Enhanced Inline Assembly and Type Safety</h1>
+<p>We are excited to share a significant update to our compiler’s frontend and backend, focusing on two critical areas: <strong>Inline Assembly (ASM)</strong> and <strong>Type System Robustness</strong>. This release makes writing low-level code more expressive while ensuring that the type system catches more potential errors at compile time.</p>
+<h3>1. Robust Inline ASM Parsing</h3>
+<p>Inline assembly is a bridge between high-level logic and bare-metal performance. We’ve overhauled how our parser handles <code>asm</code> blocks to make them more versatile:</p>
+<ul>
+<li>
+<p><strong>Generic Expression Support</strong>: <code>parse_asm_block</code> now accepts full <code>Expression</code> nodes for inputs and outputs. This means you can directly use variable references, literals (decimal, hex, binary), pointers (<code>&amp;x</code>), and dereferences (<code>deref x</code>) within your ASM blocks.</p>
+</li>
+<li>
+<p><strong>Structured Clauses</strong>: With the new <code>parse_asm_operand</code> and <code>parse_asm_inout_clause</code>, the syntax for <code>in</code> and <code>out</code> operands is cleaner and more maintainable.</p>
+</li>
+<li>
+<p><strong>Assignment Validation</strong>: The compiler now enforces an <code>is_assignable</code> check for <code>out</code> operands, preventing logical errors where a value might be attempted to be written to a non-writable expression.</p>
+</li>
+</ul>
+<h3>2. Smarter LLVM Codegen for ASM</h3>
+<p>Translating high-level intent to LLVM IR requires precision. Our backend now handles complex ASM scenarios with ease:</p>
+<ul>
+<li>
+<p><strong>Multiple Outputs</strong>: <code>gen_asm_stmt_ir</code> has been refactored to support multiple output operands by utilizing struct return values in LLVM.</p>
+</li>
+<li>
+<p><strong>Literal Radix Awareness</strong>: The Lexer now preserves the raw string representation of <code>IntLiteral</code> tokens. This allows the backend to correctly interpret different radices (like hex <code>0x</code> or binary <code>0b</code>) during constant folding and code generation.</p>
+</li>
+<li>
+<p><strong>Automatic Casting</strong>: We introduced <code>coerce_basic_value</code> to handle explicit conversions—such as turning an integer into a pointer for a syscall—and implicit widening.</p>
+</li>
+</ul>
+<h3>3. Strengthening Type Safety &amp; Coercion</h3>
+<p>To improve the developer experience, we've introduced <strong>Automatic Type Coercion</strong>. This reduces the need for manual casting in common, safe scenarios:</p>
+<ul>
+<li>
+<p><strong>Integer Widening</strong>: The compiler now automatically widens integers (e.g., <code>i32</code> to <code>i64</code>) when passing arguments to functions or initializing variables.</p>
+</li>
+<li>
+<p><strong>Pointer Safety</strong>: Safe pointer casts are now handled via <code>coerce_to_expected</code> during function calls, ensuring that the types match the expected signature without unnecessary boilerplate.</p>
+</li>
+</ul>
+<h3>4. Better Error Reporting with Colors</h3>
+<p>Debugging is easier when errors stand out. We have integrated the <code>colorex</code> crate into our error reporting module (<code>front/error</code>). Compiler errors are now syntax-highlighted in the terminal, helping you pinpoint issues in your source code at a glance.</p>
+<h3>5. Testing &amp; Reliability</h3>
+<p>This update includes significant updates to our test suite:</p>
+<ul>
+<li>
+<p><strong>Syscall Wrappers</strong>: <code>test56.wave</code> has been updated to use new type-safe syscall wrappers (<code>syscall4i</code>, <code>syscall4p</code>), proving the efficiency of the new ASM and coercion logic.</p>
+</li>
+<li>
+<p><strong>Stability</strong>: We’ve fixed edge cases in array sizing (<code>test66.wave</code>) and overflow handling (<code>test69.wave</code>), ensuring the compiler remains stable as it grows.</p>
+</li>
+</ul>
+<h3>Summary of Key Changes</h3>
+<ul>
+<li>
+<p><strong>ASM</strong>: Support for multiple outputs, complex expressions, and pointer operands.</p>
+</li>
+<li>
+<p><strong>Types</strong>: Automatic integer widening and pointer coercion in function calls.</p>
+</li>
+<li>
+<p><strong>DX</strong>: Colored error messages and preserved radix info for integer literals.</p>
+</li>
+<li>
+<p><strong>Backend</strong>: Refactored LLVM IR generation for assembly and variable initialization.</p>
+</li>
+</ul>
+<p>These improvements represent a major step toward making our language a powerful tool for both high-level application logic and low-level systems programming. We can't wait to see what you build with these new capabilities!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/265">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

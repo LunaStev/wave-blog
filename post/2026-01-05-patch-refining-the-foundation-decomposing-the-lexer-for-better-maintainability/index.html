@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability | Wave Programming Language Blog</title>
+  <meta name="description" content="Following our recent efforts to modularize the parser, we have now turned our attention to the very first stage of our compilation pipeline: the Lexer. Over time, this component had grown into a single file of nearly 900 lines, making it increasingly...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability">
+  <meta property="og:description" content="Following our recent efforts to modularize the parser, we have now turned our attention to the very first stage of our compilation pipeline: the Lexer. Over time, this component had grown into a single file of nearly 900 lines, making it increasingly...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-refining-the-foundation-decomposing-the-lexer-for-better-maintainability">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767602253060/fae83c18-757d-47f4-a298-c95b9b1ebbe7.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability">
+  <meta name="twitter:description" content="Following our recent efforts to modularize the parser, we have now turned our attention to the very first stage of our compilation pipeline: the Lexer. Over time, this component had grown into a single file of nearly 900 lines, making it increasingly...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767602253060/fae83c18-757d-47f4-a298-c95b9b1ebbe7.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-refining-the-foundation-decomposing-the-lexer-for-better-maintainability">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability", "description": "Following our recent efforts to modularize the parser, we have now turned our attention to the very first stage of our compilation pipeline: the Lexer. Over time, this component had grown into a single file of nearly 900 lines, making it increasingly...", "datePublished": "2026-01-05T08:38:29", "dateModified": "2026-01-05T08:38:29", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-refining-the-foundation-decomposing-the-lexer-for-better-maintainability", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-refining-the-foundation-decomposing-the-lexer-for-better-maintainability", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1767602253060/fae83c18-757d-47f4-a298-c95b9b1ebbe7.png", "keywords": ["#waves", "languages", "compiler", "programming languages", "Programming Blogs", "patch"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-05</span></div>
+      <h1>Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability</h1>
+      <p class="desc">Following our recent efforts to modularize the parser, we have now turned our attention to the very first stage of our compilation pipeline: the Lexer. Over time, this component had grown into a single file of nearly 900 lines, making it increasingly...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1767602253060/fae83c18-757d-47f4-a298-c95b9b1ebbe7.png" alt="Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability" loading="lazy">
+      <ul class="tags"><li>#waves</li><li>languages</li><li>compiler</li><li>programming languages</li><li>Programming Blogs</li><li>patch</li></ul>
+      <section class="content"><h1>Patch: Refining the Foundation: Decomposing the Lexer for Better Maintainability</h1>
+<p>Following our recent efforts to modularize the parser, we have now turned our attention to the very first stage of our compilation pipeline: the Lexer.</p>
+<p>Over time, this component had grown into a single file of nearly <strong>900 lines</strong>, making it increasingly difficult to reason about and safely extend.</p>
+<p>In our latest update, we have successfully decomposed the previously monolithic lexer into functional submodules. This change focuses on "separation of concerns," ensuring that each part of the lexical analysis process has a dedicated and logical home.</p>
+<p><img alt="" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1767602991582/8854dbc7-fbe8-41a8-97aa-f4052720f1d8.png align=" title="center"></p>
+<h3>Why Refactor the Lexer?</h3>
+<p>The lexer is responsible for turning raw source code into a stream of tokens. As we added support for more complex literals, keywords, and comment styles, the lexer's logic became increasingly intertwined. By breaking it down, we make the codebase more approachable for new contributors and significantly reduce the risk of regression when adding new syntax.</p>
+<h3>The New Modular Architecture</h3>
+<p>The lexer has been organized into several specialized components within <code>front/lexer/src/</code>:</p>
+<ul>
+<li>
+<p><code>core.rs</code>: Defines the foundational <code>Lexer</code> and <code>Token</code> structures. This serves as the primary source of truth for what a token is in our language.</p>
+</li>
+<li>
+<p><code>cursor.rs</code>: Implements low-level source navigation. Logic for advancing through the text, peeking at upcoming characters (<code>peek</code>), and conditional matching (<code>match_next</code>) is now isolated here.</p>
+</li>
+<li>
+<p><code>scan.rs</code>: The "brain" of the lexer. This module contains the main dispatch logic (<code>next_token</code>) that decides which specialized scanner to call based on the current character.</p>
+</li>
+<li>
+<p><code>ident.rs</code>: Handles identifier scanning and the mapping of strings to reserved keywords.</p>
+</li>
+<li>
+<p><code>literals.rs</code>: Dedicated logic for parsing complex character and string literals.</p>
+</li>
+<li>
+<p><code>trivia.rs</code>: Manages "trivia"—the parts of the code that the compiler ignores, such as whitespace and comments.</p>
+</li>
+<li>
+<p><code>common.rs</code>: A centralized location for internal shared imports used across the lexer modules.</p>
+</li>
+</ul>
+<h3>Integration and API Improvements</h3>
+<p>This wasn't just an internal cleanup; we also refined how other parts of the compiler interact with the lexer:</p>
+<ul>
+<li>
+<p><strong>Refined API</strong>: We updated <code>lib.rs</code> and <code>mod.rs</code> to provide a cleaner public interface.</p>
+</li>
+<li>
+<p><strong>Parser Alignment</strong>: The <code>front/parser</code> has been updated to align with the new lexer structure. This included making token type references more explicit (e.g., <code>lexer::token::TokenType</code>), which improves code clarity in the parsing logic.</p>
+</li>
+</ul>
+<h3>Benefits for the Future</h3>
+<p>By separating the "how" (navigating source code) from the "what" (identifying specific tokens), we've created a much more robust foundation. Whether we are adding new operators, supporting different string encoding styles, or optimizing scanning performance, these changes allow us to target specific areas without navigating a giant source file.</p>
+<p>Stay tuned as we continue to optimize our frontend architecture!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/264">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

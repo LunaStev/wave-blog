@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wave Language Performance Benchmark: Comparison with C and Rust | Wave Programming Language Blog</title>
+  <meta name="description" content="Wave is not aiming to be a &quot;C replacement&quot; like Zig, but it is an independent low-level language distinct from C. It has been under active development for about six months now. Currently in its pre-beta phase, Wave still has several bugs and limitati...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Wave Language Performance Benchmark: Comparison with C and Rust">
+  <meta property="og:description" content="Wave is not aiming to be a &quot;C replacement&quot; like Zig, but it is an independent low-level language distinct from C. It has been under active development for about six months now. Currently in its pre-beta phase, Wave still has several bugs and limitati...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-07-10-wave-language-performance-benchmark-comparison-with-c-and-rust">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271443053/c5b61455-f485-4500-95ab-902e888f6c5a.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wave Language Performance Benchmark: Comparison with C and Rust">
+  <meta name="twitter:description" content="Wave is not aiming to be a &quot;C replacement&quot; like Zig, but it is an independent low-level language distinct from C. It has been under active development for about six months now. Currently in its pre-beta phase, Wave still has several bugs and limitati...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271443053/c5b61455-f485-4500-95ab-902e888f6c5a.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-07-10-wave-language-performance-benchmark-comparison-with-c-and-rust">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Wave Language Performance Benchmark: Comparison with C and Rust", "description": "Wave is not aiming to be a \"C replacement\" like Zig, but it is an independent low-level language distinct from C. It has been under active development for about six months now. Currently in its pre-beta phase, Wave still has several bugs and limitati...", "datePublished": "2025-07-10T07:23:49", "dateModified": "2025-07-10T07:23:49", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-07-10-wave-language-performance-benchmark-comparison-with-c-and-rust", "url": "https://LunaStev.github.io/wave-blog/post/2025-07-10-wave-language-performance-benchmark-comparison-with-c-and-rust", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754271443053/c5b61455-f485-4500-95ab-902e888f6c5a.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-07-10</span></div>
+      <h1>Wave Language Performance Benchmark: Comparison with C and Rust</h1>
+      <p class="desc">Wave is not aiming to be a &quot;C replacement&quot; like Zig, but it is an independent low-level language distinct from C. It has been under active development for about six months now. Currently in its pre-beta phase, Wave still has several bugs and limitati...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271443053/c5b61455-f485-4500-95ab-902e888f6c5a.webp" alt="Wave Language Performance Benchmark: Comparison with C and Rust" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Wave Language Performance Benchmark: Comparison with C and Rust</h1>
+<p>Wave is not aiming to be a "C replacement" like Zig, but it is an independent low-level language distinct from C. It has been under active development for about six months now.</p>
+<p>Currently in its pre-beta phase, Wave still has several bugs and limitations—but that also means there's significant room for improvement. The potential is definitely there.</p>
+<p>According to the roadmap, the frontend of Wave will be completed during the pre-beta stage. In the next phase, alpha, development will begin on Wave’s custom compiler toolchain called Whale, with the goal of moving away from LLVM. The current plan is for Whale to fully replace LLVM and become a highly optimized and independent compiler toolchain tailored specifically for Wave.</p>
+<p>However, Wave also faces some clear challenges:</p>
+<ul>
+<li>
+<p><strong>Lack of ecosystem</strong>: While the concept of Wave has been around for over a year, actual development only began six months ago. As a result, there is no standard library, and there are practically no real-world programs built with it. While algorithmic code is possible, practical application-level development is not. As of version <code>v0.1.2-pre-beta</code>, even basic input functions like <code>input()</code> are not yet implemented.</p>
+</li>
+<li>
+<p><strong>Lack of contributors</strong>: This is a common issue with all new programming languages. In the very early stages, it's normal to have zero contributors. Often, a single developer drives the entire project based on their own philosophy. That’s just how it is. Compared to existing utility tools, new programming languages attract attention much more slowly.</p>
+</li>
+</ul>
+<p>Wave is a compiled, low-level language and shouldn’t be compared to Python or JavaScript. It’s not in the same category, and Wave isn’t trying to compete with them either. If we had to choose competitors, <strong>C and Rust</strong> would be the most appropriate comparisons.</p>
+<p>As mentioned earlier, Wave is still in its early stages, so it’s only natural that it’s significantly slower than both C and Rust. However, running benchmarks and comparing results is a meaningful exercise—it provides motivation and insight into potential optimizations.</p>
+<hr>
+<p><img alt="benchmark" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754271441312/030dd3ae-2e77-4c3d-8659-e87026711759.png align=" title="left"></p>
+<p>The graph above shows a performance comparison between Wave, C, and Rust. The benchmark measures how long it takes to run a simple string length function <strong>100 million times</strong>.</p>
+<p>All three languages were tested using <strong>AOT (ahead-of-time) compilation</strong>. Note that <strong>Wave does not and will not support JIT</strong>; it will be AOT-only by design.</p>
+<p>Here are the source codes used for each language:</p>
+<pre><code class="language-plaintext">fun len(s: str) -&gt; i32 {
+    var count: i32 = 0;
+    while (s[count] != 0) {
+        count = count + 1;
+    }
+    return count;
+}
+
+fun main() {
+    var message: str = &quot;hello, world!&quot;;
+    var result: i32 = 0;
+    var i: i32 = 0;
+    while (i &lt; 100000000) {
+        result = result + len(message);
+        i = i + 1;
+    }
+    println(&quot;Wave Result: {}&quot;, result);
+}
+</code></pre>
+<p>Wave does not yet have a time-related library, so execution time was measured using the Linux <code>time</code> command. Please keep that in mind when interpreting the results.</p>
+<hr>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+
+int len(const char* s) {
+    int count = 0;
+    while (s[count] != 0) {
+        count++;
+    }
+    return count;
+}
+
+int main() {
+    const char* message = &quot;hello, world!&quot;;
+    int result = 0;
+
+    clock_t start = clock();
+    for (int i = 0; i &lt; 100000000; ++i) {
+        result += len(message);
+    }
+    clock_t end = clock();
+
+    double elapsed = (double)(end - start) / CLOCKS_PER_SEC;
+    printf(&quot;C Result: %d\n&quot;, result);
+    printf(&quot;C Time: %.3f seconds\n&quot;, elapsed);
+    return 0;
+}
+</code></pre>
+<p>C is a time-tested language that has been the foundation of many systems and is deeply optimized. It is, without question, one of the most respected and traditional languages in software development.</p>
+<hr>
+<pre><code class="language-rust">use std::time::Instant;
+use std::hint::black_box;
+
+fn len(s: &amp;str) -&gt; i32 {
+    let bytes = s.as_bytes();
+    let mut count: i32 = 0;
+    while count &lt; bytes.len() as i32 &amp;&amp; bytes[count as usize] != 0 {
+        count += 1;
+    }
+    count
+}
+
+fn main() {
+    let message = black_box(&quot;hello, world!&quot;);
+    let mut result = 0;
+
+    let start = Instant::now();
+    for _ in 0..100_000_000 {
+        result += len(message);
+    }
+    let duration = start.elapsed();
+
+    println!(&quot;Rust Result: {}&quot;, result);
+    println!(&quot;Rust Time: {:.3?}&quot;, duration);
+}
+</code></pre>
+<p>Rust is the language used to implement Wave itself, so of course it's included in the benchmark. Although Rust has only been around for about a decade, it has grown rapidly and now has a thriving ecosystem. While it hasn’t reached the level of C yet, it is without a doubt one of the most promising modern systems languages.</p>
+<hr>
+<p>Some might look at this benchmark and say, "Wow, Wave is incredibly slow!"—and yes, it is slow right now. But don’t forget: Wave is only <strong>six months into development</strong>. Rust reached its first stable release <strong>after 10 years</strong> of development.</p>
+<p><strong>Wave is about 5× slower than C, and about 4.2× slower than Rust.</strong> However, considering that Wave is still a very young AOT-compiled language, this level of performance is already quite impressive. Reaching Rust-level performance won't happen overnight, but the <strong>potential is clearly there</strong>.</p>
+<hr>
+<p>Site: https://wave-lang.dev/</p>
+<p>GitHub: https://github.com/LunaStev/Wave</p>
+<p>Discord: https://discord.com/invite/<a href="https://discord.gg/3nev5nHqq9">3nev5nHqq9</a></p></section>
+    </article>
+  </div>
+</body>
+</html>

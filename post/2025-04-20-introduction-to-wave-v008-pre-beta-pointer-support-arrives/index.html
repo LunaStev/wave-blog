@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction to Wave v0.0.8-pre-beta: Pointer Support Arrives | Wave Programming Language Blog</title>
+  <meta name="description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are very happy to introduce Wave v0.0.8-pre-beta — a version that officially brings first-class pointer support to the language. Wave was designed with low-level capabilities in mind, and in this version...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introduction to Wave v0.0.8-pre-beta: Pointer Support Arrives">
+  <meta property="og:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are very happy to introduce Wave v0.0.8-pre-beta — a version that officially brings first-class pointer support to the language. Wave was designed with low-level capabilities in mind, and in this version...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2025-04-20-introduction-to-wave-v008-pre-beta-pointer-support-arrives">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270367874/ee3376fd-ec48-4fae-afab-7160c74e27ea.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Introduction to Wave v0.0.8-pre-beta: Pointer Support Arrives">
+  <meta name="twitter:description" content="Hello! I&#x27;m LunaStev, the developer of Wave. We are very happy to introduce Wave v0.0.8-pre-beta — a version that officially brings first-class pointer support to the language. Wave was designed with low-level capabilities in mind, and in this version...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270367874/ee3376fd-ec48-4fae-afab-7160c74e27ea.webp">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2025-04-20-introduction-to-wave-v008-pre-beta-pointer-support-arrives">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Introduction to Wave v0.0.8-pre-beta: Pointer Support Arrives", "description": "Hello! I'm LunaStev, the developer of Wave. We are very happy to introduce Wave v0.0.8-pre-beta — a version that officially brings first-class pointer support to the language. Wave was designed with low-level capabilities in mind, and in this version...", "datePublished": "2025-04-20T05:10:42", "dateModified": "2025-04-20T05:10:42", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2025-04-20-introduction-to-wave-v008-pre-beta-pointer-support-arrives", "url": "https://LunaStev.github.io/wave-blog/post/2025-04-20-introduction-to-wave-v008-pre-beta-pointer-support-arrives", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1754270367874/ee3376fd-ec48-4fae-afab-7160c74e27ea.webp", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2025-04-20</span></div>
+      <h1>Introduction to Wave v0.0.8-pre-beta: Pointer Support Arrives</h1>
+      <p class="desc">Hello! I&#x27;m LunaStev, the developer of Wave. We are very happy to introduce Wave v0.0.8-pre-beta — a version that officially brings first-class pointer support to the language. Wave was designed with low-level capabilities in mind, and in this version...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270367874/ee3376fd-ec48-4fae-afab-7160c74e27ea.webp" alt="Introduction to Wave v0.0.8-pre-beta: Pointer Support Arrives" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Introduction to Wave v0.0.8-pre-beta: Pointer Support Arrives</h1>
+<p>Hello! I'm LunaStev, the developer of Wave.</p>
+<p>We are very happy to introduce Wave <code>v0.0.8-pre-beta</code> — a version that officially brings first-class pointer support to the language.</p>
+<p>Wave was designed with low-level capabilities in mind, and in this version, we’re making a major leap in that direction.</p>
+<hr>
+<h2>✅ Added Features</h2>
+<h3>🧠 Pointer System: First-Class Pointer Support in Wave</h3>
+<ul>
+<li>
+<p>Introduced <code>ptr&lt;T&gt;</code> type syntax for defining typed pointers<br>
+    → Example: <code>var p: ptr&lt;i32&gt;;</code></p>
+</li>
+<li>
+<p>Implemented <code>&amp;x</code> address-of operator<br>
+    → Compiles to LLVM IR as <code>store i32* %x</code></p>
+</li>
+<li>
+<p>Implemented <code>deref p</code> dereference operator<br>
+    → Generates IR as <code>load i32, i32* %p</code></p>
+</li>
+<li>
+<p>Supported pointer-based initialization<br>
+    → <code>var p: ptr&lt;i32&gt; = &amp;x;</code> is now fully parsed and compiled</p>
+</li>
+<li>
+<p>Enabled dereferencing for both expression and assignment<br>
+    → Example: <code>deref p = 42;</code> is valid and stored directly via IR</p>
+</li>
+<li>
+<p>Address values can be printed as integers<br>
+    → <code>%ld</code> used for pointer-to-int cast in formatted output<br>
+    → <code>println("address = {}", p);</code> prints memory address</p>
+</li>
+</ul>
+<h2>🔧 Bug Fixes</h2>
+<h3>🐛 Fixed Pointer Initialization Parsing Issue</h3>
+<ul>
+<li>
+<p>Changed <code>VariableNode.initial_value</code> from <code>Option&lt;Literal&gt;</code> to <code>Option&lt;Expression&gt;</code></p>
+</li>
+<li>
+<p>Allowed <code>&amp;x</code> to be accepted as a valid initializer expression</p>
+</li>
+</ul>
+<h3>🐛 Fixed LLVM IR Crash on AddressOf Expression</h3>
+<ul>
+<li>
+<p>Added support for <code>Expression::AddressOf</code> in IR generation</p>
+</li>
+<li>
+<p>Prevented crash by checking for variable reference inside address-of</p>
+</li>
+</ul>
+<h3>🐛 Fixed printf format mismatch for pointers</h3>
+<ul>
+<li>
+<p><code>%s</code> → <code>%ld</code> for pointer values</p>
+</li>
+<li>
+<p>Ensured correct casting of <code>i32*</code> to <code>i64</code> before printing</p>
+</li>
+</ul>
+<h2>✨ Other Changes</h2>
+<h3>🧠 Improved Format String Handling in IR</h3>
+<ul>
+<li>
+<p>Added dynamic format string generation based on argument types</p>
+</li>
+<li>
+<p>Format strings now automatically adapt for int, float, and pointer types</p>
+</li>
+</ul>
+<hr>
+<h2>Showcase</h2>
+<p><img alt="Imag3e description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270366188/032659ca-dbc7-40dc-9d0c-2403ad2b6cd0.png align=" title="left"></p>
+<p><img alt="Ima3ge description" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1754270367057/0735b5ae-2de5-48fd-be40-46923c3c8c85.png align=" title="left"></p>
+<hr>
+<p>Thank you for using Wave! Stay tuned for future updates and enhancements.</p>
+<hr>
+<h2>Installation Guide</h2>
+<h3>For Linux:</h3>
+<ol>
+<li>
+<p><strong>Download and Extract:</strong></p>
+<ul>
+<li>
+<p>Download the <code>wave-v0.0.8-pre-beta-x86_64-linux-gnu.tar.gz</code> file from the official source.</p>
+</li>
+<li>
+<p>Use the wget command:</p>
+<p><code>bash
+wget https://github.com/LunaStev/Wave/releases/download/v0.0.8-pre-beta/wave-v0.0.8-pre-beta-x86_64-linux-gnu.tar.gz</code></p>
+</li>
+<li>
+<p>Extract the archive:</p>
+<p><code>bash
+sudo tar -xvzf wave-v0.0.8-pre-beta-x86_64-linux-gnu.tar.gz -C /usr/local/bin</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Setting up LLVMs</p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+sudo apt-get update
+sudo apt-get install llvm-14 llvm-14-dev clang-14 libclang-14-dev lld-14 clang
+sudo ln -s /usr/lib/llvm-14/lib/libLLVM-14.so /usr/lib/libllvm-14.so
+export LLVM_SYS_140_PREFIX=/usr/lib/llvm-14
+source ~/.bashrc</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Verify Installation:</strong></p>
+<ul>
+<li>
+<p>Open a terminal and type:</p>
+<p><code>bash
+wavec --version</code></p>
+</li>
+<li>
+<p>If the version number displays, the installation was successful.</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Contributor</h2>
+<p>@LunaStev | 🇰🇷</p>
+<hr>
+<h2>Website</h2>
+<p><a href="https://wave-lang.dev">Website</a></p>
+<p><a href="https://github.com/LunaStev/Wave">GitHub</a></p>
+<p><a href="https://ko-fi.com/lunasev">Ko-fi</a></p></section>
+    </article>
+  </div>
+</body>
+</html>

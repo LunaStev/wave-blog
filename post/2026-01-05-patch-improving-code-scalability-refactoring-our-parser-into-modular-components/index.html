@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch: Improving Code Scalability: Refactoring Our Parser into Modular Components | Wave Programming Language Blog</title>
+  <meta name="description" content="At the core of any compiler or language toolchain, the parser is often one of the most complex and rapidly evolving components. As our project has grown, so has our parser.rs file. To ensure long-term maintainability and to empower our contributors, ...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch: Improving Code Scalability: Refactoring Our Parser into Modular Components">
+  <meta property="og:description" content="At the core of any compiler or language toolchain, the parser is often one of the most complex and rapidly evolving components. As our project has grown, so has our parser.rs file. To ensure long-term maintainability and to empower our contributors, ...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-improving-code-scalability-refactoring-our-parser-into-modular-components">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767596772793/38758fd3-07e9-418d-bf66-4ffaf7c05b4f.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch: Improving Code Scalability: Refactoring Our Parser into Modular Components">
+  <meta name="twitter:description" content="At the core of any compiler or language toolchain, the parser is often one of the most complex and rapidly evolving components. As our project has grown, so has our parser.rs file. To ensure long-term maintainability and to empower our contributors, ...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1767596772793/38758fd3-07e9-418d-bf66-4ffaf7c05b4f.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-improving-code-scalability-refactoring-our-parser-into-modular-components">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch: Improving Code Scalability: Refactoring Our Parser into Modular Components", "description": "At the core of any compiler or language toolchain, the parser is often one of the most complex and rapidly evolving components. As our project has grown, so has our parser.rs file. To ensure long-term maintainability and to empower our contributors, ...", "datePublished": "2026-01-05T07:03:47", "dateModified": "2026-01-05T07:03:47", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-improving-code-scalability-refactoring-our-parser-into-modular-components", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-05-patch-improving-code-scalability-refactoring-our-parser-into-modular-components", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1767596772793/38758fd3-07e9-418d-bf66-4ffaf7c05b4f.png", "keywords": [], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-05</span></div>
+      <h1>Patch: Improving Code Scalability: Refactoring Our Parser into Modular Components</h1>
+      <p class="desc">At the core of any compiler or language toolchain, the parser is often one of the most complex and rapidly evolving components. As our project has grown, so has our parser.rs file. To ensure long-term maintainability and to empower our contributors, ...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1767596772793/38758fd3-07e9-418d-bf66-4ffaf7c05b4f.png" alt="Patch: Improving Code Scalability: Refactoring Our Parser into Modular Components" loading="lazy">
+      <ul class="tags"></ul>
+      <section class="content"><h1>Patch: Improving Code Scalability: Refactoring Our Parser into Modular Components</h1>
+<p>At the core of any compiler or language toolchain, the parser is often one of the most complex and rapidly evolving components. As our project has grown, so has our <code>parser.rs</code> file. To ensure long-term maintainability and to empower our contributors, we have recently completed a significant refactoring of our parser architecture.</p>
+<p><img alt="" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1767596593673/5df2806c-b0bf-4a93-a9a6-1373364248f4.png align=" title="center"></p>
+<h3>The Challenge: Managing Complexity</h3>
+<p>Previously, a single <code>parser.rs</code> file handled almost every aspect of our language's syntax. While this worked in the early stages, the file eventually grew too large to navigate efficiently. Adding new language features or debugging existing logic became increasingly difficult as different parsing rules were tightly coupled within a single scope.</p>
+<h3>The Solution: A Modular Architecture</h3>
+<p>We have decoupled the monolithic parser into a series of logical submodules. This change moves the parser into a dedicated directory structure under <code>front/parser/src/parser/</code>, making the codebase more intuitive and easier to extend.</p>
+<p>Here is a breakdown of the new module structure:</p>
+<ul>
+<li>
+<p><code>asm.rs</code>: Handles assembly block parsing (<code>parse_asm_block</code>).</p>
+</li>
+<li>
+<p><code>control.rs</code>: Manages control flow structures like <code>if</code>, <code>while</code>, and <code>for</code> loops.</p>
+</li>
+<li>
+<p><code>decl.rs</code>: Centralizes declarations for variables, constants, and keywords like <code>let</code> and <code>var</code>.</p>
+</li>
+<li>
+<p><code>expr.rs</code>: Dedicated to expression parsing, including function calls and parentheses handling.</p>
+</li>
+<li>
+<p><code>functions.rs</code>: Focused on function definitions, parameter parsing, and body extraction.</p>
+</li>
+<li>
+<p><code>io.rs</code>: Streamlines built-in I/O operations such as <code>println</code>, <code>print</code>, and <code>input</code>.</p>
+</li>
+<li>
+<p><code>items.rs</code>: Manages high-level items like imports, protocols, and structs.</p>
+</li>
+<li>
+<p><code>stmt.rs</code>: Orchestrates statements, assignments, and block logic.</p>
+</li>
+<li>
+<p><code>types.rs</code>: A new home for type-parsing logic (formerly in <code>type_system.rs</code>), centralizing how the parser interprets types from tokens.</p>
+</li>
+</ul>
+<h3>Key Enhancements &amp; Cleanup</h3>
+<p>Beyond just moving files, this refactor allowed us to polish the surrounding codebase:</p>
+<ul>
+<li>
+<p><strong>Unified Entry Point</strong>: <code>parse.rs</code> now serves as the main entry point, housing the core <code>parse()</code> function and managing submodule declarations.</p>
+</li>
+<li>
+<p><strong>Refined Type System Integration</strong>: By merging <code>type_system.rs</code> into <code>types.rs</code>, we’ve created a more cohesive workflow for type resolution during the parsing phase.</p>
+</li>
+<li>
+<p><strong>Cleaner Imports</strong>: We updated all internal crate imports and resolved unused import warnings in <code>main.rs</code> and <code>runner.rs</code>, resulting in a cleaner build output.</p>
+</li>
+</ul>
+<h3>Moving Forward</h3>
+<p>This refactoring represents a major step forward in our infrastructure. By decoupling the parser’s components, we’ve made it significantly easier for developers to locate specific logic and implement new language features without side effects.</p>
+<p>We believe these changes will accelerate our development velocity and provide a more robust foundation for the future of the project.</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/263">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

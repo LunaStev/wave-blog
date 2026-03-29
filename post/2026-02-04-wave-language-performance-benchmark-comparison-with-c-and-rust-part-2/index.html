@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wave Language Performance Benchmark: Comparison with C and Rust (Part 2) | Wave Programming Language Blog</title>
+  <meta name="description" content="6 months ago, I benchmarked Wave against C and Rust in this post. Today, 6 months later, I ran the benchmark once again using a significantly more mature version of Wave. The Wave version used in this">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Wave Language Performance Benchmark: Comparison with C and Rust (Part 2)">
+  <meta property="og:description" content="6 months ago, I benchmarked Wave against C and Rust in this post. Today, 6 months later, I ran the benchmark once again using a significantly more mature version of Wave. The Wave version used in this">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-04-wave-language-performance-benchmark-comparison-with-c-and-rust-part-2">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770216830294/afd2fff9-b5bc-4aac-968a-9eebbc027645.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wave Language Performance Benchmark: Comparison with C and Rust (Part 2)">
+  <meta name="twitter:description" content="6 months ago, I benchmarked Wave against C and Rust in this post. Today, 6 months later, I ran the benchmark once again using a significantly more mature version of Wave. The Wave version used in this">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770216830294/afd2fff9-b5bc-4aac-968a-9eebbc027645.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-04-wave-language-performance-benchmark-comparison-with-c-and-rust-part-2">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Wave Language Performance Benchmark: Comparison with C and Rust (Part 2)", "description": "6 months ago, I benchmarked Wave against C and Rust in this post. Today, 6 months later, I ran the benchmark once again using a significantly more mature version of Wave. The Wave version used in this", "datePublished": "2026-02-04T14:56:02", "dateModified": "2026-02-04T14:56:02", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-04-wave-language-performance-benchmark-comparison-with-c-and-rust-part-2", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-04-wave-language-performance-benchmark-comparison-with-c-and-rust-part-2", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1770216830294/afd2fff9-b5bc-4aac-968a-9eebbc027645.png", "keywords": ["wave-lang", "compiler", "Benchmark", "Programming Blogs", "programming languages"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-04</span></div>
+      <h1>Wave Language Performance Benchmark: Comparison with C and Rust (Part 2)</h1>
+      <p class="desc">6 months ago, I benchmarked Wave against C and Rust in this post. Today, 6 months later, I ran the benchmark once again using a significantly more mature version of Wave. The Wave version used in this</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1770216830294/afd2fff9-b5bc-4aac-968a-9eebbc027645.png" alt="Wave Language Performance Benchmark: Comparison with C and Rust (Part 2)" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>compiler</li><li>Benchmark</li><li>Programming Blogs</li><li>programming languages</li></ul>
+      <section class="content"><h1>Wave Language Performance Benchmark: Comparison with C and Rust (Part 2)</h1>
+<p>6 months ago, I benchmarked Wave against C and Rust in <a href="https://blog.wave-lang.dev/wave-language-performance-benchmark-comparison-with-c-and-rust">this post</a>.</p>
+<p>Today, 6 months later, I ran the benchmark once again using a significantly more mature version of Wave.</p>
+<p>The Wave version used in this benchmark is one of the in-development <code>v0.1.7-pre-beta</code> builds, and is valid for commits at or after <a href="https://github.com/wavefnd/Wave/tree/0a5a208e4fc2c68be40617cf300f24de48a4ed9c">this commit</a>.</p>
+<p>All source code used for this benchmark is publicly available <a href="https://github.com/LunaStev/benchmark">here</a>.</p>
+<p>During benchmarking, Wave, Rust, and C were all tested under the assumption that they use an LLVM backend.</p>
+<p>Checklist:</p>
+<ul>
+<li>
+<p>[x] <code>rdtsc</code> / <code>rdtscp</code> used</p>
+</li>
+<li>
+<p>[x] CPU core pinned (<code>taskset</code>)</p>
+</li>
+<li>
+<p>[x] Unified compiler toolchain (clang + LLVM)</p>
+</li>
+<li>
+<p>[x] Inline asm to prevent loop elimination</p>
+</li>
+<li>
+<p>[x] Result validation (identical results)</p>
+</li>
+</ul>
+<hr>
+<h3>Absolute Metric</h3>
+<p><img alt="relative" src="https://velog.velcdn.com/images/lunastev/post/edd2909e-46a1-4a16-82c6-c3994b9ee788/image.png align=" title="left"></p>
+<p>This graph shows how many CPU cycles were actually consumed.</p>
+<ul>
+<li>
+<p>Y-axis: CPU Cycles (log scale)</p>
+</li>
+<li>
+<p>X-axis: Optimization level (O0 ~ O3)</p>
+</li>
+</ul>
+<h4>Key observations</h4>
+<ul>
+<li>
+<p><strong>O0</strong></p>
+<ul>
+<li>Rust ≫ Wave &gt; C<br>
+    → As expected: without optimization, Rust is the heaviest, Wave is slower than C but significantly lighter than Rust.</li>
+</ul>
+</li>
+<li>
+<p><strong>O1 and above</strong></p>
+<ul>
+<li>
+<p>C drops almost to the floor (≈ 1e8)</p>
+</li>
+<li>
+<p>Wave is about 6× slower than C</p>
+</li>
+<li>
+<p>Rust is over 20× slower than C</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>This graph demonstrates how effectively compiler optimizations are applied.</p>
+<hr>
+<h3>Relative Metric</h3>
+<p><img alt="absolute" src="https://velog.velcdn.com/images/lunastev/post/0aed8f47-7372-43b8-abb2-d4c49c6a7c72/image.png align=" title="left"></p>
+<p>The relative metric normalizes C to 1.0 and shows how many times slower the other languages are compared to C.</p>
+<p>That is:</p>
+<pre><code class="language-kotlin">Wave / C = Wave_cycles ÷ C_cycles
+Rust / C = Rust_cycles ÷ C_cycles
+</code></pre>
+<hr>
+<h3>Wave / C</h3>
+<ul>
+<li>
+<p><strong>O0:</strong> ~1.3</p>
+<ul>
+<li>Wave is about 30% slower than C</li>
+</ul>
+</li>
+<li>
+<p><strong>O1–O3:</strong> 5 ~ 7</p>
+<ul>
+<li>Even after optimization, Wave is 5–7× slower than C</li>
+</ul>
+</li>
+</ul>
+<p>From these numbers, we can see that Wave is quite competitive as a language.</p>
+<hr>
+<h3>Rust / C</h3>
+<ul>
+<li>
+<p><strong>O0:</strong> ~4</p>
+</li>
+<li>
+<p><strong>O1–O3:</strong> 17 ~ 23</p>
+</li>
+</ul>
+<p>This can be interpreted as the cost Rust pays for safety and abstraction.</p>
+<hr>
+<h3>Conclusion</h3>
+<p>Summarizing the benchmark results:</p>
+<ul>
+<li>
+<p>Wave is not faster than C.</p>
+</li>
+<li>
+<p>However, it consistently uses fewer CPU cycles than Rust.</p>
+</li>
+<li>
+<p>This difference becomes especially clear after O1-level optimizations.</p>
+</li>
+</ul>
+<p>This shows that Wave maintains a C-like execution model while introducing almost no unnecessary abstraction overhead during low-level code generation.</p>
+<p>Wave is still a pre-beta language under active development.<br>
+It does not yet have its own optimization pipeline, nor advanced features such as LTO or PGO.<br>
+Despite that, achieving this level of performance is a strong indication that the language design and compiler architecture are heading in the right direction.</p>
+<hr>
+<h3>What This Result Means</h3>
+<p>The core point of this benchmark is not simply<br>
+“Which is faster: C, Rust, or Wave?”</p>
+<p>Each language has different goals:</p>
+<ul>
+<li>
+<p>C prioritizes maximum performance and minimal abstraction.</p>
+</li>
+<li>
+<p>Rust prioritizes memory safety and a powerful type system.</p>
+</li>
+<li>
+<p>Wave prioritizes predictable low-level control and a simple execution model.</p>
+</li>
+</ul>
+<p>These results show that Wave generates very straightforward LLVM IR without additional runtime costs, aligning well with its design goals.</p>
+<p>In other words, Wave demonstrates—using real numbers—that it occupies a middle ground:<br>
+it does not oversimplify the language purely for performance,<br>
+nor does it heavily sacrifice performance for safety.</p>
+<hr>
+<h3>Why Did These Results Occur?</h3>
+<p>Wave using fewer cycles than Rust in this test does not mean that Rust is a “slow language.”<br>
+Rather, it reflects Wave’s deliberate choice of a simpler execution model.</p>
+<p>Rust provides numerous compile-time guarantees and runtime concepts to ensure safety and abstraction.<br>
+These guarantees are highly valuable in real-world applications,<br>
+but in extremely simple low-level loops, they can manifest as overhead.</p>
+<p>Wave, on the other hand, is designed around explicit types,<br>
+a simple memory model,<br>
+and minimal implicit behavior.<br>
+As a result, LLVM can optimize the generated IR more aggressively.</p>
+<p>This difference becomes especially evident after O1-level optimizations.</p>
+<hr>
+<h3>Looking Forward</h3>
+<p>This benchmark does not represent Wave’s “final performance.”<br>
+It is closer to a snapshot of where Wave currently stands.</p>
+<p>Future improvements planned for Wave include:</p>
+<ul>
+<li>
+<p>Custom optimization passes</p>
+</li>
+<li>
+<p>Introduction of the Whale backend</p>
+</li>
+<li>
+<p>More advanced inlining and loop optimizations</p>
+</li>
+<li>
+<p>Stabilization of the standard library</p>
+</li>
+</ul>
+<p>As these improvements are introduced,<br>
+Wave’s performance characteristics are likely to move even closer to C.</p>
+<p>Going forward, I plan to repeat this benchmark periodically<br>
+and continue documenting how Wave evolves over time.</p></section>
+    </article>
+  </div>
+</body>
+</html>

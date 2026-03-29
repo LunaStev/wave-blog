@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #294: Control Flow and Confidence: Full &#x27;for&#x27; Loops and Strict Type Safety | Wave Programming Language Blog</title>
+  <meta name="description" content="As Wave continues to mature, we are focusing on two main pillars: developer productivity and compile-time reliability. Our latest patch delivers on both by introducing C-style for loops and enforcing">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #294: Control Flow and Confidence: Full &#x27;for&#x27; Loops and Strict Type Safety">
+  <meta property="og:description" content="As Wave continues to mature, we are focusing on two main pillars: developer productivity and compile-time reliability. Our latest patch delivers on both by introducing C-style for loops and enforcing">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-23-patch-294-control-flow-and-confidence-full-for-loops-and-strict-type-safety">
+  <meta property="og:image" content="https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/a4fbe862-bd96-49a4-9ba3-227e07ced138.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #294: Control Flow and Confidence: Full &#x27;for&#x27; Loops and Strict Type Safety">
+  <meta name="twitter:description" content="As Wave continues to mature, we are focusing on two main pillars: developer productivity and compile-time reliability. Our latest patch delivers on both by introducing C-style for loops and enforcing">
+  <meta name="twitter:image" content="https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/a4fbe862-bd96-49a4-9ba3-227e07ced138.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-23-patch-294-control-flow-and-confidence-full-for-loops-and-strict-type-safety">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #294: Control Flow and Confidence: Full 'for' Loops and Strict Type Safety", "description": "As Wave continues to mature, we are focusing on two main pillars: developer productivity and compile-time reliability. Our latest patch delivers on both by introducing C-style for loops and enforcing", "datePublished": "2026-02-23T07:04:00", "dateModified": "2026-02-23T07:04:00", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-23-patch-294-control-flow-and-confidence-full-for-loops-and-strict-type-safety", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-23-patch-294-control-flow-and-confidence-full-for-loops-and-strict-type-safety", "image": "https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/a4fbe862-bd96-49a4-9ba3-227e07ced138.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-23</span></div>
+      <h1>Patch #294: Control Flow and Confidence: Full &#x27;for&#x27; Loops and Strict Type Safety</h1>
+      <p class="desc">As Wave continues to mature, we are focusing on two main pillars: developer productivity and compile-time reliability. Our latest patch delivers on both by introducing C-style for loops and enforcing</p>
+      <img class="cover" src="https://cloudmate-test.s3.us-east-1.amazonaws.com/uploads/covers/688f564f07f13939f0c67146/a4fbe862-bd96-49a4-9ba3-227e07ced138.png" alt="Patch #294: Control Flow and Confidence: Full &#x27;for&#x27; Loops and Strict Type Safety" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #294: Control Flow and Confidence: Full 'for' Loops and Strict Type Safety</h1>
+<p>As Wave continues to mature, we are focusing on two main pillars: developer productivity and compile-time reliability. Our latest patch delivers on both by introducing C-style <code>for</code> loops and enforcing strict rules against implicit type narrowing—ensuring that your code is both expressive and safe.</p>
+<h3>1. The Arrival of Full 'for' Loops</h3>
+<p>While <code>while</code> loops are powerful, the <code>for</code> loop is often the preferred choice for iteration due to its concise syntax. Wave now supports full C-style <code>for</code> loops, including local variable initialization.</p>
+<ul>
+<li>
+<p><strong>Scoped Initialization</strong>: You can now declare loop-local variables directly in the loop header (e.g., <code>for (var i: i32 = 0; i &lt; 10; i += 1)</code>). These variables are automatically cleaned up once the loop finishes, preventing "namespace pollution."</p>
+</li>
+<li>
+<p><strong>Robust Codegen</strong>: Our LLVM backend now handles complex loop scopes, ensuring that the initialization, condition, and increment blocks are generated with optimal performance.</p>
+</li>
+</ul>
+<h3>2. Strict Type Safety: No More Hidden Narrowing</h3>
+<p>One of the most common sources of bugs in systems programming is "narrowing"—accidentally squeezing a large value (like an <code>i64</code>) into a small variable (like an <code>i32</code>).</p>
+<ul>
+<li>
+<p><strong>Forbidding Implicit Narrowing</strong>: Wave now explicitly forbids implicit narrowing in assignments, binary operations, and function arguments. If there's a risk of data loss, the compiler will require an explicit cast, forcing you to acknowledge the conversion.</p>
+</li>
+<li>
+<p><strong>Context-Dependent Literal Inference</strong>: To make this strictness less tedious, we’ve made the compiler smarter. Numeric literals (like <code>42</code>) now use context clues. If you pass a literal to a function expecting an <code>i8</code>, the compiler will infer the literal as an <code>i8</code> automatically, provided the value fits.</p>
+</li>
+</ul>
+<h3>3. Smarter Diagnostics: From <code>Option</code> to <code>Result</code></h3>
+<p>We have overhauled the internal logic of the parser. Previously, the parser returned an <code>Option</code>, meaning it either succeeded or failed silently.</p>
+<ul>
+<li>
+<p><strong>Structured Error Reporting</strong>: The parser now returns a <code>Result&lt;Vec&lt;ASTNode&gt;, ParseError&gt;</code>. This allows us to propagate detailed error messages, source labels, and helpful hints directly to your terminal.</p>
+</li>
+<li>
+<p><strong>Improved Imports</strong>: Structured errors now extend to the import system. If an imported file has a syntax error, Wave will point you exactly to the line and column in that file, making it much easier to debug multi-file projects.</p>
+</li>
+</ul>
+<h3>4. Modular Standard Library &amp; Optimized Backend</h3>
+<p>We’ve performed a cleanup of the standard library and our optimization pipeline:</p>
+<ul>
+<li>
+<p><strong>Role-Based Modules</strong>: We’ve moved away from "umbrella" files. You can now import specific modules based on their role, such as <code>std::time::clock</code>. This keeps your namespace clean and reduces compile times.</p>
+</li>
+<li>
+<p><strong>Backend Alignment</strong>: We have normalized our optimization flags. <code>-Ofast</code> is now mapped to <code>-O3</code> within our LLVM pass pipeline, ensuring aggressive but stable optimizations across all targets.</p>
+</li>
+<li>
+<p><strong>Strict Dependency Policy</strong>: The <code>std/README.md</code> has been updated with a clear policy on <code>extern(c)</code> usage, guiding contributors on how to build a safe and portable standard library.</p>
+</li>
+</ul>
+<h3>Why This Matters</h3>
+<p>With these changes, Wave is moving toward a "safety-first" philosophy. By catching type mismatches early and providing clearer feedback, we enable you to build complex systems with confidence. The addition of the <code>for</code> loop simply makes that process feel more natural and familiar.</p>
+<p>Check out the updated tests and standard library to see these new features in action!</p></section>
+    </article>
+  </div>
+</body>
+</html>

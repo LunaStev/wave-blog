@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta | Wave Programming Language Blog</title>
+  <meta name="description" content="As we continue to iterate on our compiler, we occasionally take a step back from feature development to focus on what keeps a project sustainable: Code Hygiene. Our latest update is dedicated to cleaning up the &quot;dust&quot; that accumulates during rapid de...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta">
+  <meta property="og:description" content="As we continue to iterate on our compiler, we occasionally take a step back from feature development to focus on what keeps a project sustainable: Code Hygiene. Our latest update is dedicated to cleaning up the &quot;dust&quot; that accumulates during rapid de...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-01-10-patch-267-housekeeping-for-excellence-preparing-for-v016-pre-beta">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768044357198/28f9b882-9c4b-4d8f-8dd8-40f995cede9f.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta">
+  <meta name="twitter:description" content="As we continue to iterate on our compiler, we occasionally take a step back from feature development to focus on what keeps a project sustainable: Code Hygiene. Our latest update is dedicated to cleaning up the &quot;dust&quot; that accumulates during rapid de...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1768044357198/28f9b882-9c4b-4d8f-8dd8-40f995cede9f.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-01-10-patch-267-housekeeping-for-excellence-preparing-for-v016-pre-beta">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta", "description": "As we continue to iterate on our compiler, we occasionally take a step back from feature development to focus on what keeps a project sustainable: Code Hygiene. Our latest update is dedicated to cleaning up the \"dust\" that accumulates during rapid de...", "datePublished": "2026-01-10T11:27:05", "dateModified": "2026-01-10T11:27:05", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-01-10-patch-267-housekeeping-for-excellence-preparing-for-v016-pre-beta", "url": "https://LunaStev.github.io/wave-blog/post/2026-01-10-patch-267-housekeeping-for-excellence-preparing-for-v016-pre-beta", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1768044357198/28f9b882-9c4b-4d8f-8dd8-40f995cede9f.png", "keywords": ["wave-lang", "Programming Blogs", "General Programming", "programming languages"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-01-10</span></div>
+      <h1>Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta</h1>
+      <p class="desc">As we continue to iterate on our compiler, we occasionally take a step back from feature development to focus on what keeps a project sustainable: Code Hygiene. Our latest update is dedicated to cleaning up the &quot;dust&quot; that accumulates during rapid de...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1768044357198/28f9b882-9c4b-4d8f-8dd8-40f995cede9f.png" alt="Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>General Programming</li><li>programming languages</li></ul>
+      <section class="content"><h1>Patch #267: Housekeeping for Excellence: Preparing for v0.1.6-pre-beta</h1>
+<p>As we continue to iterate on our compiler, we occasionally take a step back from feature development to focus on what keeps a project sustainable: <strong>Code Hygiene</strong>. Our latest update is dedicated to cleaning up the "dust" that accumulates during rapid development, ensuring our codebase remains sharp, readable, and efficient.</p>
+<p>This update also marks an internal milestone as we bump our version to <strong>0.1.6-pre-beta</strong> in preparation for our upcoming release.</p>
+<h3>Setting the Stage: v0.1.6-pre-beta</h3>
+<p>While this isn't the final 0.1.6 release just yet, we’ve officially moved the needle in our <code>Cargo.toml</code>. This version bump signals that we are in the final stages of stabilizing our recent modularization and feature updates (like the enhanced ASM support and the new <code>utils</code> crate) before they reach a broader audience.</p>
+<h3>The Great Cleanup: Lexer and Parser</h3>
+<p>Following our recent refactoring of the Lexer and Parser, we performed a comprehensive audit of their internal imports.</p>
+<ul>
+<li>
+<p><strong>Lexer Polishing</strong>: We removed redundant <code>super::common::*</code> imports across the core modules (<code>core.rs</code>, <code>ident.rs</code>, <code>scan.rs</code>), tightening the visibility and scope of our internal utilities.</p>
+</li>
+<li>
+<p><strong>Parser Optimization</strong>: We identified and removed duplicate parsing logic that had lingered in <code>expr/assign.rs</code> and <code>format.rs</code>. By eliminating these old implementations, we ensure that there is only one "source of truth" for expression parsing, reducing the risk of divergent behavior.</p>
+</li>
+</ul>
+<h3>Sharpening the Backend (LLVM Codegen)</h3>
+<p>Code cleanup is just as vital in the backend as it is in the frontend. Our LLVM IR generation logic received several maintenance updates:</p>
+<ul>
+<li>
+<p><strong>Unused Import Removal</strong>: We stripped away unnecessary <code>AddressSpace</code> imports and other redundant references in our LValue and RValue generation logic.</p>
+</li>
+<li>
+<p><strong>Dead Code Elimination</strong>: We removed unreachable panic calls in <code>types.rs</code>, resulting in a more predictable and streamlined control flow.</p>
+</li>
+<li>
+<p><strong>Documentation &amp; Comments</strong>: We cleared out redundant comments that no longer reflected the current state of the architecture, ensuring that our internal documentation stays relevant.</p>
+</li>
+</ul>
+<h3>Why Maintenance Matters</h3>
+<p>It might be tempting to focus only on new features, but regular "housekeeping" like this is what prevents technical debt. A cleaner codebase leads to:</p>
+<ol>
+<li>
+<p><strong>Faster Build Times</strong>: Fewer imports and less redundant code mean less work for the Rust compiler.</p>
+</li>
+<li>
+<p><strong>Easier Contribution</strong>: New contributors can navigate the project without being confused by unused variables or duplicate functions.</p>
+</li>
+<li>
+<p><strong>Higher Reliability</strong>: Removing unreachable code and cleaning up logic reduces the surface area for potential bugs.</p>
+</li>
+</ol>
+<h3>What’s Next?</h3>
+<p>With the codebase now polished and the version bumped to <code>0.1.6-pre-beta</code>, we are focusing on final stability tests. We are incredibly excited about the progress we've made and can't wait to share the full v0.1.6 release with you soon.</p>
+<p>Stay tuned for more updates!</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/267">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>

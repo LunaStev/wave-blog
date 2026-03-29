@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants | Wave Programming Language Blog</title>
+  <meta name="description" content="As we move toward v0.1.7-pre-beta, Wave is becoming more than just a tool for low-level systems programming; it’s becoming a language that helps you organize complex logic with ease. Our latest update focuses on expanding the type system and making t...">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta property="og:site_name" content="Wave Programming Language Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants">
+  <meta property="og:description" content="As we move toward v0.1.7-pre-beta, Wave is becoming more than just a tool for low-level systems programming; it’s becoming a language that helps you organize complex logic with ease. Our latest update focuses on expanding the type system and making t...">
+  <meta property="og:url" content="https://LunaStev.github.io/wave-blog/post/2026-02-09-patch-285-strengthening-the-type-system-enums-aliases-and-iterative-constants">
+  <meta property="og:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770623089274/2500483b-a3dd-4a64-89f0-5c500434c4b6.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants">
+  <meta name="twitter:description" content="As we move toward v0.1.7-pre-beta, Wave is becoming more than just a tool for low-level systems programming; it’s becoming a language that helps you organize complex logic with ease. Our latest update focuses on expanding the type system and making t...">
+  <meta name="twitter:image" content="https://cdn.hashnode.com/res/hashnode/image/upload/v1770623089274/2500483b-a3dd-4a64-89f0-5c500434c4b6.png">
+  <link rel="canonical" href="https://LunaStev.github.io/wave-blog/post/2026-02-09-patch-285-strengthening-the-type-system-enums-aliases-and-iterative-constants">
+  <link rel="alternate" type="application/rss+xml" title="Wave Programming Language Blog RSS" href="https://LunaStev.github.io/wave-blog/rss.xml">
+  <link rel="icon" type="image/x-icon" href="https://LunaStev.github.io/wave-blog/favicon.ico">
+  <style>
+    body { margin: 0; font-family: 'Roboto Mono', 'IBM Plex Mono', monospace; background: #0d0f12; color: #d9e1f2; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 10px; }
+    .top { margin-bottom: 10px; }
+    .top a { color: #8fb3ff; text-decoration: underline; }
+    article { border: 2px solid #6d7892; background: #151922; padding: 16px; box-shadow: 6px 6px 0 #000; }
+    .meta { display: flex; gap: 8px; align-items: center; color: #97a3be; font-size: 12px; }
+    .chip { border: 1px solid #72e5b8; color: #72e5b8; padding: 2px 6px; font-size: 11px; line-height: 1; }
+    h1 { margin: 10px 0 8px; font-size: 28px; line-height: 1.3; text-transform: uppercase; }
+    .desc { margin: 0 0 12px; color: #a9b8d7; }
+    .cover { width: 100%; border: 2px solid #3a4357; }
+    .tags { list-style: none; margin: 10px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags li { border: 1px solid #3a4357; padding: 3px 7px; font-size: 12px; color: #a9b8d7; }
+    .content h1, .content h2, .content h3, .content h4 { text-transform: uppercase; font-size: 1em; margin-top: 1.3em; }
+    .content pre { overflow-x: auto; border: 2px solid #3a4357; background: #0b1019; padding: 12px; }
+    .content code { font-family: inherit; }
+    .content :not(pre) > code { border: 1px solid #3a4357; background: #121b29; padding: 1px 4px; }
+    .content img { max-width: 100%; border: 2px solid #3a4357; }
+    .content a { color: #8fb3ff; }
+    .content blockquote { border-left: 4px solid #72e5b8; padding: 4px 10px; margin-left: 0; background: #0f1c1d; color: #bce9d7; }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants", "description": "As we move toward v0.1.7-pre-beta, Wave is becoming more than just a tool for low-level systems programming; it’s becoming a language that helps you organize complex logic with ease. Our latest update focuses on expanding the type system and making t...", "datePublished": "2026-02-09T07:46:06", "dateModified": "2026-02-09T07:46:06", "mainEntityOfPage": "https://LunaStev.github.io/wave-blog/post/2026-02-09-patch-285-strengthening-the-type-system-enums-aliases-and-iterative-constants", "url": "https://LunaStev.github.io/wave-blog/post/2026-02-09-patch-285-strengthening-the-type-system-enums-aliases-and-iterative-constants", "image": "https://cdn.hashnode.com/res/hashnode/image/upload/v1770623089274/2500483b-a3dd-4a64-89f0-5c500434c4b6.png", "keywords": ["wave-lang", "Programming Blogs", "programming languages", "patching", "languages", "compiler"], "author": {"@type": "Organization", "name": "Wave Foundation"}, "publisher": {"@type": "Organization", "name": "Wave Foundation"}, "inLanguage": "en"}</script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="https://LunaStev.github.io/wave-blog/">← Wave Programming Language Blog</a></div>
+    <article>
+      <div class="meta"><span>2026-02-09</span></div>
+      <h1>Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants</h1>
+      <p class="desc">As we move toward v0.1.7-pre-beta, Wave is becoming more than just a tool for low-level systems programming; it’s becoming a language that helps you organize complex logic with ease. Our latest update focuses on expanding the type system and making t...</p>
+      <img class="cover" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1770623089274/2500483b-a3dd-4a64-89f0-5c500434c4b6.png" alt="Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants" loading="lazy">
+      <ul class="tags"><li>wave-lang</li><li>Programming Blogs</li><li>programming languages</li><li>patching</li><li>languages</li><li>compiler</li></ul>
+      <section class="content"><h1>Patch #285: Strengthening the Type System: Enums, Aliases, and Iterative Constants</h1>
+<p>As we move toward <strong>v0.1.7-pre-beta</strong>, Wave is becoming more than just a tool for low-level systems programming; it’s becoming a language that helps you organize complex logic with ease. Our latest update focuses on expanding the type system and making the compiler significantly smarter about compile-time values.</p>
+<h3>1. New Organizational Tools: Enums &amp; Type Aliases</h3>
+<p>To write clean, maintainable code, you need tools to describe your data and its meaning. We’ve added two core features:</p>
+<ul>
+<li>
+<p><strong>Enums</strong>: You can now define a set of named constants with an underlying representation.</p>
+<p><code>kotlin
+enum Status -&gt; i32 {
+    Success,
+    Error,
+    Pending
+}</code></p>
+<p>Enum variants are automatically registered as global constants, making them easy to use throughout your program.</p>
+</li>
+<li>
+<p><strong>Type Aliases</strong>: Long or complex types can now be given simpler names, improving code reuse and readability.</p>
+<p><code>kotlin
+type Handle = u64;
+type Callback = ptr&lt;i32&gt;;</code></p>
+</li>
+</ul>
+<p>To support this, we’ve implemented a pre-codegen <strong>Type Resolution Pass</strong> that flattens aliases and ensures all types are correctly resolved before the first line of LLVM IR is even written.</p>
+<h3>2. A More Powerful Constant Evaluation Engine</h3>
+<p>Our constant evaluator has graduated from simple arithmetic to handling complex data.</p>
+<ul>
+<li>
+<p><strong>Aggregate Support</strong>: You can now define constants that are <strong>struct literals</strong> or <strong>array literals</strong>. This allows you to bake complex configuration data directly into your binary.</p>
+</li>
+<li>
+<p><strong>Iterative Resolution</strong>: Constants can now depend on other constants defined later in the file. The compiler performs multiple passes (multi-round resolution) until all dependencies are resolved, giving you more freedom in how you organize your code.</p>
+</li>
+<li>
+<p><strong>Built-in Keywords</strong>: <code>true</code>, <code>false</code>, and <code>null</code> are now fully supported in constant contexts.</p>
+</li>
+</ul>
+<h3>3. Safer ABI Handling &amp; Vector Support</h3>
+<p>When interfacing with C libraries, passing structs via registers is a delicate operation. We’ve refined our approach:</p>
+<ul>
+<li>
+<p><strong>From Bit-cast to Memcpy</strong>: In our aggregate packing logic (<code>pack_agg_to_int</code>), we’ve moved from direct bit-casting to using <code>build_memcpy</code>. This is a much safer approach that respects memory alignment requirements more strictly during FFI calls.</p>
+</li>
+<li>
+<p><strong>Vector Type Support</strong>: We’ve improved support for <strong>Homogeneous Floating-point Aggregates (HFAs)</strong> by adding coercion logic between Wave structs and LLVM Vector types. This ensures peak performance when passing mathematical vectors to external libraries.</p>
+</li>
+</ul>
+<h3>4. Robust Frontend Validation</h3>
+<p>We’ve strengthened our verification pass to catch errors earlier. The compiler now detects the usage of <strong>undeclared identifiers</strong> in expressions and validates that all enum variants are correctly registered before use. This means fewer surprises at the codegen stage and more helpful error messages for you.</p>
+<h3>Summary of Key Changes</h3>
+<ul>
+<li>
+<p><strong>Syntax</strong>: Added <code>enum</code> and <code>type</code> keywords.</p>
+</li>
+<li>
+<p><strong>Compile-time</strong>: Enhanced constant evaluation with iterative dependency resolution and aggregate support.</p>
+</li>
+<li>
+<p><strong>Backend</strong>: Refactored aggregate packing using <code>memcpy</code> for better ABI safety.</p>
+</li>
+<li>
+<p><strong>Milestone</strong>: Bumped package version to <strong>v0.1.7-pre-beta</strong>.</p>
+</li>
+<li>
+<p><strong>Infrastructure</strong>: Automatic <code>target/</code> directory creation during build.</p>
+</li>
+</ul>
+<p>This release bridges the gap between high-level code organization and low-level performance. Whether you’re organizing state with enums or defining complex compile-time arrays, Wave v0.1.7-pre-beta provides the foundation you need.</p>
+<h3>Link</h3>
+<ul>
+<li>
+<p><a href="https://github.com/wavefnd/Wave/pull/285">Pull request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wavefnd/Wave">GitHub</a></p>
+</li>
+<li>
+<p><a href="https://discord.gg/3nev5nHqq9">Community</a></p>
+</li>
+</ul></section>
+    </article>
+  </div>
+</body>
+</html>
