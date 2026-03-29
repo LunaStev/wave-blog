@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          pip install markdown
+
+      - name: Build Angular app
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          BASE_HREF="/${REPO_NAME}/"
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            BASE_HREF="/"
+          fi
+
+          npm run build -- --configuration production --base-href "$BASE_HREF"
+
+      - name: Resolve publish directory
+        run: |
+          if [ -d "dist/waveblog/browser" ]; then
+            echo "PUBLISH_DIR=dist/waveblog/browser" >> "$GITHUB_ENV"
+          else
+            echo "PUBLISH_DIR=dist/waveblog" >> "$GITHUB_ENV"
+          fi
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ${{ env.PUBLISH_DIR }}
+          force_orphan: true

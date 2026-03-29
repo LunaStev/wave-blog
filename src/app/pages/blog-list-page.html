@@ -1,0 +1,54 @@
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-hero">
+  <p class="mono badge">Official</p>
+  <h1>Wave Programming Language Blog</h1>
+  <p class="lead">Compiler progress, low-level experiments, and release notes from the Wave language journey.</p>
+
+  <div class="hero-meta mono">
+    <span>{{ posts.length }} posts</span>
+    <span>Latest update: {{ latestDate }}</span>
+  </div>
+
+  <label class="search-wrap">
+    <span class="mono">Search</span>
+    <input
+      type="search"
+      [ngModel]="query()"
+      (ngModelChange)="query.set($event)"
+      placeholder="Find by title, tag, or description"
+      aria-label="Search posts"
+    >
+  </label>
+</header>
+
+<main class="feed-grid">
+  @for (post of orderedFilteredPosts(); track post.slug) {
+    <article class="post-card" [style.--delay]="($index * 0.04) + 's'" [class.pinned]="post.pinned">
+      <a [routerLink]="['/post', post.slug]">
+        <div class="card-cover" [class.no-cover]="!post.cover" [style.background-image]="cardCoverStyle(post)"></div>
+
+        <div class="card-body">
+          <div class="card-head">
+            <p class="mono card-date">{{ post.dateDisplay }}</p>
+            @if (post.pinned) {
+              <span class="pin-chip mono">PINNED</span>
+            }
+          </div>
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.description }}</p>
+
+          <ul class="tag-row">
+            @for (tag of post.tags.slice(0, 4); track tag) {
+              <li>{{ tag }}</li>
+            }
+          </ul>
+        </div>
+      </a>
+    </article>
+  }
+
+  @if (!orderedFilteredPosts().length) {
+    <p class="empty-state">No posts matched your search.</p>
+  }
+</main>
