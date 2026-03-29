@@ -1,13 +1,16 @@
 # Wave Blog
 
-## Cloudflare Pages
+## Cloudflare Workers (Default)
 
-- Framework preset: `None`
-- Build command: `npm run build`
-- Build output directory: `dist/waveblog`
-- Root directory: `/`
+- Static assets are served from `dist/waveblog`.
+- SPA fallback is enabled (`not_found_handling = "single-page-application"` in `wrangler.toml`).
 
-### Environment variables
+### Commands
+
+- Local preview: `npm run preview:worker`
+- Deploy: `npm run deploy:worker`
+
+### Environment variable
 
 - `SITE_URL`: official blog URL (example: `https://blog.wave-lang.org`)
   - Used for canonical URL, `sitemap.xml`, `rss.xml`, and static post SEO metadata.
