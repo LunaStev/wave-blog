@@ -1,10 +1,11 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 
 import { BLOG_POSTS_BY_SLUG } from '../blog-data';
+import { SeoService } from '../seo.service';
 
 @Component({
   selector: 'app-blog-post-page',
@@ -14,6 +15,7 @@ import { BLOG_POSTS_BY_SLUG } from '../blog-data';
 export class BlogPostPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly seo = inject(SeoService);
 
   private readonly slug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug') ?? '')),
@@ -29,4 +31,15 @@ export class BlogPostPageComponent {
     }
     return this.sanitizer.bypassSecurityTrustHtml(post.contentHtml);
   });
+
+  constructor() {
+    effect(() => {
+      const post = this.post();
+      if (post) {
+        this.seo.setPost(post);
+        return;
+      }
+      this.seo.setNotFound();
+    });
+  }
 }

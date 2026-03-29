@@ -35,13 +35,20 @@ jobs:
 
       - name: Build Angular app
         run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER}"
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          SITE_URL="https://${OWNER}.github.io"
+
+          if [[ "$REPO_NAME" != "${OWNER}.github.io" ]]; then
+            SITE_URL="${SITE_URL}/${REPO_NAME}"
+          fi
+
           BASE_HREF="/${REPO_NAME}/"
           if [[ "$REPO_NAME" == *.github.io ]]; then
             BASE_HREF="/"
           fi
 
-          npm run build -- --configuration production --base-href "$BASE_HREF"
+          SITE_URL="$SITE_URL" npm run build -- --configuration production --base-href "$BASE_HREF"
 
       - name: Resolve publish directory
         run: |
@@ -51,10 +58,13 @@ jobs:
             echo "PUBLISH_DIR=dist/waveblog" >> "$GITHUB_ENV"
           fi
 
+      - name: Create SPA fallback page
+        run: cp "$PUBLISH_DIR/index.html" "$PUBLISH_DIR/404.html"
+
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ${{ env.PUBLISH_DIR }}
           force_orphan: true

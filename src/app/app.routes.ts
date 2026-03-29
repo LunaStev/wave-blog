@@ -7,7 +7,7 @@ export const routes: Routes = [
   {
     path: '',
     component: BlogListPageComponent,
-    title: 'Wave Engineering Blog'
+    title: 'Wave Programming Language Blog'
   },
   {
     path: 'post/:slug',
