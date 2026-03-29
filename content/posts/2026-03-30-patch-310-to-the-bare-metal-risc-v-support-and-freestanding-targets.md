@@ -3,7 +3,7 @@ title: "Patch #310: To the Bare Metal: RISC-V Support and Freestanding Targets"
 date: "2026-03-30 01:36:00"
 description: "As we continue to build Wave into a versatile systems language, our goal is to support not just high-level applications, but also the "bare metal"—the layer where software meets hardware directly."
 tags: ["wave-lang", "compiler", "Programming Blogs", "programming languages"]
-pinned: true
+pinned: false
 cover: "patch-310.png"
 ---
 

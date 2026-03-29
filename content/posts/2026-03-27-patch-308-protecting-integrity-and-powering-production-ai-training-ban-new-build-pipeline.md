@@ -3,7 +3,7 @@ title: "Patch #308: Protecting Integrity and Powering Production: AI Training Ba
 date: "2026-03-27 04:39:11"
 description: "As the Wave language ecosystem grows, we are committed to two fundamental principles: protecting the creative work of our contributors and providing developers with a professional-grade toolchain. Our"
 tags: ["wave-lang", "compiler", "Programming Blogs", "programming languages"]
-pinned: true
+pinned: false
 cover: "https://cdn.hashnode.com/uploads/covers/688f564f07f13939f0c67146/dfdbce25-a541-49a2-ad3a-dabce8b88195.png"
 ---
 
