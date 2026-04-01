@@ -1,14 +1,13 @@
 ---
-title: "Patch #310: To the Bare Metal: RISC-V Support and Freestanding Targets"
-date: "2026-03-30 01:36:00"
-description: "As we continue to build Wave into a versatile systems language, our goal is to support not just high-level applications, but also the "bare metal"—the layer where software meets hardware directly."
+title: "Patch #311: Precision in Linking: Introducing -C link-sysroot and Enhanced Validation"
+date: "2026-04-01 18:13:00"
+description: "When building software for different architectures or embedded systems, managing the "sysroot"—the directory containing the target's standard headers and libraries—is one of the most critical steps. Our latest update to the `wavec` CLI makes this process more transparent and less error-prone by introducing a dedicated linking-stage sysroot option and improved safety checks."
 tags: ["wave-lang", "compiler", "Programming Blogs", "programming languages"]
 pinned: false
-cover: "patch-310.png"
+cover: "patch-311.png"
 ---
 
 # Patch #311: Precision in Linking: Introducing -C link-sysroot and Enhanced Validation
-
 
 When building software for different architectures or embedded systems, managing the "sysroot"—the directory containing the target's standard headers and libraries—is one of the most critical steps. Our latest update to the `wavec` CLI makes this process more transparent and less error-prone by introducing a dedicated linking-stage sysroot option and improved safety checks.
 
