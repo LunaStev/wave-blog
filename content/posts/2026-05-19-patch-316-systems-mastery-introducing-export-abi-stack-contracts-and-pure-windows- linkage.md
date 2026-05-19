@@ -48,7 +48,7 @@ Try out the new `export` syntax and see the stack analysis in action today!
 
 ### Link
 
-*   [Pull request](https://github.com/wavefnd/Wave/pull/315)
+*   [Pull request](https://github.com/wavefnd/Wave/pull/316)
     
 *   [GitHub](https://github.com/wavefnd/Wave)
     
