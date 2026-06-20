@@ -118,5 +118,5 @@ Longer term, running `wavec` inside WaveOS is a hosted-compiler project of its o
 
 - [Wave on GitHub](https://github.com/wavefnd/Wave)
 - [Wave releases](https://github.com/wavefnd/Wave/releases)
-- [Wave documentation](https://wave-lang.dev/docs/)
+- [Wave documentation](https://wave-lang.dev/docs/intro/)
 - [Wave community](https://discord.gg/3nev5nHqq9)
