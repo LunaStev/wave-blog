@@ -4,6 +4,7 @@ date: "2026-06-20 18:00:00"
 description: "Wave v0.1.9-pre-beta strengthens the compiler as a portable systems toolchain with standalone packages, a redesigned build CLI, Windows support, freestanding code generation, explicit exports, safer inline assembly, and stricter release validation."
 tags: ["wave-lang", "release", "compiler", "systems-programming"]
 pinned: true
+cover: "release-19.png"
 ---
 
 # Wave v0.1.9-pre-beta: Portable Toolchains, Freestanding Systems, and Release Hardening

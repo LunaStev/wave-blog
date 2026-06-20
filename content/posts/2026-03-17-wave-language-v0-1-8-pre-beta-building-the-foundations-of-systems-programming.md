@@ -3,7 +3,7 @@ title: "Wave Language v0.1.8-pre-beta: Building the Foundations of Systems Progr
 date: "2026-03-17 08:58:43"
 description: "The Wave Language Team is proud to announce the release of v0.1.8-pre-beta. This update marks a definitive turning point, evolving Wave from an experimental project into a robust and modern systems pr"
 tags: ["wave-lang", "Programming Blogs", "programming languages", "release notes"]
-pinned: true
+pinned: false
 cover: "https://cdn.hashnode.com/uploads/covers/688f564f07f13939f0c67146/d5b37b34-5689-4155-bdda-10bb662d9d78.png"
 ---
 
